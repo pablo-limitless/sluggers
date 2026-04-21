@@ -3,1518 +3,1509 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLUGGERS HIT — Collectible Cannabis</title>
+  <title>SLUGGERS — Beyond the Wormhole</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Black+Ops+One&family=Outfit:wght@400;500;600;700;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            bang: ['Bangers', 'cursive'],
-            ops: ['Black Ops One', 'cursive'],
-            body: ['Public Sans', 'sans-serif'],
-            ui: ['Outfit', 'sans-serif'],
-          },
-          colors: {
-            slug: {
-              green:  '#AEDB43',
-              red:    '#CC1F1A',
-              black:  '#111111',
-              yellow: '#F5C518',
-              white:  '#F5F5F0',
-              cream:  '#EDE8D8',
-              dark:   '#0D0D0D',
-              card:   '#1A1208',
-            }
-          }
-        }
-      }
-    };
-  </script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,100;0,300;0,400;1,100;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
+  <style>
+    /* ═══════════════════════════════════
+       DESIGN TOKENS — CINEMATIC DUNE
+       Palette: Villeneuve color grading.
+       No neon. Think tungsten, aged linen,
+       deep indigo space, oxidised copper.
+       ═══════════════════════════════════ */
+    :root {
+      --void:      #06060a;
+      --deep:      #0a0a10;
+      --midnight:  #0e0e1c;
+      --nebula:    #141428;
+      --sand:      #c4a46b;       /* Arrakis dune / aged parchment        */
+      --spice:     #b86b2a;       /* Spice melange — burnt sienna          */
+      --ember:     #7a3010;       /* Deep ember, barely lit                */
+      --accent:    #8fa88c;       /* Desaturated sage — organic, muted     */
+      --accent-dim:#6b8068;       /* Dimmer sage for subtle elements       */
+      --star:      #d8cfc4;       /* Warm off-white, like old paper        */
+      --haze:      rgba(143,168,140,0.05);
+      --haze-warm: rgba(184,107,42,0.07);
+      --glow-g:    rgba(143,168,140,0.25);
+      --glow-o:    rgba(196,164,107,0.3);
+      --font-head: 'Syncopate', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-sub:  'Exo 2', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
-      background: #0D0D0D;
-      color: #F5F5F0;
-      font-family: 'Public Sans', sans-serif;
+      background: var(--void);
+      color: var(--star);
+      font-family: var(--font-body);
       overflow-x: hidden;
+      cursor: crosshair;
     }
 
-    /* ───── SELECTION ───── */
-    ::selection { background: #AEDB43; color: #111; }
+    ::selection { background: var(--sand); color: var(--void); }
 
-    /* ───── SCROLLBAR ───── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #111; }
-    ::-webkit-scrollbar-thumb { background: #CC1F1A; border-radius: 3px; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--void); }
+    ::-webkit-scrollbar-thumb { background: var(--spice); }
 
-    /* ───── BUD TEXTURE ───── */
-    /* repeating radial dots to simulate cannabis bud texture */
-    .bud-texture {
-      background-image:
-        radial-gradient(ellipse 6px 8px at 10% 15%, rgba(80,120,20,0.6) 0%, transparent 100%),
-        radial-gradient(ellipse 5px 7px at 30% 45%, rgba(100,150,25,0.5) 0%, transparent 100%),
-        radial-gradient(ellipse 8px 6px at 55% 20%, rgba(70,110,15,0.55) 0%, transparent 100%),
-        radial-gradient(ellipse 5px 9px at 75% 55%, rgba(90,135,20,0.5) 0%, transparent 100%),
-        radial-gradient(ellipse 7px 5px at 90% 30%, rgba(110,160,25,0.55) 0%, transparent 100%),
-        radial-gradient(ellipse 6px 8px at 20% 70%, rgba(75,115,18,0.5) 0%, transparent 100%),
-        radial-gradient(ellipse 9px 6px at 60% 80%, rgba(95,145,22,0.55) 0%, transparent 100%),
-        radial-gradient(ellipse 5px 7px at 40% 90%, rgba(85,125,20,0.5) 0%, transparent 100%);
-      background-size: 120px 120px;
+    /* ═══════════════════════════════════
+       STAR FIELD CANVAS
+       ═══════════════════════════════════ */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    /* ───── HOUNDSTOOTH ───── */
-    .houndstooth {
-      background-color: #CC1F1A;
-      background-image:
-        conic-gradient(#111 0deg 90deg, transparent 90deg 180deg),
-        conic-gradient(#111 0deg 90deg, transparent 90deg 180deg);
-      background-size: 16px 16px;
-      background-position: 0 0, 8px 8px;
-      opacity: 0.9;
-    }
-
-    /* ───── HERO BG ───── */
-    .hero-bg {
-      background:
-        linear-gradient(180deg, rgba(13,13,13,0) 0%, rgba(13,13,13,0.8) 60%, #0D0D0D 100%),
-        radial-gradient(ellipse 100% 60% at 50% 0%, rgba(174,219,67,0.15) 0%, transparent 70%),
-        #111;
-    }
-
-    /* ───── NOISE ───── */
-    body::after {
-      content:'';
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:9999;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity:0.03;
-    }
-
-    /* ───── TABS ───── */
-    .tab-btn {
-      font-family: 'Bangers', cursive;
-      font-size: 1.35rem;
-      letter-spacing: 0.12em;
-      color: rgba(245,245,240,0.4);
-      padding: 8px 20px 6px;
-      border-bottom: 3px solid transparent;
-      cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      white-space: nowrap;
-    }
-    .tab-btn:hover { color: #AEDB43; }
-    .tab-btn.active { color: #AEDB43; border-bottom-color: #AEDB43; }
-    .tab-btn:focus-visible { outline: 2px solid #AEDB43; outline-offset: 4px; border-radius: 3px; }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeUp 0.4s ease-out; }
-
-    /* ───── TRADING CARD ───── */
-    .trading-card {
-      border-radius: 12px;
+    /* ═══════════════════════════════════
+       WORMHOLE — HERO BG
+       ═══════════════════════════════════ */
+    .wormhole {
+      position: absolute;
+      inset: 0;
       overflow: hidden;
-      border: 2px solid #CC1F1A;
-      background: #1A1208;
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
+      z-index: 1;
+    }
+
+    .wormhole::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160vmax;
+      height: 160vmax;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(ellipse 18% 18% at 50% 50%, rgba(143,168,140,0.12) 0%, transparent 100%),
+        radial-gradient(ellipse 35% 35% at 50% 50%, rgba(107,128,104,0.07) 0%, transparent 100%),
+        radial-gradient(ellipse 55% 55% at 50% 50%, rgba(14,14,28,0.85) 0%, transparent 100%),
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(184,107,42,0.04) 0%, transparent 100%);
+      animation: wormhole-pulse 8s ease-in-out infinite alternate;
+    }
+
+    .wormhole::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 90vmin;
+      height: 90vmin;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: transparent;
+      box-shadow:
+        0 0 0 1px rgba(196,164,107,0.07),
+        0 0 0 40px rgba(143,168,140,0.025),
+        0 0 0 80px rgba(143,168,140,0.015),
+        0 0 0 160px rgba(143,168,140,0.008),
+        0 0 180px 80px rgba(80,70,50,0.1);
+      animation: wormhole-ring 12s linear infinite;
+    }
+
+    @keyframes wormhole-pulse {
+      0%   { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 1;   transform: translate(-50%,-50%) scale(1.08); }
+    }
+
+    @keyframes wormhole-ring {
+      0%   { transform: translate(-50%,-50%) rotate(0deg)   scale(1); }
+      100% { transform: translate(-50%,-50%) rotate(360deg) scale(1.05); }
+    }
+
+    /* ═══════════════════════════════════
+       SPICE DUST PARTICLES
+       ═══════════════════════════════════ */
+    .spice-particles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .spice-particles span {
+      position: absolute;
+      border-radius: 50%;
+      animation: drift linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes drift {
+      0%   { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-10vh) translateX(var(--drift-x, 40px)) rotate(360deg); opacity: 0; }
+    }
+
+    /* ═══════════════════════════════════
+       ORBITAL RINGS
+       ═══════════════════════════════════ */
+    .orbital-system {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 800px;
+      height: 800px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .orbital-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      transform-origin: center;
+    }
+
+    .orbital-ring:nth-child(1) {
+      width: 240px; height: 240px;
+      margin: -120px;
+      border-color: rgba(143,168,140,0.18);
+      box-shadow: 0 0 20px rgba(143,168,140,0.04) inset;
+      animation: orbit-spin 20s linear infinite;
+    }
+    .orbital-ring:nth-child(2) {
+      width: 400px; height: 400px;
+      margin: -200px;
+      border-color: rgba(196,164,107,0.12);
+      border-style: dashed;
+      animation: orbit-spin 35s linear infinite reverse;
+    }
+    .orbital-ring:nth-child(3) {
+      width: 560px; height: 560px;
+      margin: -280px;
+      border-color: rgba(143,168,140,0.07);
+      animation: orbit-spin 55s linear infinite;
+    }
+    .orbital-ring:nth-child(4) {
+      width: 720px; height: 720px;
+      margin: -360px;
+      border-color: rgba(184,107,42,0.05);
+      border-style: dotted;
+      animation: orbit-spin 80s linear infinite reverse;
+    }
+
+    .orbit-node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      top: -3px;
+      left: 50%;
+      margin-left: -3px;
+    }
+
+    .orbit-node.aurora { background: var(--accent); box-shadow: 0 0 10px rgba(143,168,140,0.6); }
+    .orbit-node.spice  { background: var(--sand);   box-shadow: 0 0 10px rgba(196,164,107,0.6); }
+
+    @keyframes orbit-spin {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+
+    /* ═══════════════════════════════════
+       NAV
+       ═══════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(196,164,107,0.07);
+      background: linear-gradient(180deg, rgba(2,4,8,0.95) 0%, rgba(2,4,8,0) 100%);
+      backdrop-filter: blur(12px);
+      animation: nav-reveal 1.2s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes nav-reveal {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-wordmark {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--sand);
+      text-shadow: 0 0 40px rgba(196,164,107,0.3);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(216,207,196,0.4);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--sand);
+      text-shadow: 0 0 20px rgba(196,164,107,0.3);
+    }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid rgba(196,164,107,0.4);
+      color: var(--sand);
+      padding: 0.5rem 1.2rem;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: rgba(196,164,107,0.12);
+      color: var(--star);
+      box-shadow: 0 0 24px rgba(196,164,107,0.2);
+    }
+
+    /* ═══════════════════════════════════
+       HERO
+       ═══════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-ambient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(10,8,5,0.7) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(232,145,58,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(143,168,140,0.04) 0%, transparent 60%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      color: rgba(143,168,140,0.7);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(3.5rem, 12vw, 9rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fade-up 0.8s 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-title .line-1 {
+      display: block;
+      color: var(--star);
+    }
+
+    .hero-title .line-2 {
+      display: block;
+      -webkit-text-stroke: 1px rgba(196,164,107,0.5);
+      color: transparent;
+      text-shadow: 0 0 80px rgba(196,164,107,0.15);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-sub);
+      font-size: clamp(0.9rem, 2vw, 1.15rem);
+      font-weight: 100;
+      letter-spacing: 0.25em;
+      color: rgba(200,169,110,0.8);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fade-up 0.8s 1.2s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-coords {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: rgba(232,244,255,0.2);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fade-up 0.8s 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.8s 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+
+    .btn-primary {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      background: rgba(184,107,42,0.15);
+      color: var(--sand);
+      border: 1px solid rgba(196,164,107,0.35);
+      padding: 1rem 2.5rem;
       cursor: pointer;
       position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.4s, transform 0.2s, background 0.4s;
+      text-decoration: none;
+      display: inline-block;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
     }
-    .trading-card::before {
+
+    .btn-primary::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
-      pointer-events: none;
-      border-radius: inherit;
-      z-index: 1;
-    }
-    .trading-card:hover {
-      transform: translateY(-10px) rotate(-1deg) scale(1.02);
-      box-shadow: 0 24px 48px rgba(204,31,26,0.3), 0 0 0 1px rgba(174,219,67,0.2);
+      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.12), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
     }
 
-    .card-header {
-      background: #CC1F1A;
-      padding: 6px 10px 5px;
+    .btn-primary:hover {
+      background: rgba(184,107,42,0.25);
+      box-shadow: 0 0 30px rgba(196,164,107,0.2), 0 0 60px rgba(184,107,42,0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:hover::before { transform: translateX(100%); }
+
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      background: transparent;
+      color: rgba(216,207,196,0.5);
+      border: 1px solid rgba(216,207,196,0.15);
+      padding: 1rem 2.5rem;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(196,164,107,0.4);
+      color: var(--sand);
+      box-shadow: 0 0 20px rgba(196,164,107,0.1);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════
+       SCROLL INDICATOR
+       ═══════════════════════════════════ */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fade-up 0.8s 2.2s forwards;
+    }
+
+    .scroll-indicator span {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      color: rgba(232,244,255,0.25);
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(180deg, rgba(196,164,107,0.5) 0%, transparent 100%);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scroll-pulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.2); }
+    }
+
+    /* ═══════════════════════════════════
+       DIVIDER GLYPH
+       ═══════════════════════════════════ */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 3rem;
+      margin: 0 auto;
+      max-width: 1200px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.2), transparent);
+    }
+
+    .divider-glyph {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: rgba(196,164,107,0.45);
+    }
+
+    /* ═══════════════════════════════════
+       PRODUCTS SECTION
+       ═══════════════════════════════════ */
+    .section {
+      position: relative;
+      z-index: 10;
+      padding: 8rem 3rem;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      color: var(--aurora);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0.7;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--star);
+      margin-bottom: 1.5rem;
+      line-height: 1;
+    }
+
+    .section-title span {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(196,164,107,0.45);
+    }
+
+    .section-intro {
+      font-family: var(--font-sub);
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(200,169,110,0.7);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 4rem;
+    }
+
+    /* ═══════════════════════════════════
+       PRODUCT GRID
+       ═══════════════════════════════════ */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      position: relative;
+      background: var(--deep);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(143,168,140,0.04) 0%, transparent 50%, rgba(184,107,42,0.06) 100%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 2;
+    }
+
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card:hover::before { opacity: 1; }
+
+    .product-card-inner {
+      padding: 2.5rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .product-strain-class {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(143,168,140,0.6);
+      margin-bottom: 1rem;
+    }
+
+    .product-name {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--star);
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+
+    .product-series {
+      font-family: var(--font-sub);
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: rgba(200,169,110,0.6);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .product-visual {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Cannabis bud as a radiant orb */
+    .bud-orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 40% 60% 55% 45% / 45% 55% 60% 40%;
+      position: relative;
+      animation: morph 8s ease-in-out infinite;
+    }
+
+    /* Filmic, desaturated bud tones — no neon */
+    .bud-orb.emerald {
+      background: radial-gradient(ellipse at 35% 35%, #7a9e6a, #2e5228 55%, #111a0e 100%);
+      box-shadow: 0 0 35px rgba(90,130,75,0.2), 0 0 70px rgba(40,70,30,0.15);
+    }
+
+    .bud-orb.amber {
+      background: radial-gradient(ellipse at 35% 35%, #c99040, #7a4a12 55%, #2a1505 100%);
+      box-shadow: 0 0 35px rgba(180,130,50,0.2), 0 0 70px rgba(100,60,15,0.15);
+    }
+
+    .bud-orb.frost {
+      background: radial-gradient(ellipse at 35% 35%, #a8b8c8, #4a6070 55%, #0e1820 100%);
+      box-shadow: 0 0 35px rgba(140,165,185,0.18), 0 0 70px rgba(60,85,100,0.12);
+    }
+
+    .bud-orb.violet {
+      background: radial-gradient(ellipse at 35% 35%, #8a6a9a, #432858 55%, #140a1e 100%);
+      box-shadow: 0 0 35px rgba(110,80,130,0.2), 0 0 70px rgba(60,35,80,0.15);
+    }
+
+    @keyframes morph {
+      0%, 100% { border-radius: 40% 60% 55% 45% / 45% 55% 60% 40%; }
+      25%       { border-radius: 55% 45% 40% 60% / 60% 40% 55% 45%; }
+      50%       { border-radius: 45% 55% 60% 40% / 40% 60% 45% 55%; }
+      75%       { border-radius: 60% 40% 45% 55% / 55% 45% 40% 60%; }
+    }
+
+    .bud-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: orbit-spin 6s linear infinite;
+    }
+
+    .product-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      margin-bottom: 2rem;
+      border-top: 1px solid rgba(196,164,107,0.1);
+      border-bottom: 1px solid rgba(196,164,107,0.1);
+    }
+
+    .stat-item {
+      padding: 1rem 0;
+      text-align: center;
+      border-right: 1px solid rgba(196,164,107,0.08);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--sand);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      color: rgba(232,244,255,0.3);
+      text-transform: uppercase;
+    }
+
+    .product-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-top: 1.5rem;
     }
-    .card-visual {
-      height: 180px;
+
+    .product-price {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      color: var(--sand);
+      letter-spacing: 0.05em;
+    }
+
+    .product-add {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      border: 1px solid rgba(196,164,107,0.25);
+      color: rgba(196,164,107,0.7);
+      background: transparent;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.35s;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    }
+
+    .product-add:hover {
+      background: rgba(196,164,107,0.1);
+      color: var(--sand);
+      border-color: rgba(196,164,107,0.5);
+      box-shadow: 0 0 18px rgba(196,164,107,0.15);
+    }
+
+    /* ═══════════════════════════════════
+       MANIFESTO SECTION
+       ═══════════════════════════════════ */
+    .manifesto {
+      position: relative;
+      padding: 10rem 3rem;
+      text-align: center;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, var(--void) 0%, rgba(5,11,18,1) 50%, var(--void) 100%);
+    }
+
+    .manifesto-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(143,168,140,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 30%, rgba(232,145,58,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(143,168,140,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .manifesto-text {
+      position: relative;
+      z-index: 5;
+      font-family: var(--font-sub);
+      font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+      font-weight: 100;
+      font-style: italic;
+      letter-spacing: 0.08em;
+      line-height: 1.6;
+      color: rgba(232,244,255,0.6);
+      max-width: 900px;
+      margin: 0 auto 3rem;
+    }
+
+    .manifesto-text em {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 300;
+      text-shadow: 0 0 40px rgba(143,168,140,0.2);
+    }
+
+    .manifesto-text .warm {
+      color: var(--spice);
+      text-shadow: 0 0 40px var(--glow-o);
+    }
+
+    .manifesto-sig {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      color: rgba(232,244,255,0.2);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════
+       FEATURES / SPECS
+       ═══════════════════════════════════ */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .spec-block {
+      background: var(--deep);
+      padding: 3rem 2rem;
       position: relative;
       overflow: hidden;
     }
-    .card-stats {
-      background: #111;
-      border-top: 2px solid #CC1F1A;
-      padding: 8px 10px;
-    }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 2px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-    }
-    .stat-label { color: rgba(245,245,240,0.4); text-transform: uppercase; }
-    .stat-value { color: #AEDB43; }
 
-    /* ───── JUICED BADGE ───── */
-    .juiced-badge {
-      background: linear-gradient(135deg, #AEDB43 0%, #F5C518 100%);
-      color: #111;
-      font-family: 'Bangers', cursive;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      padding: 2px 8px;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
+    .spec-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.35), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
     }
 
-    /* ───── BUTTONS ───── */
-    .btn-hit {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px 10px;
-      background: #CC1F1A;
-      color: #F5F5F0;
-      font-family: 'Bangers', cursive;
-      font-size: 1.25rem;
-      letter-spacing: 0.15em;
-      border-radius: 6px;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-hit:hover {
-      transform: scale(1.05) translateY(-2px);
-      box-shadow: 0 12px 32px rgba(204,31,26,0.4);
-    }
-    .btn-hit:active { transform: scale(0.97); }
-    .btn-hit:focus-visible { outline: 2px solid #AEDB43; outline-offset: 3px; }
+    .spec-block:hover::after { transform: scaleX(1); }
 
-    .btn-green {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px 10px;
-      background: #AEDB43;
-      color: #111;
-      font-family: 'Bangers', cursive;
-      font-size: 1.25rem;
-      letter-spacing: 0.15em;
-      border-radius: 6px;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-green:hover {
-      transform: scale(1.05) translateY(-2px);
-      box-shadow: 0 12px 32px rgba(174,219,67,0.35);
-    }
-    .btn-green:active { transform: scale(0.97); }
-    .btn-green:focus-visible { outline: 2px solid #CC1F1A; outline-offset: 3px; }
-
-    .btn-outline-green {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 11px 26px 9px;
-      background: transparent;
-      color: #AEDB43;
-      font-family: 'Bangers', cursive;
-      font-size: 1.2rem;
-      letter-spacing: 0.15em;
-      border-radius: 6px;
-      border: 2px solid #AEDB43;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.2s ease;
-      text-decoration: none;
-    }
-    .btn-outline-green:hover { background: rgba(174,219,67,0.08); }
-    .btn-outline-green:focus-visible { outline: 2px solid #AEDB43; outline-offset: 3px; }
-
-    /* ───── TICKER ───── */
-    .ticker-wrap { overflow: hidden; }
-    .ticker-track {
-      display: flex;
-      white-space: nowrap;
-      animation: tickerScroll 22s linear infinite;
-    }
-    .ticker-track:hover { animation-play-state: paused; }
-
-    /* ───── SECTION LABEL ───── */
-    .section-label {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
+    .spec-number {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      color: rgba(143,168,140,0.35);
+      margin-bottom: 1.5rem;
       text-transform: uppercase;
-      color: #AEDB43;
-      margin-bottom: 10px;
     }
 
-    /* ───── BIG HEADING ───── */
-    .big-head {
-      font-family: 'Bangers', cursive;
-      line-height: 0.92;
-      letter-spacing: 0.04em;
+    .spec-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      filter: drop-shadow(0 0 8px rgba(143,168,140,0.3));
+      opacity: 0.6;
     }
 
-    /* ───── LIGHTNING BOLT ───── */
-    .bolt {
-      display: inline-block;
-      color: #AEDB43;
-      font-style: normal;
-    }
-
-    /* ───── NAV ───── */
-    nav {
-      background: rgba(13,13,13,0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 2px solid #CC1F1A;
-    }
-
-    /* ───── FILTER PILLS ───── */
-    .f-pill {
-      font-family: 'Bangers', cursive;
-      font-size: 1.1rem;
+    .spec-title {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
       letter-spacing: 0.1em;
-      padding: 5px 16px 3px;
-      border: 2px solid rgba(255,255,255,0.12);
-      border-radius: 100px;
-      color: rgba(245,245,240,0.5);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
+      color: var(--star);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
-    .f-pill:hover { border-color: #CC1F1A; color: #F5F5F0; }
-    .f-pill.active { background: #CC1F1A; border-color: #CC1F1A; color: #F5F5F0; }
-    .f-pill:focus-visible { outline: 2px solid #AEDB43; outline-offset: 2px; }
 
-    /* ───── REVEAL ───── */
+    .spec-desc {
+      font-family: var(--font-sub);
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(232,244,255,0.45);
+      letter-spacing: 0.02em;
+    }
+
+    /* ═══════════════════════════════════
+       PARALLAX BAND
+       ═══════════════════════════════════ */
+    .parallax-band {
+      position: relative;
+      padding: 6rem 0;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--void) 0%, var(--midnight) 50%, var(--void) 100%);
+    }
+
+    .band-line {
+      font-family: var(--font-head);
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+      display: inline-block;
+    }
+
+    .band-line.fwd  { color: transparent; -webkit-text-stroke: 1px rgba(196,164,107,0.18); }
+    .band-line.rev  {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(143,168,140,0.12);
+      animation-direction: reverse;
+      animation-duration: 28s;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════
+       CTA FINALE
+       ═══════════════════════════════════ */
+    .cta-section {
+      position: relative;
+      padding: 12rem 3rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(143,168,140,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 30% at 50% 50%, rgba(184,107,42,0.05) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .cta-hexgrid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(196,164,107,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196,164,107,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      position: relative;
+      z-index: 5;
+      font-family: var(--font-head);
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--star);
+      line-height: 0.95;
+      margin-bottom: 2rem;
+    }
+
+    .cta-title .glow-text {
+      display: block;
+      color: var(--sand);
+      text-shadow: 0 0 60px rgba(196,164,107,0.2), 0 0 120px rgba(184,107,42,0.1);
+    }
+
+    .cta-body {
+      position: relative;
+      z-index: 5;
+      font-family: var(--font-sub);
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(200,169,110,0.7);
+      margin-bottom: 4rem;
+      text-transform: uppercase;
+    }
+
+    .cta-actions {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════ */
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(196,164,107,0.07);
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      color: rgba(196,164,107,0.4);
+    }
+
+    .footer-legal {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: rgba(232,244,255,0.18);
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    .footer-coords {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: rgba(143,168,140,0.2);
+    }
+
+    /* ═══════════════════════════════════
+       SCANLINE OVERLAY
+       ═══════════════════════════════════ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    /* ═══════════════════════════════════
+       NOISE GRAIN
+       ═══════════════════════════════════ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+    }
+
+    /* ═══════════════════════════════════
+       SCROLL ANIMATIONS
+       ═══════════════════════════════════ */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ───── KEYFRAMES ───── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes tickerScroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes floatY {
-      0%,100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-18px) rotate(5deg); }
-    }
-    @keyframes floatY2 {
-      0%,100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(14px) rotate(-4deg); }
-    }
-    @keyframes spinSlow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    @keyframes budPulse {
-      0%,100% { opacity: 0.7; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.06); }
-    }
-    @keyframes slideAgeOut {
-      to { opacity: 0; transform: scale(1.05); pointer-events: none; }
-    }
-    @keyframes cardFlip {
-      0%   { transform: rotateY(0deg); }
-      50%  { transform: rotateY(180deg); }
-      100% { transform: rotateY(0deg); }
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
     }
 
-    /* ───── HERO FLOATING SHAPES ───── */
-    .hero-shape { position: absolute; pointer-events: none; }
-    .f1 { animation: floatY  7s ease-in-out infinite; }
-    .f2 { animation: floatY2 9s ease-in-out infinite; animation-delay: -3s; }
-    .f3 { animation: floatY  6s ease-in-out infinite; animation-delay: -5s; }
-    .f4 { animation: spinSlow 20s linear infinite; }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    /* ───── TERRAIN LANDSCAPE ───── */
-    .terrain-wrap { position: absolute; bottom: 0; left: 0; width: 100%; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
 
-    /* ───── REDUCED MOTION ───── */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-      .reveal { opacity: 1; transform: none; }
+    /* ═══════════════════════════════════
+       CURSOR GLOW
+       ═══════════════════════════════════ */
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      background: radial-gradient(circle, rgba(143,168,140,0.04) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+    }
+
+    /* ═══════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .section { padding: 5rem 1.5rem; }
+      .manifesto { padding: 6rem 1.5rem; }
+      .cta-section { padding: 7rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; }
+      .orbital-system { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ════════════════════════════════════════
-       AGE GATE
-  ════════════════════════════════════════ -->
-  <div id="age-gate" role="dialog" aria-modal="true" aria-labelledby="age-title"
-    class="fixed inset-0 z-[200] flex items-center justify-center p-4"
-    style="background:#0D0D0D">
-    <div class="max-w-xs w-full">
-      <!-- houndstooth stripe -->
-      <div class="houndstooth h-4 rounded-t-xl"></div>
-      <div class="border-2 border-t-0 border-slug-red rounded-b-xl p-8 text-center" style="background:#1A1208">
-        <!-- Logo mark -->
-        <div class="mb-6 flex justify-center">
-          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-            <rect width="56" height="56" rx="8" fill="#CC1F1A"/>
-            <path d="M14 40 L28 16 L42 40" stroke="#AEDB43" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="28" cy="33" r="4" fill="#0D0D0D"/>
-          </svg>
-        </div>
-        <p class="section-label mb-1">Collectible Cannabis</p>
-        <h2 id="age-title" class="big-head text-5xl mb-2 text-slug-green">ARE YOU 21?</h2>
-        <p class="text-slug-white/40 text-sm font-body leading-relaxed mb-8">
-          Cannabis products. Adults only.<br/>Must be 21+ to enter.
-        </p>
-        <div class="flex flex-col gap-3">
-          <button class="btn-hit justify-center text-xl" onclick="enterSite()" id="yes-btn">
-            YES — I'M 21+
-          </button>
-          <a href="https://google.com" class="btn-outline-green justify-center" id="no-btn" aria-label="Exit site, I am not 21">
-            NAH, EXIT
-          </a>
-        </div>
-        <p class="text-slug-white/20 text-xs font-body mt-5">By entering you confirm legal age in your jurisdiction.</p>
-      </div>
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Star field -->
+<canvas id="starfield"></canvas>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-wordmark">SLUGGERS</div>
+  <ul class="nav-links">
+    <li><a href="#strains">Strains</a></li>
+    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#craft">Craft</a></li>
+    <li><a href="#cta">Deploy</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Enter</a>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="wormhole"></div>
+
+  <!-- Spice dust particles -->
+  <div class="spice-particles" id="spiceParticles"></div>
+
+  <!-- Orbital rings -->
+  <div class="orbital-system">
+    <div class="orbital-ring">
+      <div class="orbit-node aurora"></div>
+    </div>
+    <div class="orbital-ring">
+      <div class="orbit-node spice"></div>
+    </div>
+    <div class="orbital-ring">
+      <div class="orbit-node aurora" style="left:0; top:50%; margin-top:-4px; margin-left:-4px;"></div>
+    </div>
+    <div class="orbital-ring"></div>
+  </div>
+
+  <div class="hero-ambient"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">⬡ Collectible Cannabis &nbsp;·&nbsp; Est. 2025 &nbsp;·&nbsp; Interplanetary Grade ⬡</p>
+    <h1 class="hero-title">
+      <span class="line-1">SLUGGERS</span>
+      <span class="line-2">HIT</span>
+    </h1>
+    <p class="hero-subtitle">Beyond the wormhole &nbsp;·&nbsp; The spice must flow</p>
+    <p class="hero-coords">38.9°N · 77.0°W · SECTOR DELTA-7 · SIGNAL LOCKED</p>
+    <div class="hero-actions">
+      <a href="#strains" class="btn-primary">Explore Strains</a>
+      <a href="#manifesto" class="btn-ghost">The Manifesto</a>
     </div>
   </div>
 
+  <div class="scroll-indicator">
+    <span>Descend</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-  <!-- ════════════════════════════════════════
-       NAV
-  ════════════════════════════════════════ -->
-  <nav class="fixed top-0 left-0 right-0 z-50 px-4 lg:px-10">
-    <div class="max-w-7xl mx-auto flex items-center justify-between h-14 gap-4">
+<!-- ═══ DIVIDER ═══ -->
+<div class="section-divider reveal">
+  <div class="divider-line"></div>
+  <div class="divider-glyph">◈ PRODUCT CATALOG ◈</div>
+  <div class="divider-line"></div>
+</div>
 
-      <!-- Logo -->
-      <a href="#" class="flex items-center gap-2.5 shrink-0" aria-label="Sluggers Hit home">
-        <svg width="34" height="34" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-          <rect width="56" height="56" rx="6" fill="#CC1F1A"/>
-          <path d="M14 40 L28 16 L42 40" stroke="#AEDB43" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="28" cy="33" r="4" fill="#0D0D0D"/>
-        </svg>
-        <div class="leading-none">
-          <div class="font-bang text-slug-white text-xl tracking-[0.12em] leading-none">SLUGGERS</div>
-          <div class="font-bang text-slug-green text-xs tracking-[0.35em] leading-none">HIT</div>
-        </div>
-      </a>
+<!-- ═══ STRAINS ═══ -->
+<section class="section" id="strains">
+  <div style="max-width:1200px; margin:0 auto;">
+    <p class="section-label reveal">// Strain Archive — Season IV</p>
+    <h2 class="section-title reveal reveal-delay-1">Current <span>Drops</span></h2>
+    <p class="section-intro reveal reveal-delay-2">
+      Each cultivar engineered for a specific trajectory. Choose your vector.
+      Premium flower. Collectible packs. No compromises.
+    </p>
 
-      <!-- Desktop tabs -->
-      <div class="hidden md:flex items-end gap-0 border-b-2 border-white/10 self-end" role="tablist" aria-label="Site sections">
-        <button class="tab-btn active" onclick="switchTab('products')" id="btn-products" role="tab" aria-selected="true" aria-controls="tab-products">Products</button>
-        <button class="tab-btn" onclick="switchTab('brand')" id="btn-brand" role="tab" aria-selected="false" aria-controls="tab-brand">Brand</button>
-        <button class="tab-btn" onclick="switchTab('experience')" id="btn-experience" role="tab" aria-selected="false" aria-controls="tab-experience">Experience</button>
-        <button class="tab-btn" onclick="switchTab('find')" id="btn-find" role="tab" aria-selected="false" aria-controls="tab-find">Find Us</button>
-      </div>
-
-      <!-- CTA + mobile menu -->
-      <div class="flex items-center gap-3">
-        <a href="#shop" class="btn-green hidden sm:inline-flex text-base py-2 px-5">SHOP</a>
-        <button class="md:hidden p-2 text-slug-white/60 hover:text-slug-white transition-colors" onclick="toggleMob()" aria-label="Open menu" id="mob-btn">
-          <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true" id="menu-icon">
-            <rect y="0" width="22" height="2.5" rx="1.25" fill="currentColor"/>
-            <rect y="6.5" width="22" height="2.5" rx="1.25" fill="currentColor"/>
-            <rect y="13" width="22" height="2.5" rx="1.25" fill="currentColor"/>
-          </svg>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" id="close-icon" class="hidden">
-            <line x1="1" y1="1" x2="17" y2="17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="17" y1="1" x2="1" y2="17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile menu -->
-    <div id="mob-menu" class="hidden md:hidden border-t border-slug-red/30 py-3" style="background:rgba(13,13,13,0.98)">
-      <div class="flex flex-col" role="tablist">
-        <button class="tab-btn text-left py-3 border-b border-white/5 active" onclick="switchTab('products');closeMob()" role="tab">Products</button>
-        <button class="tab-btn text-left py-3 border-b border-white/5" onclick="switchTab('brand');closeMob()" role="tab">Brand</button>
-        <button class="tab-btn text-left py-3 border-b border-white/5" onclick="switchTab('experience');closeMob()" role="tab">Experience</button>
-        <button class="tab-btn text-left py-3" onclick="switchTab('find');closeMob()" role="tab">Find Us</button>
-      </div>
-    </div>
-  </nav>
-
-
-  <!-- ════════════════════════════════════════
-       HERO
-  ════════════════════════════════════════ -->
-  <section aria-label="Hero" class="relative min-h-dvh flex items-center overflow-hidden hero-bg pt-14">
-
-    <!-- Bud texture background layer -->
-    <div class="absolute inset-0 bud-texture opacity-20" aria-hidden="true"></div>
-
-    <!-- Houndstooth strip top -->
-    <div class="absolute top-14 left-0 right-0 h-3 houndstooth opacity-60" aria-hidden="true"></div>
-
-    <!-- Floating shapes (pre-roll silhouettes, lightning, stars) -->
-    <div class="hero-shape f1" style="top:12%;left:5%;opacity:0.45" aria-hidden="true">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-        <polygon points="22,2 42,38 2,38" stroke="#AEDB43" stroke-width="2" fill="rgba(174,219,67,0.07)"/>
-      </svg>
-    </div>
-    <div class="hero-shape f2" style="top:20%;right:8%;opacity:0.5" aria-hidden="true">
-      <!-- Lightning bolt -->
-      <svg width="32" height="50" viewBox="0 0 32 50" fill="none">
-        <path d="M20 2 L6 26 L14 26 L12 48 L26 24 L18 24 Z" fill="#CC1F1A" stroke="#AEDB43" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <div class="hero-shape f3" style="bottom:28%;left:10%;opacity:0.4" aria-hidden="true">
-      <!-- Star -->
-      <svg width="36" height="36" viewBox="0 0 50 50" fill="none">
-        <polygon points="25,3 30,18 46,18 33,28 38,44 25,34 12,44 17,28 4,18 20,18" stroke="#AEDB43" stroke-width="1.5" fill="rgba(174,219,67,0.08)"/>
-      </svg>
-    </div>
-    <div class="hero-shape f4" style="top:35%;right:12%;opacity:0.2" aria-hidden="true">
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="36" stroke="#AEDB43" stroke-width="1" stroke-dasharray="10 5"/>
-      </svg>
-    </div>
-    <div class="hero-shape f1" style="bottom:20%;right:18%;opacity:0.35;animation-delay:-4s" aria-hidden="true">
-      <!-- Cannabis leaf outline -->
-      <svg width="50" height="50" viewBox="0 0 100 100" fill="none">
-        <path d="M50 90 C50 90 50 50 50 40" stroke="#AEDB43" stroke-width="2"/>
-        <path d="M50 40 Q20 20 10 5 Q35 10 50 40" fill="rgba(174,219,67,0.2)" stroke="#AEDB43" stroke-width="1.5"/>
-        <path d="M50 40 Q80 20 90 5 Q65 10 50 40" fill="rgba(174,219,67,0.2)" stroke="#AEDB43" stroke-width="1.5"/>
-        <path d="M50 55 Q18 50 5 34 Q28 38 50 55" fill="rgba(174,219,67,0.15)" stroke="#AEDB43" stroke-width="1.5"/>
-        <path d="M50 55 Q82 50 95 34 Q72 38 50 55" fill="rgba(174,219,67,0.15)" stroke="#AEDB43" stroke-width="1.5"/>
-      </svg>
-    </div>
-
-    <!-- Rolling terrain / landscape -->
-    <div class="terrain-wrap" aria-hidden="true">
-      <svg viewBox="0 0 1440 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:auto;display:block">
-        <!-- Back ridge -->
-        <path d="M0,180 C120,100 300,160 480,130 C660,100 840,60 1020,90 C1200,120 1320,140 1440,120 L1440,240 L0,240 Z"
-          fill="rgba(174,219,67,0.04)"/>
-        <!-- Mid ridge -->
-        <path d="M0,200 C80,160 220,190 380,170 C540,150 700,120 880,140 C1060,160 1220,180 1440,160 L1440,240 L0,240 Z"
-          fill="rgba(204,31,26,0.06)"/>
-        <!-- Front ridge -->
-        <path d="M0,220 C60,200 180,215 320,205 C460,195 620,175 800,188 C980,201 1160,215 1440,200 L1440,240 L0,240 Z"
-          fill="rgba(174,219,67,0.06)"/>
-      </svg>
-    </div>
-
-    <!-- Houndstooth bottom strip -->
-    <div class="absolute bottom-0 left-0 right-0 h-4 houndstooth opacity-50" aria-hidden="true"></div>
-
-    <!-- HERO CONTENT -->
-    <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-10 pt-10 pb-24 w-full">
-
-      <!-- Collectible badge -->
-      <div class="inline-flex items-center gap-2 mb-8 border-2 border-slug-green rounded-full px-4 py-1.5 reveal" style="background:rgba(174,219,67,0.08)">
-        <span class="w-1.5 h-1.5 rounded-full bg-slug-green animate-pulse" aria-hidden="true"></span>
-        <span class="font-ui font-700 text-slug-green text-xs tracking-[0.2em] uppercase">Collectible Cannabis · Est. 2021</span>
-      </div>
-
-      <!-- Main title -->
-      <div class="reveal" style="transition-delay:0.1s">
-        <h1 class="big-head leading-none mb-0" style="font-size:clamp(5rem,18vw,14rem)">
-          <span style="color:#AEDB43;display:block">SLUG</span>
-          <span style="color:#CC1F1A;display:block;margin-top:-0.12em">GERS</span>
-        </h1>
-        <div class="flex items-center gap-3 mt-2 mb-8">
-          <div class="h-1 flex-1 max-w-xs" style="background:linear-gradient(90deg,#CC1F1A,transparent)"></div>
-          <span class="font-bang text-slug-white/60 tracking-[0.4em] text-base">HIT</span>
-          <div class="h-1 flex-1 max-w-xs" style="background:linear-gradient(270deg,#CC1F1A,transparent)"></div>
+    <div class="product-grid" id="strains">
+      <!-- Card 1 -->
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-card-inner">
+          <div class="product-strain-class">// Sativa-Dominant · Batch #0047</div>
+          <div class="product-name">GALACTIC<br>HAZE</div>
+          <div class="product-series">Interstellar Series · Limited</div>
+          <div class="product-visual">
+            <div class="bud-orb emerald"></div>
+            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;"></div>
+            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:9s;"></div>
+          </div>
+          <div class="product-stats">
+            <div class="stat-item">
+              <span class="stat-val">28.4%</span>
+              <span class="stat-label">THC</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">0.3%</span>
+              <span class="stat-label">CBD</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">3.5g</span>
+              <span class="stat-label">Weight</span>
+            </div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$55</div>
+            <button class="product-add">Acquire</button>
+          </div>
         </div>
       </div>
 
-      <!-- Tagline -->
-      <div class="reveal" style="transition-delay:0.2s">
-        <p class="font-bang text-slug-white/55 text-2xl tracking-[0.25em] uppercase mb-3">
-          IT'S NOT UNUSUAL TO BE STONED
-        </p>
-        <p class="font-body text-slug-white/35 text-sm max-w-md leading-relaxed mb-10">
-          Premium pre-rolls. Collectible trading cards. Small batch, single source.
-          Triple-infused with diamonds &amp; hash. JUICED<sup>*</sup>
-        </p>
+      <!-- Card 2 -->
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-card-inner">
+          <div class="product-strain-class">// Indica · Batch #0052</div>
+          <div class="product-name">SAND<br>WORM OG</div>
+          <div class="product-series">Dune Reserve · Collector Grade</div>
+          <div class="product-visual">
+            <div class="bud-orb amber"></div>
+            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(180,130,50,0.12);"></div>
+            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:11s;border-color:rgba(140,90,30,0.08);"></div>
+          </div>
+          <div class="product-stats">
+            <div class="stat-item">
+              <span class="stat-val">31.2%</span>
+              <span class="stat-label">THC</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">0.1%</span>
+              <span class="stat-label">CBD</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">3.5g</span>
+              <span class="stat-label">Weight</span>
+            </div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$60</div>
+            <button class="product-add">Acquire</button>
+          </div>
+        </div>
       </div>
 
-      <!-- CTAs -->
-      <div class="flex items-center flex-wrap gap-4 reveal" style="transition-delay:0.3s">
-        <button class="btn-hit text-xl py-3 px-8" onclick="switchTab('products')">
-          SHOP THE DROP
-        </button>
-        <button class="btn-outline-green text-xl py-3 px-8" onclick="switchTab('brand')">
-          OUR STORY
-        </button>
+      <!-- Card 3 -->
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-card-inner">
+          <div class="product-strain-class">// Hybrid · Batch #0061</div>
+          <div class="product-name">ICE<br>PLANET</div>
+          <div class="product-series">Cryo Edition · Premium</div>
+          <div class="product-visual">
+            <div class="bud-orb frost"></div>
+            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(120,145,160,0.1);"></div>
+            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:14s;border-color:rgba(80,100,115,0.07);"></div>
+          </div>
+          <div class="product-stats">
+            <div class="stat-item">
+              <span class="stat-val">26.8%</span>
+              <span class="stat-label">THC</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">1.2%</span>
+              <span class="stat-label">CBD</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">3.5g</span>
+              <span class="stat-label">Weight</span>
+            </div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$52</div>
+            <button class="product-add">Acquire</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Juiced footnote -->
-      <p class="font-ui text-slug-white/25 text-xs mt-6 reveal" style="transition-delay:0.4s">
-        <sup>*</sup>JUICED = Triple Infused — Flower + Diamonds + Ice Hash
-      </p>
-    </div>
-  </section>
-
-
-  <!-- ════════════════════════════════════════
-       TICKER TAPE
-  ════════════════════════════════════════ -->
-  <div class="houndstooth h-2" aria-hidden="true"></div>
-  <div class="ticker-wrap py-3" style="background:#CC1F1A" aria-label="Brand marquee" aria-hidden="true">
-    <div class="ticker-track">
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SLUGGERS HIT</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">COLLECTIBLE CANNABIS</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SINGLE SOURCE</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">JUICED★ TRIPLE INFUSED</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">IT'S NOT UNUSUAL TO BE STONED</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">EST. 2021</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SPARK & HIT WITHIN 10 DAYS</span>
-      <!-- duplicate for seamless loop -->
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SLUGGERS HIT</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">COLLECTIBLE CANNABIS</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SINGLE SOURCE</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">JUICED★ TRIPLE INFUSED</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">IT'S NOT UNUSUAL TO BE STONED</span>
-      <span class="font-bang text-slug-green text-lg tracking-[0.2em] px-8">EST. 2021</span>
-      <span class="font-bang text-slug-white text-lg tracking-[0.2em] px-8">SPARK & HIT WITHIN 10 DAYS</span>
+      <!-- Card 4 -->
+      <div class="product-card reveal reveal-delay-4">
+        <div class="product-card-inner">
+          <div class="product-strain-class">// Sativa · Batch #0069</div>
+          <div class="product-name">NEBULA<br>KUSH</div>
+          <div class="product-series">Void Series · Rare Drop</div>
+          <div class="product-visual">
+            <div class="bud-orb violet"></div>
+            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(120,90,145,0.1);"></div>
+            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:10s;border-color:rgba(80,55,100,0.07);"></div>
+          </div>
+          <div class="product-stats">
+            <div class="stat-item">
+              <span class="stat-val">33.0%</span>
+              <span class="stat-label">THC</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">0.2%</span>
+              <span class="stat-label">CBD</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val">3.5g</span>
+              <span class="stat-label">Weight</span>
+            </div>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">$65</div>
+            <button class="product-add">Acquire</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="houndstooth h-2" aria-hidden="true"></div>
+</section>
 
+<!-- ═══ PARALLAX BAND ═══ -->
+<div class="parallax-band" aria-hidden="true">
+  <div style="overflow:hidden; margin-bottom:1rem;">
+    <span class="band-line fwd">
+      SLUGGERS HIT &nbsp;·&nbsp; THE SPICE MUST FLOW &nbsp;·&nbsp; INTERSTELLAR GRADE &nbsp;·&nbsp;
+      SLUGGERS HIT &nbsp;·&nbsp; THE SPICE MUST FLOW &nbsp;·&nbsp; INTERSTELLAR GRADE &nbsp;·&nbsp;
+    </span>
+  </div>
+  <div style="overflow:hidden;">
+    <span class="band-line rev">
+      BEYOND THE WORMHOLE &nbsp;·&nbsp; COLLECTIBLE CANNABIS &nbsp;·&nbsp; STRAIN ARCHIVE IV &nbsp;·&nbsp;
+      BEYOND THE WORMHOLE &nbsp;·&nbsp; COLLECTIBLE CANNABIS &nbsp;·&nbsp; STRAIN ARCHIVE IV &nbsp;·&nbsp;
+    </span>
+  </div>
+</div>
 
-  <!-- ════════════════════════════════════════
-       MAIN CONTENT
-  ════════════════════════════════════════ -->
-  <main id="main-content" class="max-w-7xl mx-auto px-4 lg:px-10 py-16">
+<!-- ═══ MANIFESTO ═══ -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-bg"></div>
+  <p class="manifesto-text reveal">
+    "They told us cannabis was <em>ordinary</em>.<br>
+    We said: every bud is a <span class="warm">collapsed star</span>,<br>
+    every hit a <em>fold in spacetime</em>.<br>
+    Sluggers doesn't sell flower —<br>
+    we sell <span class="warm">coordinates</span> to places<br>
+    <em>no one else has been</em>."
+  </p>
+  <p class="manifesto-sig reveal reveal-delay-2">— The Sluggers Doctrine · Sector Delta-7 · 2025</p>
+</section>
 
-    <!-- Mobile tab pills -->
-    <div class="md:hidden flex gap-2 mb-10 overflow-x-auto pb-2" style="-ms-overflow-style:none;scrollbar-width:none" role="tablist">
-      <button class="f-pill active" onclick="switchTab('products')" id="mob-products">Products</button>
-      <button class="f-pill" onclick="switchTab('brand')" id="mob-brand">Brand</button>
-      <button class="f-pill" onclick="switchTab('experience')" id="mob-experience">Experience</button>
-      <button class="f-pill" onclick="switchTab('find')" id="mob-find">Find Us</button>
-    </div>
+<!-- ═══ DIVIDER ═══ -->
+<div class="section-divider reveal">
+  <div class="divider-line"></div>
+  <div class="divider-glyph">◈ CRAFT PROTOCOLS ◈</div>
+  <div class="divider-line"></div>
+</div>
 
+<!-- ═══ SPECS / CRAFT ═══ -->
+<section class="section" id="craft">
+  <div style="max-width:1200px; margin:0 auto;">
+    <p class="section-label reveal">// Engineering Specs</p>
+    <h2 class="section-title reveal reveal-delay-1">The <span>Science</span></h2>
+    <p class="section-intro reveal reveal-delay-2">
+      Four obsessions. Zero shortcuts.
+      Premium inputs. Exacting process. Collectible output.
+    </p>
 
-    <!-- ═══ TAB: PRODUCTS ═══ -->
-    <div id="tab-products" class="tab-content active" role="tabpanel" aria-labelledby="btn-products">
-
-      <!-- Header -->
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 reveal">
-        <div>
-          <p class="section-label">— The Collection</p>
-          <h2 class="big-head" style="font-size:clamp(2.5rem,6vw,4.5rem)">
-            <span style="color:#AEDB43">THE</span>
-            <span style="color:#F5F5F0"> LINEUP</span>
-          </h2>
-        </div>
-        <p class="font-body text-slug-white/40 text-sm max-w-xs leading-relaxed">
-          Every pack ships with a collectible holo trading card. Each strain is a character. Collect 'em all.
-        </p>
+    <div class="specs-grid">
+      <div class="spec-block reveal reveal-delay-1">
+        <div class="spec-number">01 // Cultivation</div>
+        <span class="spec-icon">⬡</span>
+        <div class="spec-title">Deep-Space Genetics</div>
+        <p class="spec-desc">Sourced from breeders operating at the frontier of cannabinoid expression. Phenotyped across 18 months. Only singularities make the cut.</p>
       </div>
 
-      <!-- Filter pills -->
-      <div class="flex gap-2 flex-wrap mb-8 reveal" role="group" aria-label="Filter by type">
-        <button class="f-pill active" onclick="filterCat('all')" aria-pressed="true">ALL DROPS</button>
-        <button class="f-pill" onclick="filterCat('pre-roll')" aria-pressed="false">PRE-ROLLS</button>
-        <button class="f-pill" onclick="filterCat('flower')" aria-pressed="false">FLOWER</button>
-        <button class="f-pill" onclick="filterCat('infused')" aria-pressed="false">JUICED★</button>
-        <button class="f-pill" onclick="filterCat('tin')" aria-pressed="false">TINS</button>
+      <div class="spec-block reveal reveal-delay-2">
+        <div class="spec-number">02 // Environment</div>
+        <span class="spec-icon">◎</span>
+        <div class="spec-title">Controlled Atmosphere</div>
+        <p class="spec-desc">VPD-dialed rooms. Spectrum-tuned lighting. CO₂ enriched to 1200ppm. Every variable controlled like a life-support system at L2.</p>
       </div>
 
-      <!-- Product grid (trading card style) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
-
-        <!-- CARD 1: UFOreoZ -->
-        <article class="trading-card reveal" data-cat="infused pre-roll" style="transition-delay:0s">
-          <!-- Houndstooth header -->
-          <div class="card-header">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest leading-none">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="juiced-badge">JUICED★</span>
-              <span class="font-bang text-slug-white/60 text-sm">#001</span>
-            </div>
-          </div>
-
-          <!-- Visual: bud texture + character zone -->
-          <div class="card-visual bud-texture" style="background:#2A3A10" aria-label="UFOreoZ product visual">
-            <!-- Character bubble -->
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-24 h-24 rounded-full flex items-center justify-center border-4 border-slug-green"
-                style="background:radial-gradient(circle,#AEDB43 0%,#4a6a10 60%,#2a3a10 100%);animation:budPulse 3s ease-in-out infinite">
-                <!-- Alien face placeholder -->
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-label="UFOreoZ mascot">
-                  <ellipse cx="20" cy="22" rx="14" ry="16" fill="#7CB518"/>
-                  <ellipse cx="20" cy="22" rx="14" ry="16" fill="none" stroke="#AEDB43" stroke-width="1.5"/>
-                  <circle cx="14" cy="19" r="4" fill="#CC1F1A"/>
-                  <circle cx="26" cy="19" r="4" fill="#CC1F1A"/>
-                  <circle cx="14" cy="19" r="2" fill="#111"/>
-                  <circle cx="26" cy="19" r="2" fill="#111"/>
-                  <path d="M14 28 Q20 32 26 28" stroke="#AEDB43" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                  <ellipse cx="8" cy="15" rx="5" ry="8" fill="#5a9010" opacity="0.7"/>
-                  <ellipse cx="32" cy="15" rx="5" ry="8" fill="#5a9010" opacity="0.7"/>
-                </svg>
-              </div>
-            </div>
-            <!-- Strain name banner -->
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(204,31,26,0.92)">
-              <div class="font-bang text-slug-white text-xl tracking-widest leading-none">UFOreoZ</div>
-              <div class="font-bang text-slug-green text-xs tracking-[0.2em]">IT'S NOT UNUSUAL TO BE STONED</div>
-            </div>
-            <!-- Corner bolt -->
-            <div class="absolute top-2 right-2 opacity-70" aria-hidden="true">
-              <svg width="18" height="28" viewBox="0 0 18 28" fill="none">
-                <path d="M12 1 L3 14 L8 14 L6 27 L15 14 L10 14 Z" fill="#AEDB43"/>
-              </svg>
-            </div>
-          </div>
-
-          <!-- Stats section -->
-          <div class="card-stats">
-            <div class="font-bang text-slug-red text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Tastes Like</span><span class="stat-value">White Chocolate Oreos</span></div>
-            <div class="stat-row"><span class="stat-label">Feels Like</span><span class="stat-value">The Perfect High</span></div>
-            <div class="stat-row"><span class="stat-label">Pairs With</span><span class="stat-value">An Alien Invasion</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">32% + Infused</span></div>
-          </div>
-
-          <!-- Buy row -->
-          <div class="flex items-center justify-between px-3 py-3 border-t-2 border-slug-red">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$65</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">3×1g</span>
-            </div>
-            <button class="btn-hit py-2 px-5 text-base" aria-label="Add UFOreoZ to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-
-        <!-- CARD 2: Strawberry Fields -->
-        <article class="trading-card reveal" data-cat="flower" style="transition-delay:0.08s">
-          <div class="card-header" style="background:#8B1A1A">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bang text-slug-green text-sm px-2 py-0.5 border border-slug-green rounded">FLOWER</span>
-              <span class="font-bang text-slug-white/60 text-sm">#002</span>
-            </div>
-          </div>
-          <div class="card-visual" style="background:radial-gradient(ellipse at 40% 30%,#5a1a2a,#1a0a10)" aria-label="Strawberry Fields visual">
-            <div class="absolute inset-0 bud-texture opacity-40" style="filter:hue-rotate(280deg)"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-20 h-20 rounded-full border-4" style="border-color:#CC1F1A;background:radial-gradient(circle,#CC4466 0%,#4a1020 60%);animation:budPulse 4s ease-in-out infinite">
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-label="Strawberry mascot">
-                  <ellipse cx="40" cy="46" rx="20" ry="24" fill="#CC1F1A"/>
-                  <path d="M30 28 Q40 18 50 28" fill="#AEDB43" stroke="#AEDB43" stroke-width="1"/>
-                  <circle cx="34" cy="44" r="2" fill="rgba(255,255,255,0.4)"/>
-                  <circle cx="46" cy="44" r="2" fill="rgba(255,255,255,0.4)"/>
-                  <path d="M34 52 Q40 56 46 52" stroke="#F5F5F0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(139,26,26,0.92)">
-              <div class="font-bang text-slug-white text-xl tracking-widest">Strawberry Fields</div>
-              <div class="font-bang text-slug-green text-xs tracking-[0.2em]">FOREVER IN THE CLOUDS</div>
-            </div>
-          </div>
-          <div class="card-stats">
-            <div class="font-bang text-slug-red text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Tastes Like</span><span class="stat-value">Fresh Strawberries</span></div>
-            <div class="stat-row"><span class="stat-label">Feels Like</span><span class="stat-value">Floating on a Cloud</span></div>
-            <div class="stat-row"><span class="stat-label">Pairs With</span><span class="stat-value">A Sunset Drive</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">26% · Indica</span></div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-3 border-t-2 border-slug-red">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$55</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">3.5g</span>
-            </div>
-            <button class="btn-hit py-2 px-5 text-base" aria-label="Add Strawberry Fields to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-
-        <!-- CARD 3: Cosmic Tin (JUICED TIN) -->
-        <article class="trading-card reveal" data-cat="tin infused" style="transition-delay:0.16s;border-color:#F5C518">
-          <div class="card-header" style="background:#7a6010">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT — TIN</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="juiced-badge">JUICED★</span>
-              <span class="font-bang text-slug-white/60 text-sm">#003</span>
-            </div>
-          </div>
-          <div class="card-visual" style="background:linear-gradient(135deg,#1a1208,#2a2010)" aria-label="Cosmic Tin product">
-            <!-- Tin illustration -->
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="relative">
-                <div class="w-28 h-20 rounded-lg border-2 border-slug-yellow flex items-center justify-center"
-                  style="background:linear-gradient(135deg,#e8e0c0,#c0b890);animation:floatY 5s ease-in-out infinite">
-                  <div class="text-center">
-                    <div class="font-bang text-slug-black text-lg tracking-widest leading-none">SLUGGERS</div>
-                    <div class="font-bang text-slug-red text-xs tracking-[0.2em]">HIT</div>
-                    <div class="font-ui text-slug-black/60 text-xs mt-1">5 × PRE-ROLLS</div>
-                  </div>
-                </div>
-                <!-- Pre-rolls sticking out -->
-                <div class="absolute -top-4 left-4 w-3 h-10 rounded-full" style="background:linear-gradient(180deg,#c8a050,#8a6530);transform:rotate(-5deg)"></div>
-                <div class="absolute -top-3 left-9 w-3 h-9 rounded-full" style="background:linear-gradient(180deg,#c8a050,#8a6530)"></div>
-                <div class="absolute -top-4 left-14 w-3 h-10 rounded-full" style="background:linear-gradient(180deg,#c8a050,#8a6530);transform:rotate(5deg)"></div>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(122,96,16,0.95)">
-              <div class="font-bang text-slug-yellow text-xl tracking-widest">JUICED TIN PACK</div>
-              <div class="font-bang text-slug-white text-xs tracking-[0.2em]">PREMIUM BUDS + ICE HASH</div>
-            </div>
-          </div>
-          <div class="card-stats">
-            <div class="font-bang text-slug-yellow text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Contents</span><span class="stat-value">5 Infused Pre-rolls</span></div>
-            <div class="stat-row"><span class="stat-label">Infused With</span><span class="stat-value">Diamonds + Ice Hash</span></div>
-            <div class="stat-row"><span class="stat-label">Bonus</span><span class="stat-value">Holo Trading Card</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">35%+ Combined</span></div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-3 border-t-2" style="border-color:#F5C518">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$90</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">5×1g tin</span>
-            </div>
-            <button class="btn-green py-2 px-5 text-base" aria-label="Add Juiced Tin to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-
-        <!-- CARD 4: Space Cookies -->
-        <article class="trading-card reveal" data-cat="pre-roll" style="transition-delay:0.24s">
-          <div class="card-header">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bang text-slug-white text-sm px-2 py-0.5 border border-white/30 rounded">HYBRID</span>
-              <span class="font-bang text-slug-white/60 text-sm">#004</span>
-            </div>
-          </div>
-          <div class="card-visual bud-texture" style="background:#1a1a2a" aria-label="Space Cookies visual">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-20 h-20 rounded-full border-4 border-purple-500 flex items-center justify-center"
-                style="background:radial-gradient(circle,#5a3a8a 0%,#1a1030 60%);animation:budPulse 3.5s ease-in-out infinite">
-                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-label="Space cookies character">
-                  <circle cx="22" cy="22" r="18" fill="#2a1a50"/>
-                  <circle cx="15" cy="18" r="3" fill="#AEDB43"/>
-                  <circle cx="29" cy="18" r="3" fill="#AEDB43"/>
-                  <path d="M14 28 Q22 34 30 28" stroke="#F5C518" stroke-width="1.5" fill="none"/>
-                  <circle cx="22" cy="8" r="4" fill="#F5C518" opacity="0.7"/>
-                </svg>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(50,20,100,0.9)">
-              <div class="font-bang text-slug-white text-xl tracking-widest">Space Cookies</div>
-              <div class="font-bang text-slug-green text-xs tracking-[0.2em]">ONE GIANT LEAP FOR STONER-KIND</div>
-            </div>
-          </div>
-          <div class="card-stats">
-            <div class="font-bang text-slug-red text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Tastes Like</span><span class="stat-value">Cosmic Dough & Spice</span></div>
-            <div class="stat-row"><span class="stat-label">Feels Like</span><span class="stat-value">Zero Gravity</span></div>
-            <div class="stat-row"><span class="stat-label">Pairs With</span><span class="stat-value">Late Night Telescope</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">29% · Hybrid</span></div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-3 border-t-2 border-slug-red">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$60</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">5×0.7g</span>
-            </div>
-            <button class="btn-hit py-2 px-5 text-base" aria-label="Add Space Cookies to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-
-        <!-- CARD 5: Jungle Boy OG -->
-        <article class="trading-card reveal" data-cat="flower" style="transition-delay:0.32s">
-          <div class="card-header" style="background:#154a15">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bang text-slug-green text-sm px-2 py-0.5 border border-slug-green rounded">SATIVA</span>
-              <span class="font-bang text-slug-white/60 text-sm">#005</span>
-            </div>
-          </div>
-          <div class="card-visual bud-texture" style="background:#0a2a0a" aria-label="Jungle Boy OG visual">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-20 h-20 rounded-full border-4 border-slug-green flex items-center justify-center"
-                style="background:radial-gradient(circle,#2a6a10 0%,#0a2a0a 60%);animation:budPulse 2.8s ease-in-out infinite">
-                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" aria-label="Jungle character">
-                  <ellipse cx="22" cy="24" rx="15" ry="17" fill="#1a5a08"/>
-                  <circle cx="16" cy="20" r="3.5" fill="#AEDB43"/>
-                  <circle cx="28" cy="20" r="3.5" fill="#AEDB43"/>
-                  <circle cx="16" cy="20" r="1.5" fill="#111"/>
-                  <circle cx="28" cy="20" r="1.5" fill="#111"/>
-                  <path d="M15 30 Q22 35 29 30" stroke="#AEDB43" stroke-width="1.5" fill="none"/>
-                  <path d="M10 10 Q22 0 34 10" fill="#AEDB43" opacity="0.6"/>
-                </svg>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(21,74,21,0.92)">
-              <div class="font-bang text-slug-white text-xl tracking-widest">Jungle Boy OG</div>
-              <div class="font-bang text-slug-green text-xs tracking-[0.2em]">RAISED IN THE CANOPY</div>
-            </div>
-          </div>
-          <div class="card-stats">
-            <div class="font-bang text-slug-red text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Tastes Like</span><span class="stat-value">Pine & Citrus Zest</span></div>
-            <div class="stat-row"><span class="stat-label">Feels Like</span><span class="stat-value">Morning in the Jungle</span></div>
-            <div class="stat-row"><span class="stat-label">Pairs With</span><span class="stat-value">A Creative Session</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">27% · Sativa</span></div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-3 border-t-2 border-slug-red">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$50</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">3.5g</span>
-            </div>
-            <button class="btn-hit py-2 px-5 text-base" aria-label="Add Jungle Boy OG to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-
-        <!-- CARD 6: Starburzt JUICED -->
-        <article class="trading-card reveal" data-cat="tin infused pre-roll" style="transition-delay:0.4s;border-color:#AEDB43">
-          <div class="card-header" style="background:#3a6a10">
-            <div>
-              <span class="font-bang text-slug-white text-xl tracking-widest">SLUGGERS</span>
-              <span class="font-bang text-slug-green text-xs tracking-[0.3em] block">HIT · SPECIAL EDITION</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="juiced-badge">JUICED★</span>
-              <span class="font-bang text-slug-white/60 text-sm">SE</span>
-            </div>
-          </div>
-          <div class="card-visual" aria-label="Starburzt Juiced product visual">
-            <!-- Houndstooth bg -->
-            <div class="absolute inset-0 houndstooth opacity-60"></div>
-            <div class="absolute inset-0 bud-texture opacity-50" style="mix-blend-mode:screen"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="text-center">
-                <div class="font-bang text-slug-green text-3xl tracking-wide leading-none" style="text-shadow:2px 2px 0 #111,-2px -2px 0 #111">StarBurzt</div>
-                <div class="juiced-badge mt-2 mx-auto" style="display:inline-flex">JUICED★</div>
-              </div>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 py-2 px-3" style="background:rgba(58,106,16,0.95)">
-              <div class="font-bang text-slug-white text-xl tracking-widest">StarBurzt JUICED</div>
-              <div class="font-bang text-slug-yellow text-xs tracking-[0.2em]">W/ DIAMONDS & HASH · SINGLE SOURCE</div>
-            </div>
-            <div class="absolute top-2 right-2" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 50 50" fill="none">
-                <polygon points="25,3 29,17 44,17 32,26 37,41 25,32 13,41 18,26 6,17 21,17" fill="#F5C518"/>
-              </svg>
-            </div>
-          </div>
-          <div class="card-stats">
-            <div class="font-bang text-slug-green text-base tracking-wider mb-2">STATS</div>
-            <div class="stat-row"><span class="stat-label">Tastes Like</span><span class="stat-value">Tropical Candy Burst</span></div>
-            <div class="stat-row"><span class="stat-label">Feels Like</span><span class="stat-value">An Explosion of Bliss</span></div>
-            <div class="stat-row"><span class="stat-label">Format</span><span class="stat-value">Tin · 5 Pre-rolls</span></div>
-            <div class="stat-row" style="border-bottom:none"><span class="stat-label">THC</span><span class="stat-value">38%+ Triple Infused</span></div>
-          </div>
-          <div class="flex items-center justify-between px-3 py-3 border-t-2" style="border-color:#AEDB43">
-            <div>
-              <span class="font-bang text-slug-yellow text-2xl">$95</span>
-              <span class="font-ui text-slug-white/40 text-xs ml-1">limited</span>
-            </div>
-            <button class="btn-green py-2 px-5 text-base" aria-label="Add StarBurzt Juiced to cart">ADD TO PACK</button>
-          </div>
-        </article>
-
-      </div><!-- /product-grid -->
-
-      <!-- Footnote -->
-      <p class="font-ui text-slug-white/25 text-xs mt-10 text-center reveal">
-        SPARK &amp; HIT WITHIN 10 DAYS OF OPENING. JUICED★ = TRIPLE INFUSED. FOR ADULTS 21+ ONLY.
-      </p>
-    </div><!-- /tab-products -->
-
-
-    <!-- ═══ TAB: BRAND ═══ -->
-    <div id="tab-brand" class="tab-content" role="tabpanel" aria-labelledby="btn-brand">
-
-      <!-- Hero split -->
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20 reveal">
-        <div>
-          <p class="section-label">— Our Story</p>
-          <h2 class="big-head mb-6" style="font-size:clamp(3rem,7vw,6rem)">
-            <span style="color:#AEDB43">BORN</span><br>
-            <span style="color:#F5F5F0">FROM THE</span><br>
-            <span style="color:#CC1F1A">CULTURE</span>
-          </h2>
-          <p class="font-body text-slug-white/55 text-sm leading-relaxed mb-5 max-w-md">
-            Sluggers Hit started because we were tired of boring cannabis. Tired of plain white bags and corporate vibes. We wanted something that felt like <em>ours</em> — loud, collectible, something you'd want to show off before you even spark it.
-          </p>
-          <p class="font-body text-slug-white/40 text-sm leading-relaxed mb-8 max-w-md">
-            Every strain gets a character. Every tin comes with a holo trading card. It's not just cannabis — it's a set to complete. Small batch, single source, JUICED to the max.
-          </p>
-          <button class="btn-hit text-xl">MEET THE TEAM</button>
-        </div>
-
-        <!-- Brand visual: stacked cards animation -->
-        <div class="relative flex items-center justify-center h-80" aria-hidden="true">
-          <!-- Background card -->
-          <div class="absolute w-48 h-64 rounded-xl border-2 border-slug-red houndstooth opacity-50"
-            style="transform:rotate(-12deg) translateX(-20px)"></div>
-          <!-- Middle card -->
-          <div class="absolute w-48 h-64 rounded-xl border-2 border-slug-yellow bud-texture"
-            style="transform:rotate(-5deg);background:#2A3A10;animation:floatY 7s ease-in-out infinite"></div>
-          <!-- Front card -->
-          <div class="absolute w-48 h-64 rounded-xl border-2 border-slug-green overflow-hidden"
-            style="background:#1A1208;transform:rotate(3deg);animation:floatY2 8s ease-in-out infinite">
-            <div class="card-header h-10 flex items-center">
-              <span class="font-bang text-slug-white text-base tracking-wider">SLUGGERS HIT</span>
-            </div>
-            <div class="flex-1 bud-texture flex items-center justify-center" style="height:120px;background:#2A3A10">
-              <div class="font-bang text-slug-green text-4xl">S</div>
-            </div>
-            <div class="p-2 border-t border-slug-red">
-              <div class="font-bang text-slug-red text-xs">COLLECTIBLE CANNABIS</div>
-              <div class="font-ui text-slug-white/40 text-xs">sluggers.com</div>
-            </div>
-          </div>
-        </div>
+      <div class="spec-block reveal reveal-delay-3">
+        <div class="spec-number">03 // Cure</div>
+        <span class="spec-icon">◐</span>
+        <div class="spec-title">Extended Dark Cure</div>
+        <p class="spec-desc">Sixty days minimum. Humidity-locked at 62%. Terpenes preserved through a cryogenic-inspired slow cure that locks the volatile spectrum.</p>
       </div>
 
-      <!-- Divider -->
-      <div class="houndstooth h-2 mb-16 reveal"></div>
-
-      <!-- Stats -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
-        <div class="border-2 border-slug-red rounded-xl p-5 text-center reveal" style="background:#1A1208;transition-delay:0s">
-          <div class="big-head text-4xl text-slug-green">2021</div>
-          <div class="font-bang text-slug-white/40 text-sm tracking-wider mt-1">Est.</div>
-        </div>
-        <div class="border-2 border-slug-red rounded-xl p-5 text-center reveal" style="background:#1A1208;transition-delay:0.08s">
-          <div class="big-head text-4xl text-slug-red">40+</div>
-          <div class="font-bang text-slug-white/40 text-sm tracking-wider mt-1">Characters</div>
-        </div>
-        <div class="border-2 border-slug-red rounded-xl p-5 text-center reveal" style="background:#1A1208;transition-delay:0.16s">
-          <div class="big-head text-4xl text-slug-yellow">100%</div>
-          <div class="font-bang text-slug-white/40 text-sm tracking-wider mt-1">Lab Tested</div>
-        </div>
-        <div class="border-2 border-slug-red rounded-xl p-5 text-center reveal" style="background:#1A1208;transition-delay:0.24s">
-          <div class="big-head text-4xl text-slug-green">1SRC</div>
-          <div class="font-bang text-slug-white/40 text-sm tracking-wider mt-1">Single Source</div>
-        </div>
-      </div>
-
-      <!-- Values -->
-      <div class="grid md:grid-cols-3 gap-5">
-        <div class="border-2 border-slug-red rounded-xl overflow-hidden reveal" style="transition-delay:0s">
-          <div class="houndstooth h-2"></div>
-          <div class="p-6" style="background:#1A1208">
-            <div class="font-bang text-slug-green text-xl mb-3 tracking-wider">COLLECT 'EM ALL</div>
-            <p class="font-body text-slug-white/45 text-sm leading-relaxed">Each strain is a character. Each pack ships with a holographic trading card. The hobby of cannabis culture.</p>
-          </div>
-        </div>
-        <div class="border-2 border-slug-yellow rounded-xl overflow-hidden reveal" style="transition-delay:0.1s">
-          <div class="houndstooth h-2" style="background:#F5C518"></div>
-          <div class="p-6" style="background:#1A1208">
-            <div class="font-bang text-slug-yellow text-xl mb-3 tracking-wider">JUICED★ PROGRAM</div>
-            <p class="font-body text-slug-white/45 text-sm leading-relaxed">Triple Infused = Premium flower + liquid diamonds + solventless ice hash. The most elevated pre-roll format on the market.</p>
-          </div>
-        </div>
-        <div class="border-2 border-slug-green rounded-xl overflow-hidden reveal" style="transition-delay:0.2s">
-          <div class="houndstooth h-2" style="background:#AEDB43"></div>
-          <div class="p-6" style="background:#1A1208">
-            <div class="font-bang text-slug-green text-xl mb-3 tracking-wider">SINGLE SOURCE</div>
-            <p class="font-body text-slug-white/45 text-sm leading-relaxed">From one farm to your hands. We know our growers, we know our genetics. Spark it within 10 days of opening for peak freshness.</p>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /tab-brand -->
-
-
-    <!-- ═══ TAB: EXPERIENCE ═══ -->
-    <div id="tab-experience" class="tab-content" role="tabpanel" aria-labelledby="btn-experience">
-
-      <div class="mb-10 reveal">
-        <p class="section-label">— The Vibe</p>
-        <h2 class="big-head" style="font-size:clamp(2.5rem,6vw,5rem)">
-          <span style="color:#CC1F1A">FEEL</span>
-          <span style="color:#F5F5F0"> EVERY </span>
-          <span style="color:#AEDB43">HIT</span>
-        </h2>
-      </div>
-
-      <!-- Mood selector -->
-      <div class="border-2 border-slug-red rounded-xl overflow-hidden mb-10 reveal" style="background:#1A1208">
-        <div class="houndstooth h-2"></div>
-        <div class="p-6">
-          <p class="font-bang text-slug-white/50 text-base tracking-wider mb-5">SELECT YOUR VIBE</p>
-          <div class="flex gap-3 flex-wrap" role="group" aria-label="Vibe selector">
-            <button class="f-pill active" onclick="setVibe(this,'chill')" aria-pressed="true">CHILL</button>
-            <button class="f-pill" onclick="setVibe(this,'creative')" aria-pressed="false">CREATIVE</button>
-            <button class="f-pill" onclick="setVibe(this,'social')" aria-pressed="false">SOCIAL</button>
-            <button class="f-pill" onclick="setVibe(this,'focus')" aria-pressed="false">FOCUS</button>
-            <button class="f-pill" onclick="setVibe(this,'stoned')" aria-pressed="false">DEEP STONED</button>
-          </div>
-          <div id="vibe-rec" class="mt-5 pt-5 border-t border-white/5">
-            <p class="font-body text-slug-white/55 text-sm leading-relaxed">
-              <span class="font-bang text-slug-green text-base">CHILL MODE:</span> Grab the
-              <span class="font-bang text-slug-white">UFOreoZ Juiced Tin</span> or
-              <span class="font-bang text-slug-white">Strawberry Fields flower</span>.
-              Heavy body, relaxed mind. Put on something slow. You're in the right place.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gallery tiles -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 reveal">
-        <!-- Tile 1 -->
-        <div class="col-span-2 rounded-xl overflow-hidden relative h-60 reveal" style="transition-delay:0s">
-          <div class="absolute inset-0 houndstooth"></div>
-          <div class="absolute inset-0 bud-texture opacity-60" style="mix-blend-mode:screen"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="text-center">
-              <div class="font-bang text-slug-white text-4xl tracking-widest leading-none" style="text-shadow:2px 2px 0 #CC1F1A">JUICED★</div>
-              <div class="font-bang text-slug-green text-sm tracking-[0.3em] mt-1">TRIPLE INFUSED</div>
-            </div>
-          </div>
-        </div>
-        <!-- Tile 2 -->
-        <div class="rounded-xl overflow-hidden relative h-60 reveal" style="background:#1a3a10;transition-delay:0.08s">
-          <div class="absolute inset-0 bud-texture"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-end pb-4">
-            <div class="font-bang text-slug-green text-xl tracking-wider">FLOWER</div>
-            <div class="font-ui text-slug-white/40 text-xs">Single Source</div>
-          </div>
-        </div>
-        <!-- Tile 3 -->
-        <div class="rounded-xl overflow-hidden relative h-60 reveal" style="background:#1a0a0a;transition-delay:0.16s">
-          <div class="absolute inset-0 houndstooth opacity-40"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-end pb-4">
-            <div class="font-bang text-slug-red text-xl tracking-wider">PRE-ROLLS</div>
-            <div class="font-ui text-slug-white/40 text-xs">Kief + Infused</div>
-          </div>
-        </div>
-        <!-- Tile 4 -->
-        <div class="col-span-2 rounded-xl overflow-hidden relative h-40 reveal" style="transition-delay:0.24s">
-          <div style="background:linear-gradient(135deg,#1a1208,#3a6a10)" class="absolute inset-0"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="font-bang text-slug-white text-3xl tracking-[0.2em]">COLLECT THE SET</div>
-          </div>
-        </div>
-        <!-- Tile 5 -->
-        <div class="col-span-2 rounded-xl overflow-hidden relative h-40 reveal" style="background:#0a0a1a;transition-delay:0.32s">
-          <div class="absolute inset-0 bud-texture opacity-30"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="text-center">
-              <div class="font-bang text-slug-yellow text-2xl">HOLO TRADING CARDS</div>
-              <div class="font-ui text-slug-white/30 text-xs mt-1">Every pack includes one. Limited editions available.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Testimonials -->
-      <div class="grid md:grid-cols-3 gap-5 reveal">
-        <blockquote class="border-2 border-slug-red rounded-xl p-5" style="background:#1A1208">
-          <div class="houndstooth h-1 mb-4 rounded" style="height:3px"></div>
-          <p class="font-body text-slug-white/60 text-sm leading-relaxed italic mb-4">"UFOreoZ Juiced is the most elite pre-roll I've put my lips on. The trading card was fire too."</p>
-          <footer class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded border border-slug-red flex items-center justify-center" style="background:#CC1F1A20">
-              <span class="font-bang text-slug-red text-xs">DK</span>
-            </div>
-            <div>
-              <cite class="not-italic font-bang text-slug-white text-sm tracking-wide">D. King</cite>
-              <p class="font-ui text-slug-white/30 text-xs">LA, CA</p>
-            </div>
-          </footer>
-        </blockquote>
-        <blockquote class="border-2 border-slug-green rounded-xl p-5" style="background:#1A1208">
-          <div class="h-1 mb-4 rounded" style="background:#AEDB43"></div>
-          <p class="font-body text-slug-white/60 text-sm leading-relaxed italic mb-4">"The tin packaging is insane. Opened it and there's a whole lineup of JUICED slugs and a holo card inside."</p>
-          <footer class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded border border-slug-green flex items-center justify-center" style="background:#AEDB4320">
-              <span class="font-bang text-slug-green text-xs">MR</span>
-            </div>
-            <div>
-              <cite class="not-italic font-bang text-slug-white text-sm tracking-wide">M. Reyes</cite>
-              <p class="font-ui text-slug-white/30 text-xs">Oakland, CA</p>
-            </div>
-          </footer>
-        </blockquote>
-        <blockquote class="border-2 border-slug-yellow rounded-xl p-5" style="background:#1A1208">
-          <div class="h-1 mb-4 rounded" style="background:#F5C518"></div>
-          <p class="font-body text-slug-white/60 text-sm leading-relaxed italic mb-4">"I've collected 12 different character cards. This brand is a completely different level of creativity."</p>
-          <footer class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded border border-slug-yellow flex items-center justify-center" style="background:#F5C51820">
-              <span class="font-bang text-slug-yellow text-xs">AV</span>
-            </div>
-            <div>
-              <cite class="not-italic font-bang text-slug-white text-sm tracking-wide">A. Vega</cite>
-              <p class="font-ui text-slug-white/30 text-xs">San Francisco, CA</p>
-            </div>
-          </footer>
-        </blockquote>
-      </div>
-
-    </div><!-- /tab-experience -->
-
-
-    <!-- ═══ TAB: FIND US ═══ -->
-    <div id="tab-find" class="tab-content" role="tabpanel" aria-labelledby="btn-find">
-
-      <div class="mb-10 reveal">
-        <p class="section-label">— Retail Locations</p>
-        <h2 class="big-head" style="font-size:clamp(2.5rem,6vw,5rem)">
-          <span style="color:#AEDB43">WHERE</span>
-          <span style="color:#F5F5F0"> TO </span>
-          <span style="color:#CC1F1A">FIND US</span>
-        </h2>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-10">
-        <!-- Locations -->
-        <div class="space-y-3 reveal">
-          <p class="font-body text-slug-white/35 text-sm mb-6 leading-relaxed">Licensed dispensaries across California. Spark &amp; hit within 10 days of opening.</p>
-
-          <div class="location-card border-2 border-white/8 rounded-xl p-4 cursor-pointer transition-colors hover:border-slug-red" style="background:#1A1208" onclick="activateLocation(this)" role="button" tabindex="0">
-            <div class="flex items-start justify-between">
-              <div>
-                <h3 class="font-bang text-slug-white text-base tracking-wider">MedMen — West Hollywood</h3>
-                <p class="font-body text-slug-white/35 text-xs mt-0.5">8208 Santa Monica Blvd, West Hollywood, CA</p>
-                <p class="font-ui text-slug-white/25 text-xs mt-1">Mon–Sun · 9am–10pm</p>
-              </div>
-              <div class="w-8 h-8 border border-slug-red rounded-lg flex items-center justify-center shrink-0">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CC1F1A" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="location-card border-2 border-white/8 rounded-xl p-4 cursor-pointer transition-colors hover:border-slug-red" style="background:#1A1208" onclick="activateLocation(this)" role="button" tabindex="0">
-            <div class="flex items-start justify-between">
-              <div>
-                <h3 class="font-bang text-slug-white text-base tracking-wider">Harborside — Oakland</h3>
-                <p class="font-body text-slug-white/35 text-xs mt-0.5">1840 Embarcadero, Oakland, CA</p>
-                <p class="font-ui text-slug-white/25 text-xs mt-1">Mon–Sun · 8am–9pm</p>
-              </div>
-              <div class="w-8 h-8 border border-slug-red rounded-lg flex items-center justify-center shrink-0">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CC1F1A" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="location-card border-2 border-white/8 rounded-xl p-4 cursor-pointer transition-colors hover:border-slug-red" style="background:#1A1208" onclick="activateLocation(this)" role="button" tabindex="0">
-            <div class="flex items-start justify-between">
-              <div>
-                <h3 class="font-bang text-slug-white text-base tracking-wider">The Cookie Store — SF</h3>
-                <p class="font-body text-slug-white/35 text-xs mt-0.5">3165 16th St, San Francisco, CA</p>
-                <p class="font-ui text-slug-white/25 text-xs mt-1">Mon–Sat · 10am–8pm</p>
-              </div>
-              <div class="w-8 h-8 border border-slug-red rounded-lg flex items-center justify-center shrink-0">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CC1F1A" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="location-card border-2 border-white/8 rounded-xl p-4 cursor-pointer transition-colors hover:border-slug-red" style="background:#1A1208" onclick="activateLocation(this)" role="button" tabindex="0">
-            <div class="flex items-start justify-between">
-              <div>
-                <h3 class="font-bang text-slug-white text-base tracking-wider">Jungle Boys — LA</h3>
-                <p class="font-body text-slug-white/35 text-xs mt-0.5">5901 Venice Blvd, Los Angeles, CA</p>
-                <p class="font-ui text-slug-white/25 text-xs mt-1">Mon–Sun · 10am–10pm</p>
-              </div>
-              <div class="w-8 h-8 border border-slug-red rounded-lg flex items-center justify-center shrink-0">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#CC1F1A" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-            </div>
-          </div>
-
-          <button class="btn-outline-green w-full justify-center mt-2 text-base">
-            SEARCH ALL LOCATIONS
-          </button>
-        </div>
-
-        <!-- Newsletter + map -->
-        <div class="space-y-5 reveal">
-          <!-- Map grid (visual) -->
-          <div class="border-2 border-slug-red rounded-xl overflow-hidden relative h-56" style="background:#0a1a0a" aria-label="California store map">
-            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 224" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <line x1="0" y1="56" x2="400" y2="56" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <line x1="0" y1="112" x2="400" y2="112" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <line x1="0" y1="168" x2="400" y2="168" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <line x1="100" y1="0" x2="100" y2="224" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <line x1="200" y1="0" x2="200" y2="224" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <line x1="300" y1="0" x2="300" y2="224" stroke="#AEDB43" stroke-width="0.5" opacity="0.25"/>
-              <path d="M0,112 Q100,90 200,112 Q300,134 400,112" stroke="#CC1F1A" stroke-width="0.8" opacity="0.4" fill="none"/>
-              <!-- Animated pins -->
-              <circle cx="130" cy="80" r="6" fill="#AEDB43" opacity="0.9"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/></circle>
-              <circle cx="270" cy="140" r="6" fill="#CC1F1A" opacity="0.9"><animate attributeName="r" values="6;10;6" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.4s" repeatCount="indefinite"/></circle>
-              <circle cx="180" cy="175" r="6" fill="#F5C518" opacity="0.9"><animate attributeName="r" values="6;10;6" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.8s" repeatCount="indefinite"/></circle>
-              <circle cx="320" cy="70" r="6" fill="#AEDB43" opacity="0.9"><animate attributeName="r" values="6;10;6" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.2s" repeatCount="indefinite"/></circle>
-            </svg>
-            <div class="absolute bottom-3 left-3">
-              <span class="font-bang text-slug-white/40 text-xs tracking-widest">CALIFORNIA · 12 LOCATIONS</span>
-            </div>
-          </div>
-
-          <!-- Newsletter -->
-          <div class="border-2 border-slug-green rounded-xl overflow-hidden" style="background:#1A1208">
-            <div class="h-2" style="background:#AEDB43"></div>
-            <div class="p-5">
-              <h3 class="font-bang text-slug-green text-xl tracking-wider mb-1">STAY IN THE LOOP</h3>
-              <p class="font-body text-slug-white/35 text-xs mb-4 leading-relaxed">New drops, character reveals, limited tins. First to know.</p>
-              <form class="flex gap-2" onsubmit="handleEmail(event)" novalidate>
-                <label for="email" class="sr-only">Email address</label>
-                <input id="email" type="email" placeholder="your@email.com" autocomplete="email" required
-                  class="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm font-body text-slug-white placeholder-white/25 focus:outline-none focus:border-slug-green/50 focus:ring-1 focus:ring-slug-green/30 transition-colors"
-                  style="min-height:44px" aria-label="Email address"/>
-                <button type="submit" class="btn-green py-2 px-4 text-base" aria-label="Subscribe">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                </button>
-              </form>
-              <div id="email-ok" class="hidden mt-2 font-bang text-slug-green text-sm tracking-wider" role="alert" aria-live="polite">
-                ★ YOU'RE IN. FIRST TO KNOW.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /tab-find -->
-
-  </main>
-
-
-  <!-- ════════════════════════════════════════
-       FOOTER
-  ════════════════════════════════════════ -->
-  <div class="houndstooth h-2" aria-hidden="true"></div>
-  <footer class="border-t-2 border-slug-red px-4 lg:px-10 py-10" style="background:#0D0D0D" aria-label="Site footer">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <svg width="32" height="32" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-              <rect width="56" height="56" rx="6" fill="#CC1F1A"/>
-              <path d="M14 40 L28 16 L42 40" stroke="#AEDB43" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="28" cy="33" r="4" fill="#0D0D0D"/>
-            </svg>
-            <div>
-              <div class="font-bang text-slug-white text-lg tracking-[0.15em] leading-none">SLUGGERS HIT</div>
-              <div class="font-bang text-slug-green text-xs tracking-[0.3em]">COLLECTIBLE CANNABIS</div>
-            </div>
-          </div>
-          <p class="font-body text-slug-white/25 text-xs leading-relaxed max-w-xs">
-            California licensed. Adults 21+ only.<br/>Spark &amp; hit within 10 days of opening.
-          </p>
-        </div>
-
-        <nav class="flex flex-col sm:flex-row gap-8" aria-label="Footer links">
-          <div>
-            <p class="font-bang text-slug-white/40 text-sm tracking-[0.2em] mb-3">Products</p>
-            <ul class="space-y-2">
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Pre-Rolls</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Flower</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">JUICED Tins</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Trading Cards</a></li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-bang text-slug-white/40 text-sm tracking-[0.2em] mb-3">Info</p>
-            <ul class="space-y-2">
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">About</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Lab Results</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Locations</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Press</a></li>
-            </ul>
-          </div>
-          <div>
-            <p class="font-bang text-slug-white/40 text-sm tracking-[0.2em] mb-3">Follow</p>
-            <ul class="space-y-2">
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Instagram</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">TikTok</a></li>
-              <li><a href="#" class="font-body text-slug-white/25 text-xs hover:text-slug-red transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slug-green rounded">Twitter / X</a></li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-
-      <div class="houndstooth h-1 mb-5 rounded" style="opacity:0.5"></div>
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p class="font-body text-slug-white/20 text-xs">© 2025 Sluggers Hit. All rights reserved. For adults 21+ only. California licensed.</p>
-        <div class="flex gap-4">
-          <a href="#" class="font-body text-slug-white/20 text-xs hover:text-slug-white/40 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slug-green rounded">Privacy</a>
-          <a href="#" class="font-body text-slug-white/20 text-xs hover:text-slug-white/40 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slug-green rounded">Terms</a>
-          <a href="#" class="font-body text-slug-white/20 text-xs hover:text-slug-white/40 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slug-green rounded">Accessibility</a>
-        </div>
+      <div class="spec-block reveal reveal-delay-4">
+        <div class="spec-number">04 // Packaging</div>
+        <span class="spec-icon">▣</span>
+        <div class="spec-title">Collectible Capsules</div>
+        <p class="spec-desc">Vacuum-sealed in nitrogen-flushed canisters. Each pack numbered, dated, and catalogued. Your strain archive. Your history.</p>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
 
+<!-- ═══ CTA FINALE ═══ -->
+<section class="cta-section" id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-hexgrid"></div>
 
-  <!-- ════════════════════════════════════════
-       JAVASCRIPT
-  ════════════════════════════════════════ -->
-  <script>
-    /* ── Age gate ── */
-    function enterSite() {
-      const g = document.getElementById('age-gate');
-      g.style.transition = 'opacity 0.5s ease';
-      g.style.opacity = '0';
-      setTimeout(() => g.style.display = 'none', 500);
-      try { sessionStorage.setItem('sluggers-age','1'); } catch(e) {}
-    }
-    try { if (sessionStorage.getItem('sluggers-age')==='1') document.getElementById('age-gate').style.display='none'; } catch(e) {}
+  <h2 class="cta-title reveal">
+    Begin Your<br>
+    <span class="glow-text">Mission</span>
+  </h2>
+  <p class="cta-body reveal reveal-delay-1">
+    Join the archive. Receive coordinates. Get first access to new drops.
+  </p>
+  <div class="cta-actions reveal reveal-delay-2">
+    <a href="#" class="btn-primary">Shop All Strains</a>
+    <a href="#" class="btn-ghost">Join the Archive</a>
+  </div>
+</section>
 
-    /* ── Tab switch ── */
-    const TABS = ['products','brand','experience','find'];
-    function switchTab(name) {
-      TABS.forEach(t => {
-        const content = document.getElementById('tab-'+t);
-        if (content) content.classList.toggle('active', t===name);
-        ['btn-'+t, 'mob-'+t].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.classList.toggle('active', t===name);
-            if (el.hasAttribute('aria-selected')) el.setAttribute('aria-selected', t===name ? 'true':'false');
-          }
-        });
-      });
-      const main = document.getElementById('main-content');
-      if (main) window.scrollTo({ top: main.getBoundingClientRect().top + scrollY - 70, behavior: 'smooth' });
-      setTimeout(runReveal, 80);
-    }
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">SLUGGERS HIT</div>
+  <div class="footer-legal">
+    For use only where cannabis is legal. Must be 21+.<br>
+    These statements have not been evaluated by the FDA. Not for resale to minors.
+  </div>
+  <div class="footer-coords">38.9°N &nbsp;·&nbsp; 77.0°W &nbsp;·&nbsp; Δ7 &nbsp;·&nbsp; © 2025</div>
+</footer>
 
-    /* ── Mobile menu ── */
-    function toggleMob() {
-      const m = document.getElementById('mob-menu');
-      const btn = document.getElementById('mob-btn');
-      const mi = document.getElementById('menu-icon');
-      const ci = document.getElementById('close-icon');
-      const open = !m.classList.contains('hidden');
-      m.classList.toggle('hidden');
-      btn.setAttribute('aria-expanded', (!open).toString());
-      mi.classList.toggle('hidden', !open);
-      ci.classList.toggle('hidden', open);
-    }
-    function closeMob() {
-      document.getElementById('mob-menu').classList.add('hidden');
-      document.getElementById('mob-btn').setAttribute('aria-expanded','false');
-      document.getElementById('menu-icon').classList.remove('hidden');
-      document.getElementById('close-icon').classList.add('hidden');
-    }
+<script>
+  /* ═══ STAR FIELD ═══ */
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
 
-    /* ── Filter ── */
-    function filterCat(cat) {
-      document.querySelectorAll('.f-pill').forEach(p => {
-        p.classList.remove('active');
-        p.setAttribute('aria-pressed','false');
-      });
-      const active = [...document.querySelectorAll('.f-pill')].find(p => p.getAttribute('onclick')?.includes("'"+cat+"'"));
-      if (active) { active.classList.add('active'); active.setAttribute('aria-pressed','true'); }
-      document.querySelectorAll('.trading-card').forEach(c => {
-        const cats = (c.dataset.cat||'').split(' ');
-        const show = cat==='all' || cats.includes(cat);
-        c.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        c.style.opacity = show ? '1' : '0.15';
-        c.style.transform = show ? '' : 'scale(0.95)';
-        c.style.pointerEvents = show ? '' : 'none';
+  function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars(count) {
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2,
+        alpha: Math.random(),
+        alphaDir: (Math.random() > 0.5 ? 1 : -1) * 0.003,
+        speed: Math.random() * 0.05,
+        hue: Math.random() > 0.9
+          ? `rgba(143,168,140,`
+          : Math.random() > 0.8
+            ? `rgba(232,145,58,`
+            : `rgba(232,244,255,`,
       });
     }
+  }
 
-    /* ── Vibe selector ── */
-    const vibes = {
-      chill: ['CHILL MODE', 'slug-green', 'UFOreoZ Juiced Tin or Strawberry Fields flower', 'Heavy body, relaxed mind. Put on something slow. You\'re in the right place.'],
-      creative: ['CREATIVE MODE', 'slug-yellow', 'Jungle Boy OG or Space Cookies', 'Sativa-forward, cerebral buzz. Paint something. Write something. Move.'],
-      social: ['SOCIAL MODE', 'slug-red', 'StarBurzt Juiced or Space Cookies 5-pack', 'Energetic, talkative, giggly. Pass it around. Everyone\'s invited.'],
-      focus: ['FOCUS MODE', 'slug-green', 'Jungle Boy OG flower', 'Sharp, clear, dialed. Single source sativa genetics. Task mode activated.'],
-      stoned: ['DEEP STONED MODE', 'slug-red', 'UFOreoZ Juiced Tin — 2 pre-rolls back to back', 'You asked for it. Triple infused, 38%+. Spark and HIT DIFFERENT. Clear your schedule.'],
-    };
-    function setVibe(el, key) {
-      document.querySelectorAll('[onclick^="setVibe"]').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
-      el.classList.add('active'); el.setAttribute('aria-pressed','true');
-      const [label, color, product, desc] = vibes[key];
-      document.getElementById('vibe-rec').innerHTML = `<p class="font-body text-slug-white/55 text-sm leading-relaxed"><span class="font-bang text-${color} text-base">${label}:</span> Reach for <span class="font-bang text-slug-white">${product}</span>. ${desc}</p>`;
-    }
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.alpha += s.alphaDir;
+      if (s.alpha <= 0 || s.alpha >= 1) s.alphaDir *= -1;
+      s.y -= s.speed;
+      if (s.y < 0) { s.y = canvas.height; s.x = Math.random() * canvas.width; }
 
-    /* ── Location ── */
-    function activateLocation(el) {
-      document.querySelectorAll('.location-card').forEach(c => { c.style.borderColor=''; c.style.background=''; });
-      el.style.borderColor = '#CC1F1A';
-      el.style.background = 'rgba(204,31,26,0.06)';
-    }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.hue + Math.min(1, Math.max(0, s.alpha)) + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
 
-    /* ── Newsletter ── */
-    function handleEmail(e) {
-      e.preventDefault();
-      const inp = document.getElementById('email');
-      if (!inp.validity.valid) { inp.style.borderColor='#CC1F1A'; return; }
-      inp.style.borderColor='';
-      inp.value = '';
-      inp.placeholder = 'Subscribed!';
-      const ok = document.getElementById('email-ok');
-      ok.classList.remove('hidden');
-      setTimeout(() => ok.classList.add('hidden'), 5000);
-    }
+  resizeCanvas();
+  createStars(300);
+  drawStars();
+  window.addEventListener('resize', () => { resizeCanvas(); createStars(300); });
 
-    /* ── Scroll reveal ── */
-    function runReveal() {
-      document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
-        if (el.getBoundingClientRect().top < window.innerHeight * 0.93) el.classList.add('visible');
-      });
-    }
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduced) window.addEventListener('scroll', runReveal, { passive: true });
-    else document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
-    runReveal();
 
-    /* ── Subtle mouse parallax on hero shapes ── */
-    if (!reduced) {
-      document.addEventListener('mousemove', e => {
-        const x = (e.clientX/window.innerWidth - 0.5)*16;
-        const y = (e.clientY/window.innerHeight - 0.5)*10;
-        document.querySelectorAll('.hero-shape').forEach((s,i) => {
-          const d = (i%3+1)*0.3;
-          s.style.transform = s.style.transform.replace(/translate3d\([^)]+\)/,'') + ` translate(${x*d}px,${y*d}px)`;
-        });
-      });
-    }
-  </script>
+  /* ═══ SPICE PARTICLES ═══ */
+  const particleContainer = document.getElementById('spiceParticles');
+  const colors = ['rgba(143,168,140,', 'rgba(184,107,42,', 'rgba(196,164,107,', 'rgba(216,207,196,'];
+
+  for (let i = 0; i < 60; i++) {
+    const span = document.createElement('span');
+    const size = Math.random() * 3 + 1;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const opacity = Math.random() * 0.6 + 0.2;
+    const duration = Math.random() * 15 + 10;
+    const delay = Math.random() * 15;
+    const x = Math.random() * 100;
+    const drift = (Math.random() - 0.5) * 120;
+
+    span.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${x}%;
+      bottom: 0;
+      background: ${color}${opacity});
+      box-shadow: 0 0 ${size * 3}px ${color}0.6);
+      animation-duration: ${duration}s;
+      animation-delay: -${delay}s;
+      --drift-x: ${drift}px;
+    `;
+    particleContainer.appendChild(span);
+  }
+
+
+  /* ═══ CURSOR GLOW ═══ */
+  const glow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  });
+
+
+  /* ═══ SCROLL REVEAL ═══ */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>

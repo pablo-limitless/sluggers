@@ -1,1511 +1,1120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLUGGERS — Beyond the Wormhole</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,100;0,300;0,400;1,100;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-
-  <style>
-    /* ═══════════════════════════════════
-       DESIGN TOKENS — CINEMATIC DUNE
-       Palette: Villeneuve color grading.
-       No neon. Think tungsten, aged linen,
-       deep indigo space, oxidised copper.
-       ═══════════════════════════════════ */
-    :root {
-      --void:      #06060a;
-      --deep:      #0a0a10;
-      --midnight:  #0e0e1c;
-      --nebula:    #141428;
-      --sand:      #c4a46b;       /* Arrakis dune / aged parchment        */
-      --spice:     #b86b2a;       /* Spice melange — burnt sienna          */
-      --ember:     #7a3010;       /* Deep ember, barely lit                */
-      --accent:    #8fa88c;       /* Desaturated sage — organic, muted     */
-      --accent-dim:#6b8068;       /* Dimmer sage for subtle elements       */
-      --star:      #d8cfc4;       /* Warm off-white, like old paper        */
-      --haze:      rgba(143,168,140,0.05);
-      --haze-warm: rgba(184,107,42,0.07);
-      --glow-g:    rgba(143,168,140,0.25);
-      --glow-o:    rgba(196,164,107,0.3);
-      --font-head: 'Syncopate', sans-serif;
-      --font-body: 'Rajdhani', sans-serif;
-      --font-sub:  'Exo 2', sans-serif;
-      --font-mono: 'Share Tech Mono', monospace;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--void);
-      color: var(--star);
-      font-family: var(--font-body);
-      overflow-x: hidden;
-      cursor: crosshair;
-    }
-
-    ::selection { background: var(--sand); color: var(--void); }
-
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: var(--void); }
-    ::-webkit-scrollbar-thumb { background: var(--spice); }
-
-    /* ═══════════════════════════════════
-       STAR FIELD CANVAS
-       ═══════════════════════════════════ */
-    #starfield {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ═══════════════════════════════════
-       WORMHOLE — HERO BG
-       ═══════════════════════════════════ */
-    .wormhole {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .wormhole::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 160vmax;
-      height: 160vmax;
-      transform: translate(-50%, -50%);
-      background:
-        radial-gradient(ellipse 18% 18% at 50% 50%, rgba(143,168,140,0.12) 0%, transparent 100%),
-        radial-gradient(ellipse 35% 35% at 50% 50%, rgba(107,128,104,0.07) 0%, transparent 100%),
-        radial-gradient(ellipse 55% 55% at 50% 50%, rgba(14,14,28,0.85) 0%, transparent 100%),
-        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(184,107,42,0.04) 0%, transparent 100%);
-      animation: wormhole-pulse 8s ease-in-out infinite alternate;
-    }
-
-    .wormhole::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 90vmin;
-      height: 90vmin;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: transparent;
-      box-shadow:
-        0 0 0 1px rgba(196,164,107,0.07),
-        0 0 0 40px rgba(143,168,140,0.025),
-        0 0 0 80px rgba(143,168,140,0.015),
-        0 0 0 160px rgba(143,168,140,0.008),
-        0 0 180px 80px rgba(80,70,50,0.1);
-      animation: wormhole-ring 12s linear infinite;
-    }
-
-    @keyframes wormhole-pulse {
-      0%   { opacity: 0.7; transform: translate(-50%,-50%) scale(1); }
-      100% { opacity: 1;   transform: translate(-50%,-50%) scale(1.08); }
-    }
-
-    @keyframes wormhole-ring {
-      0%   { transform: translate(-50%,-50%) rotate(0deg)   scale(1); }
-      100% { transform: translate(-50%,-50%) rotate(360deg) scale(1.05); }
-    }
-
-    /* ═══════════════════════════════════
-       SPICE DUST PARTICLES
-       ═══════════════════════════════════ */
-    .spice-particles {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .spice-particles span {
-      position: absolute;
-      border-radius: 50%;
-      animation: drift linear infinite;
-      opacity: 0;
-    }
-
-    @keyframes drift {
-      0%   { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.6; }
-      100% { transform: translateY(-10vh) translateX(var(--drift-x, 40px)) rotate(360deg); opacity: 0; }
-    }
-
-    /* ═══════════════════════════════════
-       ORBITAL RINGS
-       ═══════════════════════════════════ */
-    .orbital-system {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%);
-      width: 800px;
-      height: 800px;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .orbital-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      border-radius: 50%;
-      border: 1px solid transparent;
-      transform-origin: center;
-    }
-
-    .orbital-ring:nth-child(1) {
-      width: 240px; height: 240px;
-      margin: -120px;
-      border-color: rgba(143,168,140,0.18);
-      box-shadow: 0 0 20px rgba(143,168,140,0.04) inset;
-      animation: orbit-spin 20s linear infinite;
-    }
-    .orbital-ring:nth-child(2) {
-      width: 400px; height: 400px;
-      margin: -200px;
-      border-color: rgba(196,164,107,0.12);
-      border-style: dashed;
-      animation: orbit-spin 35s linear infinite reverse;
-    }
-    .orbital-ring:nth-child(3) {
-      width: 560px; height: 560px;
-      margin: -280px;
-      border-color: rgba(143,168,140,0.07);
-      animation: orbit-spin 55s linear infinite;
-    }
-    .orbital-ring:nth-child(4) {
-      width: 720px; height: 720px;
-      margin: -360px;
-      border-color: rgba(184,107,42,0.05);
-      border-style: dotted;
-      animation: orbit-spin 80s linear infinite reverse;
-    }
-
-    .orbit-node {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      top: -3px;
-      left: 50%;
-      margin-left: -3px;
-    }
-
-    .orbit-node.aurora { background: var(--accent); box-shadow: 0 0 10px rgba(143,168,140,0.6); }
-    .orbit-node.spice  { background: var(--sand);   box-shadow: 0 0 10px rgba(196,164,107,0.6); }
-
-    @keyframes orbit-spin {
-      from { transform: translate(-50%,-50%) rotate(0deg); }
-      to   { transform: translate(-50%,-50%) rotate(360deg); }
-    }
-
-    /* ═══════════════════════════════════
-       NAV
-       ═══════════════════════════════════ */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 1.5rem 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(196,164,107,0.07);
-      background: linear-gradient(180deg, rgba(2,4,8,0.95) 0%, rgba(2,4,8,0) 100%);
-      backdrop-filter: blur(12px);
-      animation: nav-reveal 1.2s cubic-bezier(0.16,1,0.3,1) both;
-    }
-
-    @keyframes nav-reveal {
-      from { opacity: 0; transform: translateY(-20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .nav-wordmark {
-      font-family: var(--font-head);
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      color: var(--sand);
-      text-shadow: 0 0 40px rgba(196,164,107,0.3);
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: rgba(216,207,196,0.4);
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: color 0.3s, text-shadow 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: var(--sand);
-      text-shadow: 0 0 20px rgba(196,164,107,0.3);
-    }
-
-    .nav-cta {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      border: 1px solid rgba(196,164,107,0.4);
-      color: var(--sand);
-      padding: 0.5rem 1.2rem;
-      background: transparent;
-      cursor: pointer;
-      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-      text-decoration: none;
-    }
-
-    .nav-cta:hover {
-      background: rgba(196,164,107,0.12);
-      color: var(--star);
-      box-shadow: 0 0 24px rgba(196,164,107,0.2);
-    }
-
-    /* ═══════════════════════════════════
-       HERO
-       ═══════════════════════════════════ */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
-      overflow: hidden;
-    }
-
-    .hero-ambient {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(10,8,5,0.7) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(232,145,58,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(143,168,140,0.04) 0%, transparent 60%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 10;
-      max-width: 900px;
-    }
-
-    .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.5em;
-      color: rgba(143,168,140,0.7);
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fade-up 0.8s 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-title {
-      font-family: var(--font-head);
-      font-size: clamp(3.5rem, 12vw, 9rem);
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fade-up 0.8s 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-title .line-1 {
-      display: block;
-      color: var(--star);
-    }
-
-    .hero-title .line-2 {
-      display: block;
-      -webkit-text-stroke: 1px rgba(196,164,107,0.5);
-      color: transparent;
-      text-shadow: 0 0 80px rgba(196,164,107,0.15);
-    }
-
-    .hero-subtitle {
-      font-family: var(--font-sub);
-      font-size: clamp(0.9rem, 2vw, 1.15rem);
-      font-weight: 100;
-      letter-spacing: 0.25em;
-      color: rgba(200,169,110,0.8);
-      text-transform: uppercase;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fade-up 0.8s 1.2s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-coords {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      color: rgba(232,244,255,0.2);
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fade-up 0.8s 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fade-up 0.8s 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
-    }
-
-    .btn-primary {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      background: rgba(184,107,42,0.15);
-      color: var(--sand);
-      border: 1px solid rgba(196,164,107,0.35);
-      padding: 1rem 2.5rem;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.4s, transform 0.2s, background 0.4s;
-      text-decoration: none;
-      display: inline-block;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.12), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s;
-    }
-
-    .btn-primary:hover {
-      background: rgba(184,107,42,0.25);
-      box-shadow: 0 0 30px rgba(196,164,107,0.2), 0 0 60px rgba(184,107,42,0.1);
-      transform: translateY(-2px);
-    }
-
-    .btn-primary:hover::before { transform: translateX(100%); }
-
-    .btn-ghost {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      background: transparent;
-      color: rgba(216,207,196,0.5);
-      border: 1px solid rgba(216,207,196,0.15);
-      padding: 1rem 2.5rem;
-      cursor: pointer;
-      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-ghost:hover {
-      border-color: rgba(196,164,107,0.4);
-      color: var(--sand);
-      box-shadow: 0 0 20px rgba(196,164,107,0.1);
-    }
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ═══════════════════════════════════
-       SCROLL INDICATOR
-       ═══════════════════════════════════ */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fade-up 0.8s 2.2s forwards;
-    }
-
-    .scroll-indicator span {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.4em;
-      color: rgba(232,244,255,0.25);
-      text-transform: uppercase;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 50px;
-      background: linear-gradient(180deg, rgba(196,164,107,0.5) 0%, transparent 100%);
-      animation: scroll-pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes scroll-pulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50%       { opacity: 1;   transform: scaleY(1.2); }
-    }
-
-    /* ═══════════════════════════════════
-       DIVIDER GLYPH
-       ═══════════════════════════════════ */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 0 3rem;
-      margin: 0 auto;
-      max-width: 1200px;
-    }
-
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.2), transparent);
-    }
-
-    .divider-glyph {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.4em;
-      color: rgba(196,164,107,0.45);
-    }
-
-    /* ═══════════════════════════════════
-       PRODUCTS SECTION
-       ═══════════════════════════════════ */
-    .section {
-      position: relative;
-      z-index: 10;
-      padding: 8rem 3rem;
-    }
-
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.5em;
-      color: var(--aurora);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      opacity: 0.7;
-    }
-
-    .section-title {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--star);
-      margin-bottom: 1.5rem;
-      line-height: 1;
-    }
-
-    .section-title span {
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(196,164,107,0.45);
-    }
-
-    .section-intro {
-      font-family: var(--font-sub);
-      font-size: 1rem;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: rgba(200,169,110,0.7);
-      max-width: 520px;
-      line-height: 1.8;
-      margin-bottom: 4rem;
-    }
-
-    /* ═══════════════════════════════════
-       PRODUCT GRID
-       ═══════════════════════════════════ */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .product-card {
-      position: relative;
-      background: var(--deep);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .product-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(143,168,140,0.04) 0%, transparent 50%, rgba(184,107,42,0.06) 100%);
-      opacity: 0;
-      transition: opacity 0.4s;
-      z-index: 2;
-    }
-
-    .product-card:hover { transform: translateY(-4px); }
-    .product-card:hover::before { opacity: 1; }
-
-    .product-card-inner {
-      padding: 2.5rem;
-      position: relative;
-      z-index: 3;
-    }
-
-    .product-strain-class {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: rgba(143,168,140,0.6);
-      margin-bottom: 1rem;
-    }
-
-    .product-name {
-      font-family: var(--font-head);
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--star);
-      margin-bottom: 0.5rem;
-      line-height: 1.1;
-    }
-
-    .product-series {
-      font-family: var(--font-sub);
-      font-size: 0.75rem;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      color: rgba(200,169,110,0.6);
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-    }
-
-    .product-visual {
-      width: 100%;
-      height: 200px;
-      position: relative;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Cannabis bud as a radiant orb */
-    .bud-orb {
-      width: 120px;
-      height: 120px;
-      border-radius: 40% 60% 55% 45% / 45% 55% 60% 40%;
-      position: relative;
-      animation: morph 8s ease-in-out infinite;
-    }
-
-    /* Filmic, desaturated bud tones — no neon */
-    .bud-orb.emerald {
-      background: radial-gradient(ellipse at 35% 35%, #7a9e6a, #2e5228 55%, #111a0e 100%);
-      box-shadow: 0 0 35px rgba(90,130,75,0.2), 0 0 70px rgba(40,70,30,0.15);
-    }
-
-    .bud-orb.amber {
-      background: radial-gradient(ellipse at 35% 35%, #c99040, #7a4a12 55%, #2a1505 100%);
-      box-shadow: 0 0 35px rgba(180,130,50,0.2), 0 0 70px rgba(100,60,15,0.15);
-    }
-
-    .bud-orb.frost {
-      background: radial-gradient(ellipse at 35% 35%, #a8b8c8, #4a6070 55%, #0e1820 100%);
-      box-shadow: 0 0 35px rgba(140,165,185,0.18), 0 0 70px rgba(60,85,100,0.12);
-    }
-
-    .bud-orb.violet {
-      background: radial-gradient(ellipse at 35% 35%, #8a6a9a, #432858 55%, #140a1e 100%);
-      box-shadow: 0 0 35px rgba(110,80,130,0.2), 0 0 70px rgba(60,35,80,0.15);
-    }
-
-    @keyframes morph {
-      0%, 100% { border-radius: 40% 60% 55% 45% / 45% 55% 60% 40%; }
-      25%       { border-radius: 55% 45% 40% 60% / 60% 40% 55% 45%; }
-      50%       { border-radius: 45% 55% 60% 40% / 40% 60% 45% 55%; }
-      75%       { border-radius: 60% 40% 45% 55% / 55% 45% 40% 60%; }
-    }
-
-    .bud-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.05);
-      animation: orbit-spin 6s linear infinite;
-    }
-
-    .product-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0;
-      margin-bottom: 2rem;
-      border-top: 1px solid rgba(196,164,107,0.1);
-      border-bottom: 1px solid rgba(196,164,107,0.1);
-    }
-
-    .stat-item {
-      padding: 1rem 0;
-      text-align: center;
-      border-right: 1px solid rgba(196,164,107,0.08);
-    }
-    .stat-item:last-child { border-right: none; }
-
-    .stat-val {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      color: var(--sand);
-      display: block;
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-      font-family: var(--font-mono);
-      font-size: 0.5rem;
-      letter-spacing: 0.3em;
-      color: rgba(232,244,255,0.3);
-      text-transform: uppercase;
-    }
-
-    .product-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 1.5rem;
-    }
-
-    .product-price {
-      font-family: var(--font-head);
-      font-size: 1.2rem;
-      color: var(--sand);
-      letter-spacing: 0.05em;
-    }
-
-    .product-add {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      border: 1px solid rgba(196,164,107,0.25);
-      color: rgba(196,164,107,0.7);
-      background: transparent;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: all 0.35s;
-      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-    }
-
-    .product-add:hover {
-      background: rgba(196,164,107,0.1);
-      color: var(--sand);
-      border-color: rgba(196,164,107,0.5);
-      box-shadow: 0 0 18px rgba(196,164,107,0.15);
-    }
-
-    /* ═══════════════════════════════════
-       MANIFESTO SECTION
-       ═══════════════════════════════════ */
-    .manifesto {
-      position: relative;
-      padding: 10rem 3rem;
-      text-align: center;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, var(--void) 0%, rgba(5,11,18,1) 50%, var(--void) 100%);
-    }
-
-    .manifesto-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(143,168,140,0.04) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 20% 30%, rgba(232,145,58,0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(143,168,140,0.03) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .manifesto-text {
-      position: relative;
-      z-index: 5;
-      font-family: var(--font-sub);
-      font-size: clamp(1.4rem, 3.5vw, 2.4rem);
-      font-weight: 100;
-      font-style: italic;
-      letter-spacing: 0.08em;
-      line-height: 1.6;
-      color: rgba(232,244,255,0.6);
-      max-width: 900px;
-      margin: 0 auto 3rem;
-    }
-
-    .manifesto-text em {
-      color: var(--accent);
-      font-style: normal;
-      font-weight: 300;
-      text-shadow: 0 0 40px rgba(143,168,140,0.2);
-    }
-
-    .manifesto-text .warm {
-      color: var(--spice);
-      text-shadow: 0 0 40px var(--glow-o);
-    }
-
-    .manifesto-sig {
-      font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.5em;
-      color: rgba(232,244,255,0.2);
-      text-transform: uppercase;
-    }
-
-    /* ═══════════════════════════════════
-       FEATURES / SPECS
-       ═══════════════════════════════════ */
-    .specs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .spec-block {
-      background: var(--deep);
-      padding: 3rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .spec-block::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(196,164,107,0.35), transparent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .spec-block:hover::after { transform: scaleX(1); }
-
-    .spec-number {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.4em;
-      color: rgba(143,168,140,0.35);
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-    }
-
-    .spec-icon {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      display: block;
-      filter: drop-shadow(0 0 8px rgba(143,168,140,0.3));
-      opacity: 0.6;
-    }
-
-    .spec-title {
-      font-family: var(--font-head);
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-      color: var(--star);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .spec-desc {
-      font-family: var(--font-sub);
-      font-size: 0.85rem;
-      font-weight: 300;
-      line-height: 1.8;
-      color: rgba(232,244,255,0.45);
-      letter-spacing: 0.02em;
-    }
-
-    /* ═══════════════════════════════════
-       PARALLAX BAND
-       ═══════════════════════════════════ */
-    .parallax-band {
-      position: relative;
-      padding: 6rem 0;
-      overflow: hidden;
-      background: linear-gradient(180deg, var(--void) 0%, var(--midnight) 50%, var(--void) 100%);
-    }
-
-    .band-line {
-      font-family: var(--font-head);
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      animation: marquee 20s linear infinite;
-      display: inline-block;
-    }
-
-    .band-line.fwd  { color: transparent; -webkit-text-stroke: 1px rgba(196,164,107,0.18); }
-    .band-line.rev  {
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(143,168,140,0.12);
-      animation-direction: reverse;
-      animation-duration: 28s;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* ═══════════════════════════════════
-       CTA FINALE
-       ═══════════════════════════════════ */
-    .cta-section {
-      position: relative;
-      padding: 12rem 3rem;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .cta-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 60% at 50% 50%, rgba(143,168,140,0.04) 0%, transparent 70%),
-        radial-gradient(ellipse 30% 30% at 50% 50%, rgba(184,107,42,0.05) 0%, transparent 40%);
-      pointer-events: none;
-    }
-
-    .cta-hexgrid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(196,164,107,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(196,164,107,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .cta-title {
-      position: relative;
-      z-index: 5;
-      font-family: var(--font-head);
-      font-size: clamp(2.5rem, 7vw, 5.5rem);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--star);
-      line-height: 0.95;
-      margin-bottom: 2rem;
-    }
-
-    .cta-title .glow-text {
-      display: block;
-      color: var(--sand);
-      text-shadow: 0 0 60px rgba(196,164,107,0.2), 0 0 120px rgba(184,107,42,0.1);
-    }
-
-    .cta-body {
-      position: relative;
-      z-index: 5;
-      font-family: var(--font-sub);
-      font-size: 1rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: rgba(200,169,110,0.7);
-      margin-bottom: 4rem;
-      text-transform: uppercase;
-    }
-
-    .cta-actions {
-      position: relative;
-      z-index: 5;
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* ═══════════════════════════════════
-       FOOTER
-       ═══════════════════════════════════ */
-    footer {
-      position: relative;
-      z-index: 10;
-      border-top: 1px solid rgba(196,164,107,0.07);
-      padding: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .footer-brand {
-      font-family: var(--font-head);
-      font-size: 0.9rem;
-      letter-spacing: 0.3em;
-      color: rgba(196,164,107,0.4);
-    }
-
-    .footer-legal {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      color: rgba(232,244,255,0.18);
-      max-width: 500px;
-      line-height: 1.8;
-    }
-
-    .footer-coords {
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
-      color: rgba(143,168,140,0.2);
-    }
-
-    /* ═══════════════════════════════════
-       SCANLINE OVERLAY
-       ═══════════════════════════════════ */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 9998;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-      );
-    }
-
-    /* ═══════════════════════════════════
-       NOISE GRAIN
-       ═══════════════════════════════════ */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
-    }
-
-    /* ═══════════════════════════════════
-       SCROLL ANIMATIONS
-       ═══════════════════════════════════ */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-
-    /* ═══════════════════════════════════
-       CURSOR GLOW
-       ═══════════════════════════════════ */
-    .cursor-glow {
-      position: fixed;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9997;
-      background: radial-gradient(circle, rgba(143,168,140,0.04) 0%, transparent 70%);
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
-    }
-
-    /* ═══════════════════════════════════
-       RESPONSIVE
-       ═══════════════════════════════════ */
-    @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { display: none; }
-      .section { padding: 5rem 1.5rem; }
-      .manifesto { padding: 6rem 1.5rem; }
-      .cta-section { padding: 7rem 1.5rem; }
-      footer { padding: 2rem 1.5rem; flex-direction: column; }
-      .orbital-system { display: none; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLUGGERS — Premium Joints & Blunts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --gold-dim: #7a5f28;
+  --cream: #f0e6cc;
+  --smoke: #d4cfc8;
+  --deep: #0a0805;
+  --dark1: #100e09;
+  --dark2: #1a1610;
+  --dark3: #251f14;
+  --dark4: #342b18;
+  --green-deep: #1a2e14;
+  --green-accent: #4a7a2e;
+  --green-glow: #6ab04c;
+  --amber: #d4761a;
+  --paper: #c8b07a;
+  --tip-orange: #ff6b1a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--deep);
+  color: var(--cream);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+.cursor-dot {
+  position: fixed; width: 6px; height: 6px;
+  background: var(--gold); border-radius: 50%;
+  pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+}
+.cursor-ring {
+  position: fixed; width: 32px; height: 32px;
+  border: 1px solid rgba(201,168,76,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 28px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(10,8,5,0.92) 0%, transparent 100%);
+  pointer-events: none; z-index: -1;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900;
+  letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); text-decoration: none;
+}
+.nav-links { display: flex; gap: 48px; list-style: none; }
+.nav-links a {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--smoke); text-decoration: none; transition: color 0.3s ease;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--deep); background: var(--gold); border: none;
+  padding: 10px 24px; cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 110%, rgba(42,74,30,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 55% at 20% 50%, rgba(42,28,8,0.6) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 55% at 80% 50%, rgba(42,28,8,0.6) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(25,18,5,0.8) 0%, transparent 70%),
+    var(--dark1);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.045) 1px, transparent 1px);
+  background-size: 80px 80px;
+  transform: rotateX(30deg) scaleY(1.5) translateY(-20%);
+  transform-origin: center bottom;
+}
+.smoke-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+  animation: smokeExpand 8s ease-out infinite;
+  pointer-events: none;
+  top: 50%; left: 50%;
+}
+.smoke-ring:nth-child(1) { width: 300px; height: 300px; transform: translate(-50%,-50%); animation-delay: 0s; }
+.smoke-ring:nth-child(2) { width: 500px; height: 500px; transform: translate(-50%,-50%); animation-delay: 2s; }
+.smoke-ring:nth-child(3) { width: 700px; height: 700px; transform: translate(-50%,-50%); animation-delay: 4s; }
+.smoke-ring:nth-child(4) { width: 950px; height: 950px; transform: translate(-50%,-50%); animation-delay: 6s; }
+@keyframes smokeExpand {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(0.8); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.45); }
+}
+.particle-field { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; background: var(--gold);
+  opacity: 0; animation: particleDrift var(--dur) ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+@keyframes particleDrift {
+  0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.2; }
+  100% { opacity: 0; transform: translateY(-20vh) translateX(var(--dx)); }
+}
+.gold-line { position: absolute; background: var(--gold-dim); opacity: 0.12; pointer-events: none; }
+.gold-line.v { width: 1px; top: 0; bottom: 0; }
+
+/* Hero joint stage */
+.joint-stage {
+  position: absolute; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.joint-wrapper {
+  position: relative; width: 500px; height: 240px;
+  animation: heroFloat 6s ease-in-out infinite;
+}
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-18px) rotate(0.8deg); }
+}
+.joint-main {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotate(-32deg);
+  filter: drop-shadow(0 24px 60px rgba(201,168,76,0.35)) drop-shadow(0 0 80px rgba(74,122,46,0.18));
+}
+.smoke-particle {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,207,200,0.55) 0%, transparent 70%);
+  animation: smokeRise var(--dur,4s) ease-out infinite;
+  animation-delay: var(--delay,0s); pointer-events: none;
+}
+@keyframes smokeRise {
+  0% { transform: translateX(0) translateY(0) scale(0.3); opacity: 0; }
+  15% { opacity: 0.75; }
+  100% { transform: translateX(var(--dx,20px)) translateY(-160px) scale(2.8); opacity: 0; }
+}
+
+/* Hero text */
+.hero-content {
+  position: relative; z-index: 10; text-align: center; padding: 0 40px; margin-top: 60px;
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 28px; opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 14vw, 180px); font-weight: 900; line-height: 0.85;
+  letter-spacing: -0.02em; color: transparent;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--gold) 40%, var(--gold-dim) 70%, var(--cream) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  opacity: 0; animation: fadeUp 1.2s ease forwards 0.5s;
+}
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2.5vw, 28px); font-weight: 300; font-style: italic;
+  color: var(--smoke); letter-spacing: 0.15em; margin-top: 14px;
+  opacity: 0; animation: fadeUp 1s ease forwards 0.8s;
+}
+.hero-divider {
+  width: 80px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 28px auto; opacity: 0; animation: fadeUp 1s ease forwards 1s;
+}
+.hero-desc {
+  font-size: 14px; font-weight: 300; letter-spacing: 0.07em;
+  color: rgba(212,207,200,0.65); max-width: 380px; margin: 0 auto 44px;
+  line-height: 1.9; opacity: 0; animation: fadeUp 1s ease forwards 1.1s;
+}
+.hero-btns {
+  display: flex; gap: 18px; justify-content: center;
+  opacity: 0; animation: fadeUp 1s ease forwards 1.3s;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.btn-primary {
+  font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--deep); background: var(--gold); border: none; padding: 15px 38px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(-100%); transition: transform 0.5s ease;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.4); }
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-ghost {
+  font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); background: transparent; border: 1px solid rgba(201,168,76,0.4);
+  padding: 15px 38px; cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+.btn-ghost:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); transform: translateY(-2px); }
+.scroll-indicator {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeUp 1s ease forwards 1.8s;
+}
+.scroll-indicator span { font-size: 9px; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
+.scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.6; }
+  50% { transform: scaleY(0.55); opacity: 1; }
+}
+
+/* MARQUEE */
+.marquee-strip { background: var(--gold); padding: 17px 0; overflow: hidden; white-space: nowrap; }
+.marquee-inner { display: inline-flex; animation: marquee 22s linear infinite; }
+.marquee-item {
+  font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--deep); padding: 0 36px;
+}
+.marquee-dot { color: rgba(10,8,5,0.45); font-size: 18px; vertical-align: middle; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* SECTION SHARED */
+section { position: relative; overflow: hidden; }
+.section-label {
+  font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold-dim);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 14px;
+}
+.section-label::before {
+  content: ''; display: inline-block; width: 36px; height: 1px; background: var(--gold-dim);
+}
+.reveal { opacity: 0; transform: translateY(38px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+.stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.14s; }
+.stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.28s; }
+.stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.42s; }
+
+/* PHILOSOPHY */
+.philosophy { padding: 160px 60px; background: var(--dark1); }
+.philosophy-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+}
+.philosophy-text h2 {
+  font-family: 'Playfair Display', serif; font-size: clamp(40px,5vw,68px);
+  font-weight: 700; line-height: 1.05; color: var(--cream); margin-bottom: 28px;
+}
+.philosophy-text h2 em { font-style: italic; color: var(--gold); }
+.philosophy-text p {
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300;
+  line-height: 1.85; color: rgba(212,207,200,0.72); margin-bottom: 44px;
+}
+
+/* Orbit/joint display */
+.joint-display {
+  position: relative; height: 400px; display: flex; align-items: center; justify-content: center;
+}
+.orbit-container { position: relative; width: 320px; height: 320px; }
+.orbit {
+  position: absolute; border-radius: 50%; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotateX(68deg);
+  animation: orbitSpin var(--spd,20s) linear infinite;
+}
+@keyframes orbitSpin {
+  from { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(0deg); }
+  to   { transform: translate(-50%,-50%) rotateX(68deg) rotateZ(360deg); }
+}
+.joint-glow {
+  position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:180px; height:180px; border-radius:50%;
+  background: radial-gradient(circle, rgba(74,122,46,0.22) 0%, transparent 70%);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { transform:translate(-50%,-50%) scale(1); opacity:0.5; }
+  50%      { transform:translate(-50%,-50%) scale(1.4); opacity:1; }
+}
+.joint-center {
+  position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  animation: gentleSpin 12s ease-in-out infinite;
+}
+@keyframes gentleSpin {
+  0%   { transform:translate(-50%,-50%) rotate(-18deg) translateY(0); }
+  25%  { transform:translate(-50%,-50%) rotate(4deg) translateY(-7px); }
+  50%  { transform:translate(-50%,-50%) rotate(18deg) translateY(-13px); }
+  75%  { transform:translate(-50%,-50%) rotate(4deg) translateY(-7px); }
+  100% { transform:translate(-50%,-50%) rotate(-18deg) translateY(0); }
+}
+
+/* PRODUCTS */
+.products { padding: 160px 60px; background: var(--dark2); position: relative; }
+.products::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+}
+.products-header {
+  max-width:1200px; margin:0 auto 96px;
+  display:flex; align-items:flex-end; justify-content:space-between;
+}
+.products-title h2 {
+  font-family:'Playfair Display',serif; font-size:clamp(44px,6vw,80px);
+  font-weight:900; line-height:0.9; color:var(--cream);
+}
+.products-title h2 span { display:block; font-style:italic; color:var(--gold); }
+.products-count {
+  font-family:'Playfair Display',serif; font-size:72px; font-weight:900;
+  color:rgba(201,168,76,0.1); line-height:1; letter-spacing:-0.05em;
+}
+.products-grid {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+}
+.product-card {
+  position:relative; background:var(--dark3); padding:56px 36px;
+  overflow:hidden; cursor:pointer; transition:background 0.5s ease;
+}
+.product-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:var(--gold); transform:scaleX(0); transform-origin:left;
+  transition:transform 0.5s ease;
+}
+.product-card:hover { background:var(--dark4); }
+.product-card:hover::after { transform:scaleX(1); }
+.card-joint-wrap {
+  position:relative; height:190px;
+  display:flex; align-items:center; justify-content:center; margin-bottom:36px;
+}
+.card-ring {
+  position:absolute; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%);
+  border:1px dashed rgba(201,168,76,0.14);
+  animation:cardRingSpin 9s linear infinite;
+}
+@keyframes cardRingSpin {
+  from { transform:translate(-50%,-50%) rotate(0deg); }
+  to   { transform:translate(-50%,-50%) rotate(360deg); }
+}
+.card-joint {
+  transition: transform 0.6s ease, filter 0.6s ease;
+  filter: drop-shadow(0 8px 20px rgba(201,168,76,0.18));
+}
+.product-card:hover .card-joint {
+  transform: rotate(-8deg) translateY(-7px) scale(1.06);
+  filter: drop-shadow(0 18px 40px rgba(201,168,76,0.5)) drop-shadow(0 0 28px rgba(74,122,46,0.3));
+}
+.card-number { font-family:'Playfair Display',serif; font-size:11px; letter-spacing:0.4em; color:var(--gold-dim); margin-bottom:14px; }
+.card-name   { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--cream); margin-bottom:6px; line-height:1.1; }
+.card-type   { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:var(--gold); margin-bottom:22px; }
+.card-desc   { font-size:13px; font-weight:300; line-height:1.85; color:rgba(212,207,200,0.52); margin-bottom:32px; }
+.card-footer { display:flex; align-items:center; justify-content:space-between; }
+.card-price  { font-size:22px; font-weight:500; color:var(--gold); font-family:'Space Grotesk',sans-serif; }
+.card-arrow  {
+  width:38px; height:38px; border:1px solid rgba(201,168,76,0.3);
+  display:flex; align-items:center; justify-content:center;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.product-card:hover .card-arrow { background:var(--gold); border-color:var(--gold); transform:translateX(4px); }
+.product-card:hover .card-arrow svg { stroke:var(--deep); }
+
+/* RITUAL */
+.ritual { padding:160px 60px; background:var(--dark1); position:relative; }
+.ritual::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(26,46,20,0.28) 0%, transparent 60%);
+}
+.ritual-inner { max-width:1200px; margin:0 auto; }
+.ritual-header { text-align:center; margin-bottom:96px; }
+.ritual-header h2 {
+  font-family:'Playfair Display',serif; font-size:clamp(46px,7vw,96px);
+  font-weight:900; line-height:0.9; color:var(--cream);
+}
+.ritual-header h2 em {
+  display:block; font-style:italic; color:transparent;
+  -webkit-text-stroke:1px rgba(201,168,76,0.45);
+}
+.ritual-steps {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  position:relative;
+}
+.ritual-steps::before {
+  content:''; position:absolute; top:48px; left:12.5%; right:12.5%; height:1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim) 20%, var(--gold-dim) 80%, transparent);
+}
+.ritual-step { padding:0 28px; position:relative; z-index:1; }
+.step-icon {
+  width:96px; height:96px; border:1px solid rgba(201,168,76,0.28); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 36px; background:var(--dark2); position:relative;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.ritual-step:hover .step-icon { border-color:var(--gold); background:rgba(201,168,76,0.09); }
+.step-num {
+  position:absolute; top:-8px; right:-8px; width:22px; height:22px;
+  background:var(--gold); border-radius:50%; font-size:10px; font-weight:700;
+  color:var(--deep); display:flex; align-items:center; justify-content:center;
+}
+.step-title { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; color:var(--cream); text-align:center; margin-bottom:10px; }
+.step-desc  { font-size:13px; font-weight:300; color:rgba(212,207,200,0.52); text-align:center; line-height:1.85; }
+
+/* CRAFT */
+.craft { padding:160px 60px; background:var(--dark2); position:relative; }
+.craft-inner {
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1.2fr; gap:96px; align-items:center;
+}
+.craft-visual {
+  position:relative; height:580px;
+  display:flex; align-items:center; justify-content:center;
+}
+.blunt-art {
+  position:relative;
+  filter: drop-shadow(0 30px 80px rgba(212,118,26,0.3)) drop-shadow(0 0 60px rgba(201,168,76,0.18));
+  animation: bluntFloat 7s ease-in-out infinite;
+}
+@keyframes bluntFloat {
+  0%,100% { transform:rotate(-14deg) translateY(0); }
+  50%      { transform:rotate(-11deg) translateY(-14px); }
+}
+.wisp {
+  position:absolute; border-radius:50% 50% 50% 50% / 30% 30% 70% 70%;
+  background: radial-gradient(ellipse, rgba(200,195,188,0.28) 0%, transparent 70%);
+  animation: wispRise var(--dur) ease-out infinite;
+  animation-delay: var(--delay);
+}
+@keyframes wispRise {
+  0%   { transform:translateX(0) translateY(0) scaleX(1); opacity:0; }
+  10%  { opacity:0.65; }
+  60%  { transform:translateX(var(--dx,20px)) translateY(-100px) scaleX(1.4); opacity:0.3; }
+  100% { transform:translateX(var(--dx2,30px)) translateY(-200px) scaleX(0.7); opacity:0; }
+}
+.craft-content h2 {
+  font-family:'Playfair Display',serif; font-size:clamp(40px,4.5vw,62px);
+  font-weight:700; line-height:1.1; color:var(--cream); margin-bottom:28px;
+}
+.craft-content h2 em { font-style:italic; color:var(--gold); }
+.craft-content p {
+  font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:300;
+  line-height:1.9; color:rgba(212,207,200,0.68); margin-bottom:22px;
+}
+.craft-stats {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+  margin-top:52px; padding-top:52px; border-top:1px solid rgba(201,168,76,0.13);
+}
+.stat-num   { font-family:'Playfair Display',serif; font-size:46px; font-weight:900; color:var(--gold); line-height:1; margin-bottom:7px; }
+.stat-label { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(212,207,200,0.42); }
+
+/* CTA */
+.cta-section {
+  padding:160px 60px; background:var(--dark1); text-align:center; position:relative; overflow:hidden;
+}
+.cta-section::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(42,74,30,0.38) 0%, transparent 60%);
+}
+.cta-section h2 {
+  font-family:'Playfair Display',serif; font-size:clamp(56px,8vw,120px);
+  font-weight:900; line-height:0.9; color:var(--cream); position:relative; margin-bottom:44px;
+}
+.cta-section h2 span { display:block; font-style:italic; color:var(--gold); }
+.cta-section p {
+  font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300;
+  color:rgba(212,207,200,0.58); margin-bottom:52px; letter-spacing:0.05em; position:relative;
+}
+.cta-btns { display:flex; gap:18px; justify-content:center; position:relative; }
+
+/* FOOTER */
+footer { background:var(--deep); padding:76px 60px 38px; border-top:1px solid rgba(201,168,76,0.1); }
+.footer-top {
+  max-width:1200px; margin:0 auto 56px;
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:56px;
+}
+.footer-brand h3 {
+  font-family:'Playfair Display',serif; font-size:30px; font-weight:900;
+  letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+}
+.footer-brand p {
+  font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic;
+  color:rgba(212,207,200,0.42); line-height:1.8;
+}
+.footer-col h4 { font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:22px; }
+.footer-col ul { list-style:none; }
+.footer-col ul li { margin-bottom:11px; }
+.footer-col ul li a {
+  font-size:14px; font-weight:300; color:rgba(212,207,200,0.42);
+  text-decoration:none; transition:color 0.3s ease; letter-spacing:0.05em;
+}
+.footer-col ul li a:hover { color:var(--gold); }
+.footer-bottom {
+  max-width:1200px; margin:0 auto; padding-top:36px;
+  border-top:1px solid rgba(201,168,76,0.07);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.footer-bottom p { font-size:11px; letter-spacing:0.1em; color:rgba(212,207,200,0.22); }
+.age-badge { font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-dim); border:1px solid rgba(201,168,76,0.18); padding:5px 12px; }
+</style>
 </head>
 <body>
 
-<!-- Cursor glow -->
-<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-<!-- Star field -->
-<canvas id="starfield"></canvas>
-
-<!-- ═══ NAV ═══ -->
+<!-- NAV -->
 <nav>
-  <div class="nav-wordmark">SLUGGERS</div>
+  <a href="#" class="nav-logo">Sluggers</a>
   <ul class="nav-links">
-    <li><a href="#strains">Strains</a></li>
-    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#products">Collection</a></li>
     <li><a href="#craft">Craft</a></li>
-    <li><a href="#cta">Deploy</a></li>
+    <li><a href="#ritual">Ritual</a></li>
+    <li><a href="#about">About</a></li>
   </ul>
-  <a href="#cta" class="nav-cta">Enter</a>
+  <button class="nav-cta">Shop Now</button>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="hero">
-  <div class="wormhole"></div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid" id="heroGrid"></div>
+  <div class="smoke-ring"></div>
+  <div class="smoke-ring"></div>
+  <div class="smoke-ring"></div>
+  <div class="smoke-ring"></div>
+  <div class="particle-field" id="particleField"></div>
+  <div class="gold-line v" style="left:60px;"></div>
+  <div class="gold-line v" style="right:60px;"></div>
 
-  <!-- Spice dust particles -->
-  <div class="spice-particles" id="spiceParticles"></div>
-
-  <!-- Orbital rings -->
-  <div class="orbital-system">
-    <div class="orbital-ring">
-      <div class="orbit-node aurora"></div>
+  <!-- Hero joint -->
+  <div class="joint-stage">
+    <div class="joint-wrapper">
+      <div class="smoke-particle" style="--dur:3.5s;--delay:0s;--dx:14px;width:18px;height:18px;top:68px;left:84px;"></div>
+      <div class="smoke-particle" style="--dur:4.3s;--delay:0.8s;--dx:-10px;width:26px;height:26px;top:62px;left:76px;"></div>
+      <div class="smoke-particle" style="--dur:3.9s;--delay:1.6s;--dx:20px;width:14px;height:14px;top:72px;left:90px;"></div>
+      <div class="smoke-particle" style="--dur:5.1s;--delay:2.4s;--dx:-16px;width:32px;height:32px;top:58px;left:70px;"></div>
+      <svg class="joint-main" width="440" height="100" viewBox="0 0 440 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hpg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#5a3010"/>
+            <stop offset="8%" stop-color="#c8b07a"/>
+            <stop offset="88%" stop-color="#b8a060"/>
+            <stop offset="100%" stop-color="#2d1a04"/>
+          </linearGradient>
+          <linearGradient id="htg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f5e8d0"/>
+            <stop offset="100%" stop-color="#c4a870"/>
+          </linearGradient>
+          <radialGradient id="heg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.95"/>
+            <stop offset="45%" stop-color="#ff4400" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#ff1000" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="hcone" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#c8b07a"/>
+            <stop offset="100%" stop-color="#8a6030"/>
+          </linearGradient>
+          <filter id="hglow">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="240" cy="96" rx="170" ry="6" fill="rgba(0,0,0,0.45)"/>
+        <!-- filter/crutch end -->
+        <rect x="358" y="30" width="64" height="40" rx="4" fill="url(#htg)"/>
+        <line x1="366" y1="30" x2="366" y2="70" stroke="rgba(160,120,60,0.45)" stroke-width="1"/>
+        <line x1="374" y1="30" x2="374" y2="70" stroke="rgba(160,120,60,0.38)" stroke-width="1"/>
+        <line x1="382" y1="30" x2="382" y2="70" stroke="rgba(160,120,60,0.45)" stroke-width="1"/>
+        <line x1="390" y1="30" x2="390" y2="70" stroke="rgba(160,120,60,0.38)" stroke-width="1"/>
+        <line x1="398" y1="30" x2="398" y2="70" stroke="rgba(160,120,60,0.45)" stroke-width="1"/>
+        <line x1="406" y1="30" x2="406" y2="70" stroke="rgba(160,120,60,0.38)" stroke-width="1"/>
+        <rect x="420" y="33" width="14" height="34" rx="7" fill="#f0dca0"/>
+        <!-- body -->
+        <rect x="84" y="28" width="278" height="44" rx="3" fill="url(#hpg)"/>
+        <line x1="120" y1="28" x2="120" y2="72" stroke="rgba(160,130,70,0.28)" stroke-width="0.9"/>
+        <line x1="170" y1="28" x2="170" y2="72" stroke="rgba(160,130,70,0.22)" stroke-width="0.9"/>
+        <line x1="220" y1="28" x2="220" y2="72" stroke="rgba(160,130,70,0.28)" stroke-width="0.9"/>
+        <line x1="270" y1="28" x2="270" y2="72" stroke="rgba(160,130,70,0.22)" stroke-width="0.9"/>
+        <line x1="320" y1="28" x2="320" y2="72" stroke="rgba(160,130,70,0.28)" stroke-width="0.9"/>
+        <!-- twisted cone -->
+        <polygon points="84,28 84,72 18,50" fill="url(#hcone)"/>
+        <line x1="84" y1="28" x2="24" y2="46" stroke="rgba(160,130,70,0.35)" stroke-width="0.9"/>
+        <line x1="84" y1="44" x2="19" y2="49" stroke="rgba(160,130,70,0.28)" stroke-width="0.9"/>
+        <line x1="84" y1="60" x2="24" y2="54" stroke="rgba(160,130,70,0.35)" stroke-width="0.9"/>
+        <!-- ember glow -->
+        <ellipse cx="16" cy="50" rx="16" ry="12" fill="url(#heg)" filter="url(#hglow)"/>
+        <ellipse cx="16" cy="50" rx="9" ry="6" fill="#ff5500"/>
+        <ellipse cx="13" cy="49" rx="4.5" ry="3.5" fill="#ff9900" opacity="0.85"/>
+        <!-- brand text -->
+        <text x="210" y="55" font-family="'Playfair Display', serif" font-size="13" fill="rgba(201,168,76,0.75)" text-anchor="middle" font-style="italic" letter-spacing="4">SLUGGERS</text>
+      </svg>
     </div>
-    <div class="orbital-ring">
-      <div class="orbit-node spice"></div>
-    </div>
-    <div class="orbital-ring">
-      <div class="orbit-node aurora" style="left:0; top:50%; margin-top:-4px; margin-left:-4px;"></div>
-    </div>
-    <div class="orbital-ring"></div>
   </div>
 
-  <div class="hero-ambient"></div>
-
+  <!-- Text -->
   <div class="hero-content">
-    <p class="hero-eyebrow">⬡ Collectible Cannabis &nbsp;·&nbsp; Est. 2025 &nbsp;·&nbsp; Interplanetary Grade ⬡</p>
-    <h1 class="hero-title">
-      <span class="line-1">SLUGGERS</span>
-      <span class="line-2">HIT</span>
-    </h1>
-    <p class="hero-subtitle">Beyond the wormhole &nbsp;·&nbsp; The spice must flow</p>
-    <p class="hero-coords">38.9°N · 77.0°W · SECTOR DELTA-7 · SIGNAL LOCKED</p>
-    <div class="hero-actions">
-      <a href="#strains" class="btn-primary">Explore Strains</a>
-      <a href="#manifesto" class="btn-ghost">The Manifesto</a>
+    <p class="hero-eyebrow">Est. 2024 — Premium Cannabis</p>
+    <h1 class="hero-title">SLUGGERS</h1>
+    <p class="hero-sub">The art of the perfect roll</p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">Hand-crafted premium joints and blunts. Engineered for those who demand the extraordinary in every draw.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Explore Collection</button>
+      <button class="btn-ghost">Our Craft</button>
     </div>
   </div>
 
   <div class="scroll-indicator">
-    <span>Descend</span>
+    <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- ═══ DIVIDER ═══ -->
-<div class="section-divider reveal">
-  <div class="divider-line"></div>
-  <div class="divider-glyph">◈ PRODUCT CATALOG ◈</div>
-  <div class="divider-line"></div>
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner" id="marqueeEl">
+    <span class="marquee-item">Premium Joints</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Infused Blunts</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Slow Burn</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Hand Rolled</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Top Shelf</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Sluggers</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Premium Joints</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Infused Blunts</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Slow Burn</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Hand Rolled</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Top Shelf</span><span class="marquee-dot"> ✦ </span>
+    <span class="marquee-item">Sluggers</span><span class="marquee-dot"> ✦ </span>
+  </div>
 </div>
 
-<!-- ═══ STRAINS ═══ -->
-<section class="section" id="strains">
-  <div style="max-width:1200px; margin:0 auto;">
-    <p class="section-label reveal">// Strain Archive — Season IV</p>
-    <h2 class="section-title reveal reveal-delay-1">Current <span>Drops</span></h2>
-    <p class="section-intro reveal reveal-delay-2">
-      Each cultivar engineered for a specific trajectory. Choose your vector.
-      Premium flower. Collectible packs. No compromises.
-    </p>
-
-    <div class="product-grid" id="strains">
-      <!-- Card 1 -->
-      <div class="product-card reveal reveal-delay-1">
-        <div class="product-card-inner">
-          <div class="product-strain-class">// Sativa-Dominant · Batch #0047</div>
-          <div class="product-name">GALACTIC<br>HAZE</div>
-          <div class="product-series">Interstellar Series · Limited</div>
-          <div class="product-visual">
-            <div class="bud-orb emerald"></div>
-            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;"></div>
-            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:9s;"></div>
-          </div>
-          <div class="product-stats">
-            <div class="stat-item">
-              <span class="stat-val">28.4%</span>
-              <span class="stat-label">THC</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">0.3%</span>
-              <span class="stat-label">CBD</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">3.5g</span>
-              <span class="stat-label">Weight</span>
-            </div>
-          </div>
-          <div class="product-footer">
-            <div class="product-price">$55</div>
-            <button class="product-add">Acquire</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="product-card reveal reveal-delay-2">
-        <div class="product-card-inner">
-          <div class="product-strain-class">// Indica · Batch #0052</div>
-          <div class="product-name">SAND<br>WORM OG</div>
-          <div class="product-series">Dune Reserve · Collector Grade</div>
-          <div class="product-visual">
-            <div class="bud-orb amber"></div>
-            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(180,130,50,0.12);"></div>
-            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:11s;border-color:rgba(140,90,30,0.08);"></div>
-          </div>
-          <div class="product-stats">
-            <div class="stat-item">
-              <span class="stat-val">31.2%</span>
-              <span class="stat-label">THC</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">0.1%</span>
-              <span class="stat-label">CBD</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">3.5g</span>
-              <span class="stat-label">Weight</span>
-            </div>
-          </div>
-          <div class="product-footer">
-            <div class="product-price">$60</div>
-            <button class="product-add">Acquire</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="product-card reveal reveal-delay-3">
-        <div class="product-card-inner">
-          <div class="product-strain-class">// Hybrid · Batch #0061</div>
-          <div class="product-name">ICE<br>PLANET</div>
-          <div class="product-series">Cryo Edition · Premium</div>
-          <div class="product-visual">
-            <div class="bud-orb frost"></div>
-            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(120,145,160,0.1);"></div>
-            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:14s;border-color:rgba(80,100,115,0.07);"></div>
-          </div>
-          <div class="product-stats">
-            <div class="stat-item">
-              <span class="stat-val">26.8%</span>
-              <span class="stat-label">THC</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">1.2%</span>
-              <span class="stat-label">CBD</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">3.5g</span>
-              <span class="stat-label">Weight</span>
-            </div>
-          </div>
-          <div class="product-footer">
-            <div class="product-price">$52</div>
-            <button class="product-add">Acquire</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="product-card reveal reveal-delay-4">
-        <div class="product-card-inner">
-          <div class="product-strain-class">// Sativa · Batch #0069</div>
-          <div class="product-name">NEBULA<br>KUSH</div>
-          <div class="product-series">Void Series · Rare Drop</div>
-          <div class="product-visual">
-            <div class="bud-orb violet"></div>
-            <div class="bud-ring" style="width:160px;height:160px;top:20px;left:50%;margin-left:-80px;border-color:rgba(120,90,145,0.1);"></div>
-            <div class="bud-ring" style="width:200px;height:200px;top:0;left:50%;margin-left:-100px;animation-duration:10s;border-color:rgba(80,55,100,0.07);"></div>
-          </div>
-          <div class="product-stats">
-            <div class="stat-item">
-              <span class="stat-val">33.0%</span>
-              <span class="stat-label">THC</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">0.2%</span>
-              <span class="stat-label">CBD</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-val">3.5g</span>
-              <span class="stat-label">Weight</span>
-            </div>
-          </div>
-          <div class="product-footer">
-            <div class="product-price">$65</div>
-            <button class="product-add">Acquire</button>
-          </div>
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="about">
+  <div class="philosophy-inner">
+    <div class="philosophy-text reveal">
+      <p class="section-label">The Philosophy</p>
+      <h2>Born from <em>obsession.</em><br>Rolled with intention.</h2>
+      <p>We reject mediocrity in all its forms. Every Slugger is a culmination of expertise, premium flower, and an unwavering commitment to the ritual of cannabis culture.</p>
+      <button class="btn-primary">Our Story</button>
+    </div>
+    <div class="joint-display">
+      <div class="orbit-container">
+        <div class="orbit" style="--spd:20s; width:240px; height:240px; border:1px solid rgba(201,168,76,0.13);"></div>
+        <div class="orbit" style="--spd:30s; width:306px; height:306px; animation-direction:reverse; border:1px solid rgba(74,122,46,0.12);"></div>
+        <div class="orbit" style="--spd:24s; width:370px; height:370px; border:1px solid rgba(201,168,76,0.07);"></div>
+        <div class="joint-glow"></div>
+        <div class="joint-center">
+          <svg width="260" height="62" viewBox="0 0 260 62" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ocj" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4a2a08"/>
+                <stop offset="8%" stop-color="#c8b07a"/>
+                <stop offset="88%" stop-color="#b09050"/>
+                <stop offset="100%" stop-color="#2d1a04"/>
+              </linearGradient>
+              <radialGradient id="oce" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.92"/>
+                <stop offset="100%" stop-color="#ff2000" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect x="48" y="16" width="174" height="30" rx="2" fill="url(#ocj)"/>
+            <polygon points="48,16 48,46 12,31" fill="#c8b07a"/>
+            <rect x="220" y="18" width="38" height="26" rx="3" fill="#e8d5a8"/>
+            <line x1="228" y1="18" x2="228" y2="44" stroke="rgba(160,120,60,0.4)" stroke-width="0.8"/>
+            <line x1="236" y1="18" x2="236" y2="44" stroke="rgba(160,120,60,0.4)" stroke-width="0.8"/>
+            <line x1="244" y1="18" x2="244" y2="44" stroke="rgba(160,120,60,0.4)" stroke-width="0.8"/>
+            <rect x="257" y="20" width="6" height="22" rx="3" fill="#f0dca0"/>
+            <ellipse cx="11" cy="31" rx="9" ry="7" fill="url(#oce)"/>
+            <ellipse cx="11" cy="31" rx="5" ry="3.5" fill="#ff5500"/>
+            <text x="133" y="34" font-family="serif" font-size="9" fill="rgba(201,168,76,0.78)" text-anchor="middle" font-style="italic" letter-spacing="3">SLUGGERS</text>
+          </svg>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ PARALLAX BAND ═══ -->
-<div class="parallax-band" aria-hidden="true">
-  <div style="overflow:hidden; margin-bottom:1rem;">
-    <span class="band-line fwd">
-      SLUGGERS HIT &nbsp;·&nbsp; THE SPICE MUST FLOW &nbsp;·&nbsp; INTERSTELLAR GRADE &nbsp;·&nbsp;
-      SLUGGERS HIT &nbsp;·&nbsp; THE SPICE MUST FLOW &nbsp;·&nbsp; INTERSTELLAR GRADE &nbsp;·&nbsp;
-    </span>
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-header">
+    <div class="products-title reveal">
+      <p class="section-label">The Collection</p>
+      <h2>Crafted to<br><span>perfection</span></h2>
+    </div>
+    <div class="products-count reveal">03</div>
   </div>
-  <div style="overflow:hidden;">
-    <span class="band-line rev">
-      BEYOND THE WORMHOLE &nbsp;·&nbsp; COLLECTIBLE CANNABIS &nbsp;·&nbsp; STRAIN ARCHIVE IV &nbsp;·&nbsp;
-      BEYOND THE WORMHOLE &nbsp;·&nbsp; COLLECTIBLE CANNABIS &nbsp;·&nbsp; STRAIN ARCHIVE IV &nbsp;·&nbsp;
-    </span>
-  </div>
-</div>
+  <div class="products-grid stagger">
 
-<!-- ═══ MANIFESTO ═══ -->
-<section class="manifesto" id="manifesto">
-  <div class="manifesto-bg"></div>
-  <p class="manifesto-text reveal">
-    "They told us cannabis was <em>ordinary</em>.<br>
-    We said: every bud is a <span class="warm">collapsed star</span>,<br>
-    every hit a <em>fold in spacetime</em>.<br>
-    Sluggers doesn't sell flower —<br>
-    we sell <span class="warm">coordinates</span> to places<br>
-    <em>no one else has been</em>."
-  </p>
-  <p class="manifesto-sig reveal reveal-delay-2">— The Sluggers Doctrine · Sector Delta-7 · 2025</p>
+    <!-- Card 1 -->
+    <div class="product-card">
+      <div class="card-joint-wrap">
+        <div class="card-ring" style="width:155px;height:155px;"></div>
+        <svg class="card-joint" width="200" height="52" viewBox="0 0 200 52" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="c1g" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#4a2a08"/>
+              <stop offset="8%" stop-color="#c8b07a"/>
+              <stop offset="90%" stop-color="#b0905a"/>
+              <stop offset="100%" stop-color="#2d1a04"/>
+            </linearGradient>
+            <radialGradient id="c1e" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#ff2000" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="36" y="13" width="138" height="26" rx="2" fill="url(#c1g)"/>
+          <polygon points="36,13 36,39 8,26" fill="#c8b07a"/>
+          <rect x="172" y="15" width="26" height="22" rx="2" fill="#e8d5a8"/>
+          <line x1="179" y1="15" x2="179" y2="37" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <line x1="186" y1="15" x2="186" y2="37" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <line x1="193" y1="15" x2="193" y2="37" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <rect x="197" y="17" width="6" height="18" rx="3" fill="#f0dca0"/>
+          <ellipse cx="7" cy="26" rx="7" ry="5" fill="url(#c1e)"/>
+          <ellipse cx="7" cy="26" rx="3.5" ry="2.5" fill="#ff5500"/>
+          <text x="100" y="28" font-family="serif" font-size="6.5" fill="rgba(201,168,76,0.7)" text-anchor="middle" font-style="italic" letter-spacing="2.5">SLUGGERS</text>
+        </svg>
+      </div>
+      <p class="card-number">No. 01</p>
+      <h3 class="card-name">The Classic</h3>
+      <p class="card-type">Premium Hand-Rolled Joint</p>
+      <p class="card-desc">Our flagship single. 1g of top-shelf flower, hand-selected and rolled in organic rice paper with a gold-leaf crutch.</p>
+      <div class="card-footer">
+        <span class="card-price">$18</span>
+        <div class="card-arrow">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="1.4">
+            <path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card">
+      <div class="card-joint-wrap">
+        <div class="card-ring" style="width:170px;height:170px;animation-direction:reverse;border-color:rgba(212,118,26,0.18);"></div>
+        <svg class="card-joint" width="200" height="56" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="c2g" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#3d1a00"/>
+              <stop offset="5%" stop-color="#6b3010"/>
+              <stop offset="50%" stop-color="#8b4515"/>
+              <stop offset="95%" stop-color="#5a2808"/>
+              <stop offset="100%" stop-color="#1a0800"/>
+            </linearGradient>
+            <radialGradient id="c2e" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff9900" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#ff2000" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="30" y="11" width="148" height="34" rx="5" fill="url(#c2g)"/>
+          <line x1="58" y1="11" x2="56" y2="45" stroke="rgba(100,50,10,0.4)" stroke-width="0.8"/>
+          <line x1="88" y1="11" x2="86" y2="45" stroke="rgba(100,50,10,0.35)" stroke-width="0.8"/>
+          <line x1="118" y1="11" x2="116" y2="45" stroke="rgba(100,50,10,0.4)" stroke-width="0.8"/>
+          <line x1="148" y1="11" x2="146" y2="45" stroke="rgba(100,50,10,0.35)" stroke-width="0.8"/>
+          <polygon points="30,11 30,45 6,28" fill="#7a3a10"/>
+          <rect x="176" y="14" width="22" height="28" rx="3" fill="#e0c080"/>
+          <line x1="183" y1="14" x2="183" y2="42" stroke="rgba(150,100,40,0.5)" stroke-width="0.8"/>
+          <line x1="190" y1="14" x2="190" y2="42" stroke="rgba(150,100,40,0.5)" stroke-width="0.8"/>
+          <rect x="197" y="16" width="5" height="24" rx="2.5" fill="#f0d090"/>
+          <ellipse cx="5" cy="28" rx="7" ry="5.5" fill="url(#c2e)"/>
+          <ellipse cx="5" cy="28" rx="3.5" ry="3" fill="#ff6600"/>
+          <text x="98" y="31" font-family="serif" font-size="7" fill="rgba(201,168,76,0.6)" text-anchor="middle" font-style="italic" letter-spacing="2">SLUGGERS</text>
+        </svg>
+      </div>
+      <p class="card-number">No. 02</p>
+      <h3 class="card-name">The Infused</h3>
+      <p class="card-type">Diamond-Infused Blunt</p>
+      <p class="card-desc">2g wrap of THCA diamond-dusted flower in a natural tobacco leaf. Slow burn, full spectrum. Reserved for connoisseurs.</p>
+      <div class="card-footer">
+        <span class="card-price">$45</span>
+        <div class="card-arrow">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="1.4">
+            <path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card">
+      <div class="card-joint-wrap">
+        <div class="card-ring" style="width:185px;height:185px;border-color:rgba(74,122,46,0.18);"></div>
+        <svg class="card-joint" width="200" height="76" viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="c3g" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#4a2a08"/>
+              <stop offset="9%" stop-color="#c8b07a"/>
+              <stop offset="88%" stop-color="#b0905a"/>
+              <stop offset="100%" stop-color="#2d1a04"/>
+            </linearGradient>
+            <radialGradient id="c3e" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff8c00" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#ff2000" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- back joint -->
+          <g transform="rotate(-11,100,58)">
+            <rect x="34" y="50" width="130" height="18" rx="2" fill="#b09050" opacity="0.65"/>
+            <polygon points="34,50 34,68 12,59" fill="#a08040" opacity="0.65"/>
+          </g>
+          <!-- front angled -->
+          <g transform="rotate(9,100,58)">
+            <rect x="34" y="48" width="130" height="20" rx="2" fill="#c0a060" opacity="0.75"/>
+            <polygon points="34,48 34,68 10,58" fill="#b09850" opacity="0.75"/>
+          </g>
+          <!-- center main -->
+          <rect x="34" y="28" width="136" height="24" rx="2" fill="url(#c3g)"/>
+          <polygon points="34,28 34,52 8,40" fill="#c8b07a"/>
+          <rect x="168" y="30" width="28" height="20" rx="2" fill="#e8d5a8"/>
+          <line x1="175" y1="30" x2="175" y2="50" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <line x1="182" y1="30" x2="182" y2="50" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <line x1="189" y1="30" x2="189" y2="50" stroke="rgba(150,110,50,0.4)" stroke-width="0.8"/>
+          <rect x="195" y="32" width="7" height="16" rx="3.5" fill="#f0dca0"/>
+          <ellipse cx="7" cy="40" rx="7" ry="5" fill="url(#c3e)"/>
+          <ellipse cx="7" cy="40" rx="3.5" ry="2.5" fill="#ff5500"/>
+          <text x="100" y="42" font-family="serif" font-size="6" fill="rgba(201,168,76,0.7)" text-anchor="middle" font-style="italic" letter-spacing="2">SLUGGERS</text>
+        </svg>
+      </div>
+      <p class="card-number">No. 03</p>
+      <h3 class="card-name">The Pack</h3>
+      <p class="card-type">5-Joint Party Pack</p>
+      <p class="card-desc">Five perfectly rolled joints in a premium keepsake box. Curated strains, each a distinct experience. For the moments that matter.</p>
+      <div class="card-footer">
+        <span class="card-price">$75</span>
+        <div class="card-arrow">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="1.4">
+            <path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- ═══ DIVIDER ═══ -->
-<div class="section-divider reveal">
-  <div class="divider-line"></div>
-  <div class="divider-glyph">◈ CRAFT PROTOCOLS ◈</div>
-  <div class="divider-line"></div>
-</div>
-
-<!-- ═══ SPECS / CRAFT ═══ -->
-<section class="section" id="craft">
-  <div style="max-width:1200px; margin:0 auto;">
-    <p class="section-label reveal">// Engineering Specs</p>
-    <h2 class="section-title reveal reveal-delay-1">The <span>Science</span></h2>
-    <p class="section-intro reveal reveal-delay-2">
-      Four obsessions. Zero shortcuts.
-      Premium inputs. Exacting process. Collectible output.
-    </p>
-
-    <div class="specs-grid">
-      <div class="spec-block reveal reveal-delay-1">
-        <div class="spec-number">01 // Cultivation</div>
-        <span class="spec-icon">⬡</span>
-        <div class="spec-title">Deep-Space Genetics</div>
-        <p class="spec-desc">Sourced from breeders operating at the frontier of cannabinoid expression. Phenotyped across 18 months. Only singularities make the cut.</p>
+<!-- RITUAL -->
+<section class="ritual" id="ritual">
+  <div class="ritual-inner">
+    <div class="ritual-header reveal">
+      <p class="section-label" style="justify-content:center">The Ritual</p>
+      <h2>From seed<br><em>to smoke</em></h2>
+    </div>
+    <div class="ritual-steps stagger">
+      <div class="ritual-step">
+        <div class="step-icon">
+          <span class="step-num">01</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="rgba(201,168,76,0.82)" stroke-width="1.3">
+            <circle cx="17" cy="17" r="7.5"/>
+            <path d="M17 3.5v4M17 26.5v4M3.5 17h4M26.5 17h4M7 7l2.8 2.8M24.2 24.2l2.8 2.8M7 27l2.8-2.8M24.2 9.8l2.8-2.8"/>
+          </svg>
+        </div>
+        <h4 class="step-title">Cultivated</h4>
+        <p class="step-desc">Sun-grown, small-batch cannabis harvested at peak terpene expression.</p>
       </div>
-
-      <div class="spec-block reveal reveal-delay-2">
-        <div class="spec-number">02 // Environment</div>
-        <span class="spec-icon">◎</span>
-        <div class="spec-title">Controlled Atmosphere</div>
-        <p class="spec-desc">VPD-dialed rooms. Spectrum-tuned lighting. CO₂ enriched to 1200ppm. Every variable controlled like a life-support system at L2.</p>
+      <div class="ritual-step">
+        <div class="step-icon">
+          <span class="step-num">02</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="rgba(201,168,76,0.82)" stroke-width="1.3">
+            <path d="M7 27c0-8 4-14 10-18 6 4 10 10 10 18"/>
+            <path d="M17 9v12M13 19l4 4 4-4"/>
+          </svg>
+        </div>
+        <h4 class="step-title">Cured</h4>
+        <p class="step-desc">60-day slow cure in climate-controlled rooms for the perfect burn.</p>
       </div>
-
-      <div class="spec-block reveal reveal-delay-3">
-        <div class="spec-number">03 // Cure</div>
-        <span class="spec-icon">◐</span>
-        <div class="spec-title">Extended Dark Cure</div>
-        <p class="spec-desc">Sixty days minimum. Humidity-locked at 62%. Terpenes preserved through a cryogenic-inspired slow cure that locks the volatile spectrum.</p>
+      <div class="ritual-step">
+        <div class="step-icon">
+          <span class="step-num">03</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="rgba(201,168,76,0.82)" stroke-width="1.3">
+            <rect x="5" y="13" width="24" height="8" rx="4"/>
+            <circle cx="7.5" cy="17" r="2.5" fill="rgba(201,168,76,0.2)"/>
+            <path d="M10 17h14"/>
+          </svg>
+        </div>
+        <h4 class="step-title">Rolled</h4>
+        <p class="step-desc">Hand-rolled by artisans using a proprietary method for perfect density.</p>
       </div>
-
-      <div class="spec-block reveal reveal-delay-4">
-        <div class="spec-number">04 // Packaging</div>
-        <span class="spec-icon">▣</span>
-        <div class="spec-title">Collectible Capsules</div>
-        <p class="spec-desc">Vacuum-sealed in nitrogen-flushed canisters. Each pack numbered, dated, and catalogued. Your strain archive. Your history.</p>
+      <div class="ritual-step">
+        <div class="step-icon">
+          <span class="step-num">04</span>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="rgba(201,168,76,0.82)" stroke-width="1.3">
+            <path d="M7 27V13l10-8 10 8v14"/>
+            <rect x="12" y="19" width="10" height="8"/>
+            <path d="M17 19v8"/>
+          </svg>
+        </div>
+        <h4 class="step-title">Sealed</h4>
+        <p class="step-desc">Nitrogen-sealed in premium packaging. Freshness preserved until lit.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CTA FINALE ═══ -->
-<section class="cta-section" id="cta">
-  <div class="cta-bg"></div>
-  <div class="cta-hexgrid"></div>
-
-  <h2 class="cta-title reveal">
-    Begin Your<br>
-    <span class="glow-text">Mission</span>
-  </h2>
-  <p class="cta-body reveal reveal-delay-1">
-    Join the archive. Receive coordinates. Get first access to new drops.
-  </p>
-  <div class="cta-actions reveal reveal-delay-2">
-    <a href="#" class="btn-primary">Shop All Strains</a>
-    <a href="#" class="btn-ghost">Join the Archive</a>
+<!-- CRAFT -->
+<section class="craft" id="craft">
+  <div class="craft-inner">
+    <div class="craft-visual">
+      <div class="wisp" style="--dur:4s;--delay:0s;--dx:22px;--dx2:38px;width:28px;height:38px;top:calc(50% - 148px);left:calc(50% - 36px);"></div>
+      <div class="wisp" style="--dur:5.2s;--delay:1.3s;--dx:-16px;--dx2:-4px;width:38px;height:52px;top:calc(50% - 136px);left:calc(50% - 52px);"></div>
+      <div class="wisp" style="--dur:3.9s;--delay:2.6s;--dx:28px;--dx2:12px;width:22px;height:28px;top:calc(50% - 158px);left:calc(50% - 22px);"></div>
+      <!-- Big vertical blunt -->
+      <svg class="blunt-art" width="260" height="370" viewBox="0 0 260 370" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="vbh" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3d1a00"/>
+            <stop offset="6%" stop-color="#7a3d15"/>
+            <stop offset="50%" stop-color="#9a5520"/>
+            <stop offset="94%" stop-color="#6a3010"/>
+            <stop offset="100%" stop-color="#200d00"/>
+          </linearGradient>
+          <linearGradient id="vbv" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#c87830"/>
+            <stop offset="50%" stop-color="#9a5520"/>
+            <stop offset="100%" stop-color="#5a2808"/>
+          </linearGradient>
+          <linearGradient id="vbf" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#f5d890"/>
+            <stop offset="100%" stop-color="#c4a050"/>
+          </linearGradient>
+          <radialGradient id="vbe" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff9500" stop-opacity="1"/>
+            <stop offset="40%" stop-color="#ff5500" stop-opacity="0.75"/>
+            <stop offset="100%" stop-color="#ff1000" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="vbgold" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#e8c060"/>
+            <stop offset="50%" stop-color="#c9a040"/>
+            <stop offset="100%" stop-color="#a07820"/>
+          </linearGradient>
+          <filter id="vbglow">
+            <feGaussianBlur stdDeviation="7" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- ember at top -->
+        <ellipse cx="130" cy="34" rx="22" ry="18" fill="url(#vbe)" filter="url(#vbglow)"/>
+        <ellipse cx="130" cy="34" rx="13" ry="10" fill="#ff6600"/>
+        <ellipse cx="128" cy="32" rx="6.5" ry="5" fill="#ff9900" opacity="0.9"/>
+        <!-- cone twist -->
+        <path d="M110,46 Q130,18 150,46 L143,68 L117,68 Z" fill="url(#vbv)"/>
+        <path d="M113,50 Q130,30 147,50" stroke="rgba(180,100,40,0.4)" stroke-width="1" fill="none"/>
+        <path d="M117,60 Q130,46 143,60" stroke="rgba(180,100,40,0.32)" stroke-width="1" fill="none"/>
+        <!-- body -->
+        <rect x="108" y="66" width="44" height="218" rx="3" fill="url(#vbh)"/>
+        <!-- leaf veins -->
+        <line x1="119" y1="66" x2="117" y2="284" stroke="rgba(80,30,5,0.5)" stroke-width="0.9"/>
+        <line x1="130" y1="66" x2="128" y2="284" stroke="rgba(80,30,5,0.4)" stroke-width="0.9"/>
+        <line x1="141" y1="66" x2="139" y2="284" stroke="rgba(80,30,5,0.5)" stroke-width="0.9"/>
+        <line x1="152" y1="66" x2="150" y2="284" stroke="rgba(80,30,5,0.38)" stroke-width="0.9"/>
+        <!-- gold band -->
+        <rect x="108" y="166" width="44" height="7" rx="0" fill="url(#vbgold)" opacity="0.92"/>
+        <rect x="108" y="177" width="44" height="2" rx="0" fill="rgba(201,168,76,0.38)"/>
+        <!-- brand text vertical -->
+        <g transform="translate(130,198) rotate(90)">
+          <text x="0" y="0" font-family="'Playfair Display',serif" font-size="9.5" fill="rgba(201,168,76,0.82)" text-anchor="middle" font-style="italic" letter-spacing="4">SLUGGERS</text>
+        </g>
+        <g transform="translate(130,198) rotate(90)">
+          <text x="0" y="13" font-family="'Space Grotesk',sans-serif" font-size="5.5" fill="rgba(201,168,76,0.42)" text-anchor="middle" letter-spacing="3">PREMIUM</text>
+        </g>
+        <!-- filter -->
+        <rect x="110" y="284" width="40" height="52" rx="3" fill="url(#vbf)"/>
+        <line x1="118" y1="284" x2="118" y2="336" stroke="rgba(150,100,30,0.48)" stroke-width="0.9"/>
+        <line x1="127" y1="284" x2="127" y2="336" stroke="rgba(150,100,30,0.42)" stroke-width="0.9"/>
+        <line x1="136" y1="284" x2="136" y2="336" stroke="rgba(150,100,30,0.48)" stroke-width="0.9"/>
+        <line x1="145" y1="284" x2="145" y2="336" stroke="rgba(150,100,30,0.42)" stroke-width="0.9"/>
+        <rect x="112" y="336" width="36" height="14" rx="7" fill="#f0dca0"/>
+      </svg>
+    </div>
+    <div class="craft-content reveal">
+      <p class="section-label">The Craft</p>
+      <h2>Every roll, a<br><em>masterpiece.</em></h2>
+      <p>Sluggers are not mass produced. They are crafted one at a time, by hands that have dedicated thousands of hours to the singular pursuit of the perfect roll.</p>
+      <p>We source only from farms that share our obsession with quality — small operations, single origin, no compromise.</p>
+      <div class="craft-stats stagger">
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Organic flower</div>
+        </div>
+        <div>
+          <div class="stat-num">60d</div>
+          <div class="stat-label">Cure minimum</div>
+        </div>
+        <div>
+          <div class="stat-num">0</div>
+          <div class="stat-label">Additives</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- CTA -->
+<section class="cta-section reveal">
+  <h2>Roll with<br><span>the best.</span></h2>
+  <p>Premium joints and blunts. Available now.</p>
+  <div class="cta-btns">
+    <button class="btn-primary">Shop the Collection</button>
+    <button class="btn-ghost">Find a Retailer</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-brand">SLUGGERS HIT</div>
-  <div class="footer-legal">
-    For use only where cannabis is legal. Must be 21+.<br>
-    These statements have not been evaluated by the FDA. Not for resale to minors.
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>Sluggers</h3>
+      <p>Premium joints and blunts<br>for the discerning few.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Collection</h4>
+      <ul>
+        <li><a href="#">The Classic</a></li>
+        <li><a href="#">The Infused</a></li>
+        <li><a href="#">The Pack</a></li>
+        <li><a href="#">Limited Drops</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">The Craft</a></li>
+        <li><a href="#">Sourcing</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Stockists</a></li>
+      </ul>
+    </div>
   </div>
-  <div class="footer-coords">38.9°N &nbsp;·&nbsp; 77.0°W &nbsp;·&nbsp; Δ7 &nbsp;·&nbsp; © 2025</div>
+  <div class="footer-bottom">
+    <p>© 2024 Sluggers. For adults 21+. Please consume responsibly.</p>
+    <span class="age-badge">21+</span>
+  </div>
 </footer>
 
 <script>
-  /* ═══ STAR FIELD ═══ */
-  const canvas = document.getElementById('starfield');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
+/* Custom cursor */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; });
+(function animCursor(){
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button,.product-card,.ritual-step').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ ring.style.width='50px'; ring.style.height='50px'; ring.style.borderColor='rgba(201,168,76,0.82)'; });
+  el.addEventListener('mouseleave',()=>{ ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(201,168,76,0.4)'; });
+});
 
-  function resizeCanvas() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
+/* Scroll reveal */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.stagger').forEach(el=>io.observe(el));
 
-  function createStars(count) {
-    stars = [];
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.2,
-        alpha: Math.random(),
-        alphaDir: (Math.random() > 0.5 ? 1 : -1) * 0.003,
-        speed: Math.random() * 0.05,
-        hue: Math.random() > 0.9
-          ? `rgba(143,168,140,`
-          : Math.random() > 0.8
-            ? `rgba(232,145,58,`
-            : `rgba(232,244,255,`,
-      });
-    }
-  }
+/* Particle field */
+const field = document.getElementById('particleField');
+for(let i=0;i<28;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const sz = 1+Math.random()*2;
+  p.style.cssText=`left:${Math.random()*100}%;width:${sz}px;height:${sz}px;--dur:${5+Math.random()*9}s;--delay:${Math.random()*9}s;--dx:${(Math.random()-0.5)*90}px;`;
+  field.appendChild(p);
+}
 
-  function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      s.alpha += s.alphaDir;
-      if (s.alpha <= 0 || s.alpha >= 1) s.alphaDir *= -1;
-      s.y -= s.speed;
-      if (s.y < 0) { s.y = canvas.height; s.x = Math.random() * canvas.width; }
-
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = s.hue + Math.min(1, Math.max(0, s.alpha)) + ')';
-      ctx.fill();
-    });
-    requestAnimationFrame(drawStars);
-  }
-
-  resizeCanvas();
-  createStars(300);
-  drawStars();
-  window.addEventListener('resize', () => { resizeCanvas(); createStars(300); });
-
-
-  /* ═══ SPICE PARTICLES ═══ */
-  const particleContainer = document.getElementById('spiceParticles');
-  const colors = ['rgba(143,168,140,', 'rgba(184,107,42,', 'rgba(196,164,107,', 'rgba(216,207,196,'];
-
-  for (let i = 0; i < 60; i++) {
-    const span = document.createElement('span');
-    const size = Math.random() * 3 + 1;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const opacity = Math.random() * 0.6 + 0.2;
-    const duration = Math.random() * 15 + 10;
-    const delay = Math.random() * 15;
-    const x = Math.random() * 100;
-    const drift = (Math.random() - 0.5) * 120;
-
-    span.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      left: ${x}%;
-      bottom: 0;
-      background: ${color}${opacity});
-      box-shadow: 0 0 ${size * 3}px ${color}0.6);
-      animation-duration: ${duration}s;
-      animation-delay: -${delay}s;
-      --drift-x: ${drift}px;
-    `;
-    particleContainer.appendChild(span);
-  }
-
-
-  /* ═══ CURSOR GLOW ═══ */
-  const glow = document.getElementById('cursorGlow');
-  document.addEventListener('mousemove', e => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top  = e.clientY + 'px';
-  });
-
-
-  /* ═══ SCROLL REVEAL ═══ */
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-  reveals.forEach(el => observer.observe(el));
+/* Parallax grid on scroll */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  const g=document.getElementById('heroGrid');
+  if(g) g.style.transform=`rotateX(30deg) scaleY(1.5) translateY(calc(-20% + ${y*0.28}px))`;
+});
 </script>
 </body>
 </html>

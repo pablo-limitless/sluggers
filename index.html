@@ -6,7 +6,7 @@
 <title>SLUGGERS — Premium Joints & Blunts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,600&display=swap" rel="stylesheet">
 <style>
 :root {
   --gold: #c9a84c;
@@ -16,7 +16,6 @@
   --green-light: #6db840;
   --green-dim: #2a5018;
   --brown: #3d2010;
-  --bark: #5c3820;
   --white: #f0f5ea;
   --smoke: #b8c8a8;
   --cream: #e8f0de;
@@ -37,215 +36,215 @@ body {
   cursor: none;
 }
 
-/* ── STARFIELD — fixed, behind everything ── */
-#starCanvas {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-}
+/* ── STARFIELD ── */
+#starCanvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
 
-/* ── NOISE ── */
+/* ── NOISE OVERLAY ── */
 body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 9999; opacity: 0.35; mix-blend-mode: overlay;
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.35; mix-blend-mode:overlay;
 }
 
 /* ── CURSOR ── */
-.cursor-dot { position:fixed; width:6px; height:6px; background:var(--green); border-radius:50%; pointer-events:none; z-index:10000; transform:translate(-50%,-50%); }
-.cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(77,140,48,0.55); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width 0.3s ease,height 0.3s ease,border-color 0.3s ease; }
+.cursor-dot  { position:fixed; width:6px; height:6px; background:var(--green); border-radius:50%; pointer-events:none; z-index:10000; transform:translate(-50%,-50%); }
+.cursor-ring { position:fixed; width:32px; height:32px; border:1px solid rgba(77,140,48,0.55); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
 
 /* ── NAV ── */
 nav { position:fixed; top:0; left:0; right:0; z-index:1000; padding:26px 60px; display:flex; align-items:center; justify-content:space-between; }
-nav::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(2,8,6,0.95) 0%,transparent 100%); pointer-events:none; z-index:-1; }
-.nav-logo { font-family:'Anton',sans-serif; font-size:26px; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); text-decoration:none; }
+nav::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(2,8,6,.95),transparent); pointer-events:none; z-index:-1; }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:0.14em; color:var(--gold); text-decoration:none; }
 .nav-links { display:flex; gap:44px; list-style:none; }
-.nav-links a { font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--smoke); text-decoration:none; transition:color 0.3s ease; font-weight:500; }
+.nav-links a { font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--smoke); text-decoration:none; transition:color .3s; font-weight:500; }
 .nav-links a:hover { color:var(--green-light); }
-.nav-cta { font-family:'Anton',sans-serif; font-size:13px; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); background:var(--green); border:none; padding:10px 26px; cursor:pointer; transition:background 0.3s ease,transform 0.2s ease; }
+.nav-cta { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:0.18em; color:var(--white); background:var(--green); border:none; padding:10px 28px; cursor:pointer; transition:background .3s,transform .2s; }
 .nav-cta:hover { background:var(--green-light); transform:translateY(-1px); }
 
-/* ── ALL SECTIONS sit above canvas ── */
+/* ── SECTION Z-INDEX ── */
 section, .marquee-strip, footer { position:relative; z-index:1; }
 
-/* ── SECTION SHARED ── */
-.section-label { font-size:9px; letter-spacing:0.5em; text-transform:uppercase; color:var(--green-dim); margin-bottom:14px; display:flex; align-items:center; gap:14px; }
+/* ── SHARED ── */
+.section-label { font-size:9px; letter-spacing:.5em; text-transform:uppercase; color:var(--green-dim); margin-bottom:14px; display:flex; align-items:center; gap:14px; }
 .section-label::before { content:''; display:inline-block; width:36px; height:1px; background:var(--green-dim); }
-.reveal { opacity:0; transform:translateY(36px); transition:opacity 0.9s ease,transform 0.9s ease; }
-.reveal.visible { opacity:1; transform:translateY(0); }
-.stagger > * { opacity:0; transform:translateY(26px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.reveal { opacity:0; transform:translateY(36px); transition:opacity .9s,transform .9s; }
+.reveal.visible { opacity:1; transform:none; }
+.stagger > * { opacity:0; transform:translateY(26px); transition:opacity .7s,transform .7s; }
 .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
-.stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.13s; }
-.stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.26s; }
-.stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.39s; }
+.stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:.13s; }
+.stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:.26s; }
+.stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:.39s; }
 
 /* ── BUTTONS ── */
-.btn-primary { font-family:'Anton',sans-serif; font-size:14px; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); background:var(--green); border:none; padding:14px 38px; cursor:pointer; position:relative; overflow:hidden; transition:transform 0.3s ease,box-shadow 0.3s ease; }
-.btn-primary::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent); transform:translateX(-100%); transition:transform 0.5s ease; }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(77,140,48,0.45); }
+.btn-primary { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.18em; color:var(--white); background:var(--green); border:none; padding:14px 40px; cursor:pointer; position:relative; overflow:hidden; transition:transform .3s,box-shadow .3s; }
+.btn-primary::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent); transform:translateX(-100%); transition:transform .5s; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(77,140,48,.45); }
 .btn-primary:hover::before { transform:translateX(100%); }
-.btn-ghost { font-family:'Anton',sans-serif; font-size:14px; letter-spacing:0.18em; text-transform:uppercase; color:var(--green-light); background:transparent; border:1px solid rgba(77,140,48,0.45); padding:14px 38px; cursor:pointer; transition:border-color 0.3s ease,background 0.3s ease,transform 0.3s ease; }
-.btn-ghost:hover { border-color:var(--green-light); background:rgba(77,140,48,0.09); transform:translateY(-2px); }
+.btn-ghost { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:.18em; color:var(--green-light); background:transparent; border:1px solid rgba(77,140,48,.45); padding:14px 40px; cursor:pointer; transition:border-color .3s,background .3s,transform .3s; }
+.btn-ghost:hover { border-color:var(--green-light); background:rgba(77,140,48,.09); transform:translateY(-2px); }
 
 /* ════════ HERO ════════ */
-.hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-.hero-nebula { position:absolute; inset:0; pointer-events:none; background: radial-gradient(ellipse 55% 70% at 15% 60%,rgba(20,80,20,0.22) 0%,transparent 60%), radial-gradient(ellipse 40% 50% at 85% 30%,rgba(20,60,100,0.10) 0%,transparent 55%), radial-gradient(ellipse 30% 40% at 50% 80%,rgba(30,90,20,0.30) 0%,transparent 50%); }
-.smoke-ring { position:absolute; border-radius:50%; border:1px solid rgba(77,140,48,0.07); animation:ringSwell 9s ease-out infinite; pointer-events:none; top:50%; left:50%; }
-@keyframes ringSwell { 0%{opacity:0;transform:translate(-50%,-50%) scale(0.75);} 18%{opacity:0.8;} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);} }
+.hero {
+  position:relative; min-height:100vh;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 8% 0 10%; overflow:hidden;
+}
+.hero-nebula { position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 70% at 15% 60%, rgba(20,80,20,.22), transparent 60%),
+    radial-gradient(ellipse 40% 50% at 85% 30%, rgba(20,60,100,.10), transparent 55%),
+    radial-gradient(ellipse 30% 40% at 50% 80%, rgba(30,90,20,.30), transparent 50%);
+}
+.smoke-ring { position:absolute; border-radius:50%; border:1px solid rgba(77,140,48,.07); animation:ringSwell 9s ease-out infinite; pointer-events:none; top:50%; left:50%; }
+@keyframes ringSwell { 0%{opacity:0;transform:translate(-50%,-50%) scale(.75);} 18%{opacity:.8;} 100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);} }
 
-/* Hero joint wrappers */
-.hero-joint-stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
-.hero-joint-3d { transform-style:preserve-3d; will-change:transform; }
-.hero-joint-wrap { position:relative; animation:heroFloat 7s ease-in-out infinite; }
-@keyframes heroFloat { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-22px) rotate(1deg);} }
+/* Hero text column */
+.hero-content { position:relative; z-index:10; text-align:left; max-width:580px; flex:1 1 auto; }
+.hero-eyebrow { font-size:10px; letter-spacing:.55em; text-transform:uppercase; color:var(--green-light); margin-bottom:22px; opacity:0; animation:fadeUp 1s ease forwards .3s; font-weight:500; }
+.hero-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(80px,13vw,185px); line-height:.88; letter-spacing:.06em; color:transparent; background:linear-gradient(170deg,#fff 0%,#c0e090 22%,#6db840 42%,#4d8c30 62%,#c9a84c 80%,#f0f5ea 100%); -webkit-background-clip:text; background-clip:text; opacity:0; animation:fadeUp 1.2s ease forwards .5s; filter:drop-shadow(0 0 60px rgba(77,140,48,.35)); }
+.hero-sub { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,2.2vw,26px); font-weight:300; font-style:italic; color:var(--smoke); letter-spacing:.18em; margin-top:12px; opacity:0; animation:fadeUp 1s ease forwards .8s; }
+.hero-divider { width:70px; height:1px; background:linear-gradient(to right,transparent,var(--green),transparent); margin:24px 0; opacity:0; animation:fadeUp 1s ease forwards 1s; }
+.hero-desc { font-size:13px; font-weight:300; letter-spacing:.07em; color:rgba(184,200,168,.65); max-width:380px; margin-bottom:40px; line-height:2; opacity:0; animation:fadeUp 1s ease forwards 1.1s; }
+.hero-btns { display:flex; gap:16px; opacity:0; animation:fadeUp 1s ease forwards 1.3s; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
 
-/* Orbit rings */
+/* Hero joint column */
+.hero-joint-col { position:relative; z-index:5; flex:0 0 auto; display:flex; align-items:center; justify-content:center; width:240px; height:100vh; pointer-events:none; }
+.hero-joint-3d { transform-style:preserve-3d; will-change:transform; display:flex; align-items:center; justify-content:center; }
+.hero-joint-float { animation:heroFloat 7s ease-in-out infinite; }
+@keyframes heroFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-24px);} }
+
+/* Smoke particles from joint tip */
+.smp { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(200,215,200,.5),transparent 70%); animation:smokeUp var(--dur,4s) ease-out infinite var(--del,0s); pointer-events:none; }
+@keyframes smokeUp { 0%{transform:scale(.3) translateY(0) translateX(0);opacity:0;} 12%{opacity:.7;} 100%{transform:scale(3.2) translateY(-220px) translateX(var(--dx,15px));opacity:0;} }
+
+/* Green ambient glow around joint */
+.joint-glow { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(60,130,30,.28),rgba(20,60,10,.08) 50%,transparent 70%); animation:glowBreath 4s ease-in-out infinite; pointer-events:none; }
+@keyframes glowBreath { 0%,100%{transform:scale(1);opacity:.6;} 50%{transform:scale(1.4);opacity:1;} }
+
+/* Orbit rings around hero joint */
 .h-orbit { position:absolute; border-radius:50%; top:50%; left:50%; animation:orbitSpin var(--spd,22s) linear infinite; pointer-events:none; }
 @keyframes orbitSpin { from{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(0deg);} to{transform:translate(-50%,-50%) rotateX(72deg) rotateZ(360deg);} }
 
-/* Smoke particles */
-.smp { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(200,215,200,0.5) 0%,transparent 70%); animation:smokeUp var(--dur,4s) ease-out infinite; animation-delay:var(--del,0s); pointer-events:none; }
-@keyframes smokeUp { 0%{transform:scale(0.3) translateY(0) translateX(0);opacity:0;} 12%{opacity:0.7;} 100%{transform:scale(3.2) translateY(-220px) translateX(var(--dx,15px));opacity:0;} }
-
-/* Glow */
-.h-glow { position:absolute; border-radius:50%; background:radial-gradient(circle,rgba(60,130,30,0.26) 0%,rgba(20,60,10,0.08) 50%,transparent 70%); animation:glowBreath 4s ease-in-out infinite; pointer-events:none; }
-@keyframes glowBreath { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6;} 50%{transform:translate(-50%,-50%) scale(1.4);opacity:1;} }
-
-/* Hero text */
-.hero-content { position:relative; z-index:10; text-align:center; padding:0 40px; margin-top:40px; }
-.hero-eyebrow { font-size:10px; letter-spacing:0.55em; text-transform:uppercase; color:var(--green-light); margin-bottom:22px; opacity:0; animation:fadeUp 1s ease forwards 0.3s; font-weight:500; }
-.hero-title { font-family:'Anton',sans-serif; font-size:clamp(90px,16vw,210px); line-height:0.88; letter-spacing:0.06em; color:transparent; background:linear-gradient(170deg,#ffffff 0%,#c0e090 22%,#6db840 42%,#4d8c30 62%,#c9a84c 80%,#f0f5ea 100%); -webkit-background-clip:text; background-clip:text; opacity:0; animation:fadeUp 1.2s ease forwards 0.5s; filter:drop-shadow(0 0 60px rgba(77,140,48,0.35)); }
-.hero-sub { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,2.2vw,26px); font-weight:300; font-style:italic; color:var(--smoke); letter-spacing:0.18em; margin-top:12px; opacity:0; animation:fadeUp 1s ease forwards 0.8s; }
-.hero-divider { width:70px; height:1px; background:linear-gradient(to right,transparent,var(--green),transparent); margin:24px auto; opacity:0; animation:fadeUp 1s ease forwards 1s; }
-.hero-desc { font-size:13px; font-weight:300; letter-spacing:0.07em; color:rgba(184,200,168,0.65); max-width:360px; margin:0 auto 40px; line-height:2; opacity:0; animation:fadeUp 1s ease forwards 1.1s; }
-.hero-btns { display:flex; gap:16px; justify-content:center; opacity:0; animation:fadeUp 1s ease forwards 1.3s; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-.scroll-ind { position:absolute; bottom:38px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:7px; opacity:0; animation:fadeUp 1s ease forwards 1.9s; }
-.scroll-ind span { font-size:9px; letter-spacing:0.45em; text-transform:uppercase; color:rgba(77,140,48,0.55); }
+.scroll-ind { position:absolute; bottom:38px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:7px; opacity:0; animation:fadeUp 1s ease forwards 1.9s; z-index:10; }
+.scroll-ind span { font-size:9px; letter-spacing:.45em; text-transform:uppercase; color:rgba(77,140,48,.55); }
 .scroll-line { width:1px; height:56px; background:linear-gradient(to bottom,var(--green),transparent); animation:linePulse 2s ease-in-out infinite; }
-@keyframes linePulse { 0%,100%{opacity:0.55;transform:scaleY(1);} 50%{opacity:1;transform:scaleY(0.5);} }
+@keyframes linePulse { 0%,100%{opacity:.55;transform:scaleY(1);} 50%{opacity:1;transform:scaleY(.5);} }
 
 /* ── MARQUEE ── */
 .marquee-strip { background:var(--green-dim); padding:16px 0; overflow:hidden; white-space:nowrap; }
 .marquee-inner { display:inline-flex; animation:marquee 20s linear infinite; }
-.mi { font-family:'Anton',sans-serif; font-size:14px; letter-spacing:0.28em; text-transform:uppercase; color:var(--white); padding:0 32px; }
-.md { color:rgba(240,245,234,0.4); font-size:16px; vertical-align:middle; }
+.mi { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:.28em; color:var(--white); padding:0 32px; }
+.md { color:rgba(240,245,234,.4); font-size:16px; vertical-align:middle; }
 @keyframes marquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* ════════ PHILOSOPHY ════════ */
-.philosophy { padding:150px 60px; background:rgba(4,8,4,0.70); backdrop-filter:blur(2px); }
+.philosophy { padding:150px 60px; background:rgba(4,8,4,.70); backdrop-filter:blur(2px); }
 .philosophy-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:center; }
-.philosophy-text h2 { font-family:'Anton',sans-serif; font-size:clamp(44px,5.5vw,76px); line-height:0.95; color:var(--cream); margin-bottom:26px; letter-spacing:0.04em; }
+.philosophy-text h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,5.5vw,76px); line-height:.95; color:var(--cream); margin-bottom:26px; letter-spacing:.04em; }
 .philosophy-text h2 em { font-style:italic; color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.1em; }
-.philosophy-text p { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:300; line-height:1.85; color:rgba(184,200,168,0.7); margin-bottom:42px; }
+.philosophy-text p { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:300; line-height:1.85; color:rgba(184,200,168,.7); margin-bottom:42px; }
 
-/* Orbit stage */
-.orbit-stage { position:relative; height:380px; display:flex; align-items:center; justify-content:center; }
+.orbit-stage { position:relative; height:420px; display:flex; align-items:center; justify-content:center; }
 .orbit-c { position:relative; width:300px; height:300px; }
 .oc-ring { position:absolute; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%) rotateX(68deg); animation:orbitSpin var(--spd,20s) linear infinite; }
-.oc-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(50,120,30,0.24) 0%,rgba(20,60,15,0.10) 50%,transparent 70%); animation:glowBreath 4.5s ease-in-out infinite; }
+.oc-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(50,120,30,.24),rgba(20,60,15,.10) 50%,transparent 70%); animation:glowBreath 4.5s ease-in-out infinite; }
 .oc-joint { position:absolute; top:50%; left:50%; animation:gentleSpin 14s ease-in-out infinite; }
 @keyframes gentleSpin { 0%{transform:translate(-50%,-50%) rotate(-20deg) translateY(0);} 25%{transform:translate(-50%,-50%) rotate(3deg) translateY(-8px);} 50%{transform:translate(-50%,-50%) rotate(20deg) translateY(-14px);} 75%{transform:translate(-50%,-50%) rotate(3deg) translateY(-8px);} 100%{transform:translate(-50%,-50%) rotate(-20deg) translateY(0);} }
 
 /* ════════ PRODUCTS ════════ */
-.products { padding:150px 60px; background:rgba(6,10,6,0.72); backdrop-filter:blur(2px); }
+.products { padding:150px 60px; background:rgba(6,10,6,.72); backdrop-filter:blur(2px); }
 .products::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(to right,transparent,var(--green-dim),transparent); }
 .products-header { max-width:1200px; margin:0 auto 90px; display:flex; align-items:flex-end; justify-content:space-between; }
-.products-title h2 { font-family:'Anton',sans-serif; font-size:clamp(48px,6.5vw,88px); line-height:0.88; letter-spacing:0.04em; color:var(--cream); }
+.products-title h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,6.5vw,88px); line-height:.88; letter-spacing:.04em; color:var(--cream); }
 .products-title h2 span { display:block; color:var(--green-light); }
-.products-count { font-family:'Anton',sans-serif; font-size:80px; color:rgba(77,140,48,0.09); line-height:1; letter-spacing:-0.03em; }
+.products-count { font-family:'Bebas Neue',sans-serif; font-size:80px; color:rgba(77,140,48,.09); line-height:1; letter-spacing:-.03em; }
 .products-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
 
-/* Product card */
-.product-card { position:relative; background:rgba(8,14,8,0.78); backdrop-filter:blur(4px); padding:52px 34px; overflow:hidden; cursor:pointer; transition:background 0.5s ease; }
-.product-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(20,80,15,0.20) 0%,transparent 70%); opacity:0; transition:opacity 0.5s ease; }
-.product-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform 0.5s ease; }
-.product-card:hover { background:rgba(14,20,10,0.88); }
+.product-card { position:relative; background:rgba(8,14,8,.78); backdrop-filter:blur(4px); padding:52px 34px; overflow:hidden; cursor:pointer; transition:background .5s; }
+.product-card::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(20,80,15,.20),transparent 70%); opacity:0; transition:opacity .5s; }
+.product-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .5s; }
+.product-card:hover { background:rgba(14,20,10,.88); }
 .product-card:hover::before { opacity:1; }
 .product-card:hover::after { transform:scaleX(1); }
 
-/* Card visual */
 .card-visual { position:relative; height:280px; display:flex; align-items:center; justify-content:center; margin-bottom:34px; perspective:600px; overflow:visible; }
-.card-ring-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:180px; height:180px; border-radius:50%; border:1px dashed rgba(77,140,48,0.15); animation:cardRingSpin 10s linear infinite; z-index:0; }
-@keyframes cardRingSpin { from{transform:translate(-50%,-50%) rotate(0deg);} to{transform:translate(-50%,-50%) rotate(360deg);} }
-.card-product-img { width:auto; height:250px; max-width:95%; object-fit:contain; display:block; position:relative; z-index:1; transition:transform 0.7s cubic-bezier(0.34,1.56,0.64,1),filter 0.6s ease; filter:drop-shadow(0 10px 30px rgba(77,140,48,0.20)); }
-.product-card:hover .card-product-img { transform:rotateY(-12deg) rotateX(6deg) scale(1.08) translateY(-8px); filter:drop-shadow(0 24px 50px rgba(77,140,48,0.50)) drop-shadow(0 0 40px rgba(30,100,20,0.30)); }
+.card-ring-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:180px; height:180px; border-radius:50%; border:1px dashed rgba(77,140,48,.15); animation:cardRingSpin 10s linear infinite; z-index:0; }
+@keyframes cardRingSpin { from{transform:translate(-50%,-50%) rotate(0);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+.card-product-img { width:auto; height:250px; max-width:95%; object-fit:contain; display:block; position:relative; z-index:1; transition:transform .7s cubic-bezier(.34,1.56,.64,1),filter .6s; filter:drop-shadow(0 10px 30px rgba(77,140,48,.20)); }
+.product-card:hover .card-product-img { transform:rotateY(-12deg) rotateX(6deg) scale(1.08) translateY(-8px); filter:drop-shadow(0 24px 50px rgba(77,140,48,.50)) drop-shadow(0 0 40px rgba(30,100,20,.30)); }
 
-.card-number { font-family:'Anton',sans-serif; font-size:11px; letter-spacing:0.4em; color:var(--green-dim); margin-bottom:12px; }
-.card-name { font-family:'Anton',sans-serif; font-size:30px; letter-spacing:0.04em; color:var(--cream); margin-bottom:5px; line-height:1; }
-.card-type { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:var(--green-light); margin-bottom:20px; }
-.card-desc { font-size:13px; font-weight:300; line-height:1.85; color:rgba(184,200,168,0.5); margin-bottom:30px; }
+.card-number { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:.4em; color:var(--green-dim); margin-bottom:12px; }
+.card-name   { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:.04em; color:var(--cream); margin-bottom:5px; line-height:1; }
+.card-type   { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:var(--green-light); margin-bottom:20px; }
+.card-desc   { font-size:13px; font-weight:300; line-height:1.85; color:rgba(184,200,168,.5); margin-bottom:30px; }
 .card-footer { display:flex; align-items:center; justify-content:space-between; }
-.card-price { font-family:'Anton',sans-serif; font-size:26px; color:var(--gold); letter-spacing:0.05em; }
-.card-arrow { width:38px; height:38px; border:1px solid rgba(77,140,48,0.3); display:flex; align-items:center; justify-content:center; transition:background 0.3s ease,border-color 0.3s ease,transform 0.3s ease; }
+.card-price  { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--gold); letter-spacing:.05em; }
+.card-arrow  { width:38px; height:38px; border:1px solid rgba(77,140,48,.3); display:flex; align-items:center; justify-content:center; transition:background .3s,border-color .3s,transform .3s; }
 .product-card:hover .card-arrow { background:var(--green); border-color:var(--green); transform:translateX(4px); }
 .product-card:hover .card-arrow svg { stroke:var(--white); }
 
 /* ════════ RITUAL ════════ */
-.ritual { padding:150px 60px; background:rgba(4,8,4,0.66); backdrop-filter:blur(2px); }
-.ritual::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(20,60,15,0.22) 0%,transparent 60%); }
+.ritual { padding:150px 60px; background:rgba(4,8,4,.66); backdrop-filter:blur(2px); }
+.ritual::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(20,60,15,.22),transparent 60%); }
 .ritual-inner { max-width:1200px; margin:0 auto; }
 .ritual-header { text-align:center; margin-bottom:90px; }
-.ritual-header h2 { font-family:'Anton',sans-serif; font-size:clamp(50px,7.5vw,104px); line-height:0.88; letter-spacing:0.05em; color:var(--cream); }
-.ritual-header h2 em { display:block; font-style:italic; color:transparent; -webkit-text-stroke:1px rgba(77,140,48,0.45); font-family:'Cormorant Garamond',serif; font-size:0.9em; }
+.ritual-header h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(50px,7.5vw,104px); line-height:.88; letter-spacing:.05em; color:var(--cream); }
+.ritual-header h2 em { display:block; font-style:italic; color:transparent; -webkit-text-stroke:1px rgba(77,140,48,.45); font-family:'Cormorant Garamond',serif; font-size:.9em; }
 .ritual-steps { display:grid; grid-template-columns:repeat(4,1fr); position:relative; }
 .ritual-steps::before { content:''; position:absolute; top:48px; left:12.5%; right:12.5%; height:1px; background:linear-gradient(to right,transparent,var(--green-dim) 20%,var(--green-dim) 80%,transparent); }
 .ritual-step { padding:0 26px; position:relative; z-index:1; }
-.step-icon { width:96px; height:96px; border:1px solid rgba(77,140,48,0.28); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 34px; background:rgba(4,10,4,0.85); position:relative; transition:border-color 0.3s ease,background 0.3s ease,box-shadow 0.3s ease; }
-.ritual-step:hover .step-icon { border-color:var(--green); background:rgba(20,60,15,0.25); box-shadow:0 0 30px rgba(30,100,20,0.22),0 0 60px rgba(77,140,48,0.12); }
-.step-num { position:absolute; top:-8px; right:-8px; width:22px; height:22px; background:var(--green); border-radius:50%; font-size:10px; font-weight:700; color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'Anton',sans-serif; }
-.step-title { font-family:'Anton',sans-serif; font-size:20px; letter-spacing:0.06em; color:var(--cream); text-align:center; margin-bottom:10px; }
-.step-desc { font-size:13px; font-weight:300; color:rgba(184,200,168,0.5); text-align:center; line-height:1.85; }
-
-/* Step joint icons */
+.step-icon { width:96px; height:96px; border:1px solid rgba(77,140,48,.28); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 34px; background:rgba(4,10,4,.85); position:relative; transition:border-color .3s,background .3s,box-shadow .3s; }
+.ritual-step:hover .step-icon { border-color:var(--green); background:rgba(20,60,15,.25); box-shadow:0 0 30px rgba(30,100,20,.22),0 0 60px rgba(77,140,48,.12); }
+.step-num { position:absolute; top:-8px; right:-8px; width:22px; height:22px; background:var(--green); border-radius:50%; font-size:10px; font-weight:700; color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; }
+.step-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:.06em; color:var(--cream); text-align:center; margin-bottom:10px; }
+.step-desc  { font-size:13px; font-weight:300; color:rgba(184,200,168,.5); text-align:center; line-height:1.85; }
 .step-joint-wrap { width:52px; height:52px; display:flex; align-items:center; justify-content:center; }
 
 /* ════════ CRAFT ════════ */
-.craft { padding:150px 60px; background:rgba(6,10,6,0.70); backdrop-filter:blur(2px); }
+.craft { padding:150px 60px; background:rgba(6,10,6,.70); backdrop-filter:blur(2px); }
 .craft-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.15fr; gap:90px; align-items:center; }
 .craft-visual { position:relative; height:580px; display:flex; align-items:center; justify-content:center; perspective:800px; }
 .craft-joint-3d { transform-style:preserve-3d; will-change:transform; display:flex; align-items:center; justify-content:center; }
-
-/* Big floating blunt */
-.craft-blunt-wrap { animation:craftFloat 8s ease-in-out infinite; filter:drop-shadow(0 30px 80px rgba(20,80,10,0.38)) drop-shadow(0 0 80px rgba(20,80,10,0.20)); }
+.craft-blunt-wrap { animation:craftFloat 8s ease-in-out infinite; filter:drop-shadow(0 30px 80px rgba(20,80,10,.38)) drop-shadow(0 0 80px rgba(20,80,10,.20)); }
 @keyframes craftFloat { 0%,100%{transform:rotateY(-14deg) rotateX(5deg) rotateZ(-16deg) translateY(0);} 50%{transform:rotateY(8deg) rotateX(-2deg) rotateZ(-13deg) translateY(-20px);} }
 
-/* Smoke wisps */
-.wisp { position:absolute; border-radius:50% 50% 50% 50%/30% 30% 70% 70%; background:radial-gradient(ellipse,rgba(185,205,185,0.22) 0%,transparent 70%); animation:wispUp var(--dur) ease-out infinite; animation-delay:var(--delay); }
-@keyframes wispUp { 0%{transform:translateX(0) translateY(0) scaleX(1);opacity:0;} 10%{opacity:0.55;} 60%{transform:translateX(var(--dx,20px)) translateY(-110px) scaleX(1.5);opacity:0.25;} 100%{transform:translateX(var(--dx2,35px)) translateY(-220px) scaleX(0.7);opacity:0;} }
+.wisp { position:absolute; border-radius:50% 50% 50% 50%/30% 30% 70% 70%; background:radial-gradient(ellipse,rgba(185,205,185,.22),transparent 70%); animation:wispUp var(--dur) ease-out infinite var(--delay); }
+@keyframes wispUp { 0%{transform:translateX(0) translateY(0) scaleX(1);opacity:0;} 10%{opacity:.55;} 60%{transform:translateX(var(--dx,20px)) translateY(-110px) scaleX(1.5);opacity:.25;} 100%{transform:translateX(var(--dx2,35px)) translateY(-220px) scaleX(.7);opacity:0;} }
 
-.craft-content h2 { font-family:'Anton',sans-serif; font-size:clamp(42px,4.5vw,66px); line-height:0.95; letter-spacing:0.04em; color:var(--cream); margin-bottom:26px; }
+.craft-content h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(42px,4.5vw,66px); line-height:.95; letter-spacing:.04em; color:var(--cream); margin-bottom:26px; }
 .craft-content h2 em { font-style:italic; color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.08em; }
-.craft-content p { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:300; line-height:1.92; color:rgba(184,200,168,0.66); margin-bottom:20px; }
-.craft-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:48px; padding-top:48px; border-top:1px solid rgba(77,140,48,0.14); }
-.stat-num { font-family:'Anton',sans-serif; font-size:50px; color:var(--gold); line-height:1; margin-bottom:6px; letter-spacing:0.03em; }
-.stat-label { font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(184,200,168,0.42); }
+.craft-content p { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:300; line-height:1.92; color:rgba(184,200,168,.66); margin-bottom:20px; }
+.craft-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:48px; padding-top:48px; border-top:1px solid rgba(77,140,48,.14); }
+.stat-num   { font-family:'Bebas Neue',sans-serif; font-size:50px; color:var(--gold); line-height:1; margin-bottom:6px; letter-spacing:.03em; }
+.stat-label { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:rgba(184,200,168,.42); }
 
 /* ════════ CTA ════════ */
-.cta-section { padding:150px 60px; background:rgba(4,8,4,0.64); text-align:center; overflow:hidden; }
-.cta-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(20,80,10,0.38) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 50% 50%,rgba(15,60,10,0.14) 0%,transparent 60%); }
-.cta-section h2 { font-family:'Anton',sans-serif; font-size:clamp(60px,9vw,130px); line-height:0.88; letter-spacing:0.04em; color:var(--cream); position:relative; margin-bottom:40px; }
+.cta-section { padding:150px 60px; background:rgba(4,8,4,.64); text-align:center; overflow:hidden; }
+.cta-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(20,80,10,.38),transparent 55%),radial-gradient(ellipse 50% 40% at 50% 50%,rgba(15,60,10,.14),transparent 60%); }
+.cta-section h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,9vw,130px); line-height:.88; letter-spacing:.04em; color:var(--cream); position:relative; margin-bottom:40px; }
 .cta-section h2 span { display:block; color:var(--green-light); }
-.cta-section p { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; color:rgba(184,200,168,0.58); margin-bottom:50px; letter-spacing:0.06em; position:relative; }
+.cta-section p { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; color:rgba(184,200,168,.58); margin-bottom:50px; letter-spacing:.06em; position:relative; }
 .cta-btns { display:flex; gap:16px; justify-content:center; position:relative; }
 
 /* ── FOOTER ── */
-footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px solid rgba(77,140,48,0.10); }
+footer { background:rgba(2,5,2,.96); padding:72px 60px 36px; border-top:1px solid rgba(77,140,48,.10); }
 .footer-top { max-width:1200px; margin:0 auto 52px; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:52px; }
-.footer-brand h3 { font-family:'Anton',sans-serif; font-size:34px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
-.footer-brand p { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:rgba(184,200,168,0.38); line-height:1.85; }
-.footer-col h4 { font-size:10px; letter-spacing:0.32em; text-transform:uppercase; color:var(--green-dim); margin-bottom:20px; font-weight:500; }
-.footer-col ul { list-style:none; }
+.footer-brand h3 { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:.16em; color:var(--gold); margin-bottom:12px; }
+.footer-brand p  { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:rgba(184,200,168,.38); line-height:1.85; }
+.footer-col h4   { font-size:10px; letter-spacing:.32em; text-transform:uppercase; color:var(--green-dim); margin-bottom:20px; font-weight:500; }
+.footer-col ul   { list-style:none; }
 .footer-col ul li { margin-bottom:10px; }
-.footer-col ul li a { font-size:14px; font-weight:300; color:rgba(184,200,168,0.38); text-decoration:none; transition:color 0.3s ease; letter-spacing:0.05em; }
+.footer-col ul li a { font-size:14px; font-weight:300; color:rgba(184,200,168,.38); text-decoration:none; transition:color .3s; letter-spacing:.05em; }
 .footer-col ul li a:hover { color:var(--green-light); }
-.footer-bottom { max-width:1200px; margin:0 auto; padding-top:32px; border-top:1px solid rgba(77,140,48,0.07); display:flex; align-items:center; justify-content:space-between; }
-.footer-bottom p { font-size:11px; letter-spacing:0.1em; color:rgba(184,200,168,0.22); }
-.age-badge { font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:var(--green-dim); border:1px solid rgba(77,140,48,0.18); padding:5px 12px; font-weight:500; }
+.footer-bottom { max-width:1200px; margin:0 auto; padding-top:32px; border-top:1px solid rgba(77,140,48,.07); display:flex; align-items:center; justify-content:space-between; }
+.footer-bottom p { font-size:11px; letter-spacing:.1em; color:rgba(184,200,168,.22); }
+.age-badge { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--green-dim); border:1px solid rgba(77,140,48,.18); padding:5px 12px; font-weight:500; }
 </style>
 </head>
 <body>
 
 <canvas id="starCanvas"></canvas>
-<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-dot"  id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
@@ -263,146 +262,12 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero" id="home">
   <div class="hero-nebula"></div>
-  <div class="smoke-ring" style="width:280px;height:280px;animation-delay:0s;"></div>
-  <div class="smoke-ring" style="width:480px;height:480px;animation-delay:2.2s;"></div>
-  <div class="smoke-ring" style="width:700px;height:700px;animation-delay:4.4s;"></div>
-  <div class="smoke-ring" style="width:960px;height:960px;animation-delay:6.6s;"></div>
+  <div class="smoke-ring" style="width:300px;height:300px;animation-delay:0s;"></div>
+  <div class="smoke-ring" style="width:520px;height:520px;animation-delay:2.2s;"></div>
+  <div class="smoke-ring" style="width:760px;height:760px;animation-delay:4.4s;"></div>
+  <div class="smoke-ring" style="width:1020px;height:1020px;animation-delay:6.6s;"></div>
 
-  <!-- 3D joint stage — JS applies cursor tilt here -->
-  <div class="hero-joint-stage">
-    <div class="hero-joint-3d" id="heroJointStage" style="width:500px;height:280px;position:relative;">
-      <div class="hero-joint-wrap" style="width:500px;height:280px;position:relative;">
-        <!-- Green ambient glow -->
-        <div class="h-glow" style="width:320px;height:320px;top:50%;left:50%;"></div>
-        <!-- Orbit rings — green tint -->
-        <div class="h-orbit" style="--spd:22s;width:280px;height:280px;border:1px solid rgba(77,140,48,0.13);"></div>
-        <div class="h-orbit" style="--spd:35s;width:360px;height:360px;border:1px solid rgba(50,120,30,0.08);animation-direction:reverse;"></div>
-        <div class="h-orbit" style="--spd:28s;width:440px;height:440px;border:1px solid rgba(77,140,48,0.06);"></div>
-        <!-- Smoke from tip -->
-        <div class="smp" style="--dur:3.8s;--del:0s;--dx:14px;width:22px;height:22px;top:84px;left:58px;"></div>
-        <div class="smp" style="--dur:4.6s;--del:1s;--dx:-10px;width:30px;height:30px;top:78px;left:48px;"></div>
-        <div class="smp" style="--dur:3.3s;--del:2s;--dx:20px;width:16px;height:16px;top:90px;left:65px;"></div>
-        <div class="smp" style="--dur:5.2s;--del:3s;--dx:-18px;width:38px;height:38px;top:72px;left:40px;"></div>
-
-        <!-- HERO JOINT SVG — kief-coated, green/brown/black/white, realistic ember -->
-        <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-34deg);filter:drop-shadow(0 20px 60px rgba(40,100,10,0.45)) drop-shadow(0 0 100px rgba(20,80,10,0.24));" width="460" height="110" viewBox="0 0 460 110" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <!-- Kief-coated body: dark olive-green/brown — cannabis kief look -->
-            <linearGradient id="hKief" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#d0e8b0"/>
-              <stop offset="18%"  stop-color="#8aaa60"/>
-              <stop offset="35%"  stop-color="#5a7840"/>
-              <stop offset="55%"  stop-color="#3d5228"/>
-              <stop offset="78%"  stop-color="#283818"/>
-              <stop offset="100%" stop-color="#141e0c"/>
-            </linearGradient>
-            <!-- Specular highlight on cylinder top edge -->
-            <linearGradient id="hSpec" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#fff" stop-opacity="0.22"/>
-              <stop offset="25%"  stop-color="#fff" stop-opacity="0.05"/>
-              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-            </linearGradient>
-            <!-- Length shadow (ends darker) -->
-            <linearGradient id="hLen" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#000" stop-opacity="0.65"/>
-              <stop offset="7%"   stop-color="#000" stop-opacity="0"/>
-              <stop offset="88%"  stop-color="#000" stop-opacity="0"/>
-              <stop offset="100%" stop-color="#000" stop-opacity="0.40"/>
-            </linearGradient>
-            <!-- Filter/crutch — natural rolling paper white -->
-            <linearGradient id="hFilt" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#f0f0e8"/>
-              <stop offset="45%"  stop-color="#c8c0a0"/>
-              <stop offset="100%" stop-color="#a09070"/>
-            </linearGradient>
-            <!-- Twist cone tip — dark brown/char -->
-            <linearGradient id="hCone" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#4a3018"/>
-              <stop offset="45%"  stop-color="#2a1c0c"/>
-              <stop offset="100%" stop-color="#180e04"/>
-            </linearGradient>
-            <!-- Ember ambient glow — warm red-orange -->
-            <radialGradient id="hEmb" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stop-color="#ff9040"/>
-              <stop offset="30%"  stop-color="#e04000" stop-opacity="0.85"/>
-              <stop offset="60%"  stop-color="#aa1800" stop-opacity="0.55"/>
-              <stop offset="100%" stop-color="#660000" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="hGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <!-- Gold brand band -->
-            <linearGradient id="hBand" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%"   stop-color="#f0d060"/>
-              <stop offset="50%"  stop-color="#c9a030"/>
-              <stop offset="100%" stop-color="#806010"/>
-            </linearGradient>
-            <!-- Green kief speckle texture -->
-            <filter id="kief" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.9 0.6" numOctaves="4" seed="8" result="noise"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.55 0" result="colorNoise" in="noise"/>
-              <feBlend in="SourceGraphic" in2="colorNoise" mode="overlay"/>
-            </filter>
-          </defs>
-          <!-- Ground shadow -->
-          <ellipse cx="245" cy="108" rx="178" ry="6" fill="rgba(0,0,0,0.5)"/>
-          <!-- Filter end (right) — rolling paper -->
-          <rect x="366" y="28" width="68" height="52" rx="4" fill="url(#hFilt)"/>
-          <rect x="366" y="28" width="68" height="13" rx="4" fill="rgba(255,255,255,0.18)"/>
-          <line x1="375" y1="28" x2="375" y2="80" stroke="rgba(100,90,70,0.4)" stroke-width="1"/>
-          <line x1="384" y1="28" x2="384" y2="80" stroke="rgba(100,90,70,0.35)" stroke-width="1"/>
-          <line x1="393" y1="28" x2="393" y2="80" stroke="rgba(100,90,70,0.4)" stroke-width="1"/>
-          <line x1="402" y1="28" x2="402" y2="80" stroke="rgba(100,90,70,0.35)" stroke-width="1"/>
-          <line x1="411" y1="28" x2="411" y2="80" stroke="rgba(100,90,70,0.4)" stroke-width="1"/>
-          <line x1="420" y1="28" x2="420" y2="80" stroke="rgba(100,90,70,0.35)" stroke-width="1"/>
-          <rect x="366" y="67" width="68" height="13" rx="3" fill="rgba(0,0,0,0.18)"/>
-          <rect x="432" y="31" width="16" height="46" rx="8" fill="#e8e0c8"/>
-          <rect x="432" y="31" width="16" height="12" rx="6" fill="rgba(255,255,255,0.22)"/>
-          <!-- Main body — green kief-coated cannabis joint -->
-          <rect x="86" y="26" width="284" height="56" rx="3" fill="url(#hKief)" filter="url(#kief)"/>
-          <rect x="86" y="26" width="284" height="56" rx="3" fill="url(#hLen)"/>
-          <rect x="86" y="26" width="284" height="28" rx="3" fill="url(#hSpec)"/>
-          <!-- Surface texture lines -->
-          <line x1="130" y1="26" x2="130" y2="82" stroke="rgba(10,20,5,0.20)" stroke-width="0.8"/>
-          <line x1="180" y1="26" x2="180" y2="82" stroke="rgba(10,20,5,0.15)" stroke-width="0.8"/>
-          <line x1="230" y1="26" x2="230" y2="82" stroke="rgba(10,20,5,0.20)" stroke-width="0.8"/>
-          <line x1="280" y1="26" x2="280" y2="82" stroke="rgba(10,20,5,0.15)" stroke-width="0.8"/>
-          <line x1="330" y1="26" x2="330" y2="82" stroke="rgba(10,20,5,0.20)" stroke-width="0.8"/>
-          <!-- Gold brand band (touch of gold) -->
-          <rect x="195" y="26" width="7" height="56" fill="url(#hBand)" opacity="0.88"/>
-          <text x="248" y="56" font-family="Anton, sans-serif" font-size="15" fill="rgba(201,168,76,0.88)" text-anchor="middle" letter-spacing="5">SLUGGERS</text>
-          <text x="248" y="69" font-family="Space Grotesk, sans-serif" font-size="7" fill="rgba(201,168,76,0.52)" text-anchor="middle" letter-spacing="4" font-weight="500">HIT</text>
-          <!-- Twisted cone tip (left) — dark char brown -->
-          <polygon points="86,26 86,82 16,54" fill="url(#hCone)"/>
-          <line x1="86" y1="26" x2="22" y2="48" stroke="rgba(120,90,50,0.28)" stroke-width="1"/>
-          <line x1="86" y1="40" x2="18" y2="53" stroke="rgba(120,90,50,0.22)" stroke-width="1"/>
-          <line x1="86" y1="54" x2="17" y2="55" stroke="rgba(120,90,50,0.26)" stroke-width="1"/>
-          <line x1="86" y1="68" x2="19" y2="59" stroke="rgba(120,90,50,0.20)" stroke-width="1"/>
-          <line x1="86" y1="80" x2="23" y2="63" stroke="rgba(120,90,50,0.26)" stroke-width="1"/>
-          <polygon points="86,54 86,82 16,54" fill="rgba(0,0,0,0.22)"/>
-          <!-- ── REALISTIC EMBER: ash cap → char ring → layered cherry ── -->
-          <!-- 1. Warm ambient glow (large soft halo) -->
-          <ellipse cx="13" cy="54" rx="26" ry="18" fill="url(#hEmb)" filter="url(#hGlow)" opacity="0.62"/>
-          <!-- 2. Dark char outermost ring -->
-          <ellipse cx="15" cy="54" rx="10"  ry="7.5" fill="#5a0e00"/>
-          <!-- 3. Deep cherry red -->
-          <ellipse cx="15" cy="54" rx="7.5" ry="5.8" fill="#b02000"/>
-          <!-- 4. Orange-red middle -->
-          <ellipse cx="14.5" cy="54" rx="5.5" ry="4.2" fill="#d84000"/>
-          <!-- 5. Hot orange -->
-          <ellipse cx="14"   cy="53.5" rx="3.5" ry="2.8" fill="#f06020"/>
-          <!-- 6. Bright inner core -->
-          <ellipse cx="13"   cy="53"   rx="2"   ry="1.8" fill="#ff8040"/>
-          <!-- 7. White-hot pinpoint -->
-          <ellipse cx="12"   cy="52.5" rx="1"   ry="0.9" fill="#ffcc88" opacity="0.9"/>
-          <!-- 8. Ash cap (gray-white, overlaid at very tip) -->
-          <ellipse cx="9"  cy="54.5" rx="7"   ry="5"   fill="#50504a" opacity="0.84"/>
-          <ellipse cx="8"  cy="54"   rx="5"   ry="3.5" fill="#888078"/>
-          <ellipse cx="7"  cy="53.5" rx="3"   ry="2.2" fill="#b4b0a8"/>
-          <ellipse cx="5.5" cy="53"  rx="1.5" ry="1.1" fill="#d0ccc4" opacity="0.80"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-
+  <!-- LEFT: brand text -->
   <div class="hero-content">
     <p class="hero-eyebrow">Est. 2024 — Premium Cannabis</p>
     <h1 class="hero-title">SLUGGERS</h1>
@@ -414,13 +279,185 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
       <button class="btn-ghost">Our Craft</button>
     </div>
   </div>
+
+  <!-- RIGHT: 3D vertical joint — cursor-interactive -->
+  <div class="hero-joint-col">
+    <!-- Orbit rings -->
+    <div class="h-orbit" style="--spd:22s;width:220px;height:220px;border:1px solid rgba(77,140,48,.13);"></div>
+    <div class="h-orbit" style="--spd:35s;width:300px;height:300px;border:1px solid rgba(50,120,30,.08);animation-direction:reverse;"></div>
+    <!-- Green glow -->
+    <div class="joint-glow" style="width:280px;height:280px;"></div>
+    <!-- Smoke wisps rising from ember -->
+    <div class="smp" style="--dur:3.8s;--del:0s;--dx:10px;width:18px;height:18px;top:14%;left:44%;"></div>
+    <div class="smp" style="--dur:4.6s;--del:1.2s;--dx:-8px;width:24px;height:24px;top:10%;left:48%;"></div>
+    <div class="smp" style="--dur:3.2s;--del:2.4s;--dx:14px;width:14px;height:14px;top:18%;left:42%;"></div>
+    <!-- 3D stage: JS tilt applied here -->
+    <div class="hero-joint-3d" id="heroJointStage">
+      <div class="hero-joint-float">
+        <!--
+          VERTICAL JOINT — matches premium.webp:
+          • Cylindrical shading (gradient LEFT→RIGHT for round cross-section)
+          • Heavy green/white kief coating
+          • Organic twisted paper tip at top
+          • Realistic layered ember (ash→char→cherry→core)
+          • Natural cardboard crutch at bottom
+          ViewBox: 0 0 90 400  (width×height)
+        -->
+        <svg width="110" height="490" viewBox="0 0 90 400" xmlns="http://www.w3.org/2000/svg"
+             style="filter:drop-shadow(0 20px 60px rgba(40,100,10,.50)) drop-shadow(-6px 0 40px rgba(20,80,10,.28));">
+          <defs>
+            <!-- CYLINDRICAL BODY — gradient LEFT→RIGHT gives round illusion -->
+            <linearGradient id="jBody" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#a0c870"/><!-- left highlight -->
+              <stop offset="18%"  stop-color="#6a9048"/>
+              <stop offset="42%"  stop-color="#3e6028"/>
+              <stop offset="68%"  stop-color="#253c18"/>
+              <stop offset="88%"  stop-color="#182810"/>
+              <stop offset="100%" stop-color="#0e1c08"/><!-- right shadow -->
+            </linearGradient>
+            <!-- Specular shine on left edge -->
+            <linearGradient id="jShine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"  stop-color="#fff" stop-opacity=".28"/>
+              <stop offset="14%" stop-color="#fff" stop-opacity=".07"/>
+              <stop offset="40%" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <!-- Right-edge shadow deepener -->
+            <linearGradient id="jRim" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+              <stop offset="72%"  stop-color="#000" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#000" stop-opacity=".55"/>
+            </linearGradient>
+            <!-- KIEF coating: green/white speckle overlay -->
+            <filter id="jKief" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="4" seed="18" result="noise"/>
+              <feColorMatrix type="matrix"
+                values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .60 0"
+                in="noise" result="green"/>
+              <feBlend in="SourceGraphic" in2="green" mode="overlay"/>
+            </filter>
+            <!-- PAPER CRUTCH at bottom -->
+            <linearGradient id="jCrutch" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#f2f0e4"/>
+              <stop offset="30%"  stop-color="#c8c0a0"/>
+              <stop offset="70%"  stop-color="#b0a888"/>
+              <stop offset="100%" stop-color="#8a8060"/>
+            </linearGradient>
+            <!-- GOLD BRAND BAND -->
+            <linearGradient id="jGold" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#f0d060"/>
+              <stop offset="50%"  stop-color="#c9a030"/>
+              <stop offset="100%" stop-color="#806010"/>
+            </linearGradient>
+            <!-- EMBER glow -->
+            <radialGradient id="jEmber" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ff9040"/>
+              <stop offset="28%"  stop-color="#e04000" stop-opacity=".88"/>
+              <stop offset="62%"  stop-color="#aa1800" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#660000" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="jGlow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <!-- ── CRUTCH / FILTER (BOTTOM) ── -->
+          <!-- Crutch cylinder body -->
+          <rect x="12" y="318" width="66" height="72" rx="4" fill="url(#jCrutch)"/>
+          <!-- Crutch shine -->
+          <rect x="12" y="318" width="20" height="72" rx="4" fill="rgba(255,255,255,.18)"/>
+          <!-- Crutch shadow right -->
+          <rect x="60" y="318" width="18" height="72" rx="4" fill="rgba(0,0,0,.28)"/>
+          <!-- Crutch fold lines (cardboard texture) -->
+          <line x1="24" y1="318" x2="24" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <line x1="34" y1="318" x2="34" y2="390" stroke="rgba(100,90,70,.34)" stroke-width="1"/>
+          <line x1="44" y1="318" x2="44" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <line x1="54" y1="318" x2="54" y2="390" stroke="rgba(100,90,70,.34)" stroke-width="1"/>
+          <line x1="64" y1="318" x2="64" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <!-- Crutch bottom cap -->
+          <ellipse cx="45" cy="390" rx="33" ry="6" fill="#c8c0a0"/>
+          <ellipse cx="45" cy="388" rx="33" ry="4" fill="rgba(255,255,255,.14)"/>
+          <!-- Bottom ground shadow -->
+          <ellipse cx="45" cy="396" rx="28" ry="5" fill="rgba(0,0,0,.55)"/>
+
+          <!-- ── MAIN BODY (kief-coated joint paper) ── -->
+          <!-- Base body cylinder -->
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#jBody)" filter="url(#jKief)"/>
+          <!-- Specular left shine -->
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#jShine)"/>
+          <!-- Right-edge rim shadow -->
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#jRim)"/>
+          <!-- Subtle horizontal wrap lines (rolling paper) -->
+          <line x1="13" y1="140" x2="77" y2="135" stroke="rgba(10,22,5,.22)" stroke-width=".8"/>
+          <line x1="13" y1="190" x2="77" y2="185" stroke="rgba(10,22,5,.18)" stroke-width=".8"/>
+          <line x1="13" y1="240" x2="77" y2="235" stroke="rgba(10,22,5,.22)" stroke-width=".8"/>
+          <line x1="13" y1="290" x2="77" y2="285" stroke="rgba(10,22,5,.18)" stroke-width=".8"/>
+          <!-- Gold brand band (touch of gold) -->
+          <rect x="12" y="198" width="66" height="9"  fill="url(#jGold)" opacity=".92"/>
+          <rect x="12" y="211" width="66" height="2"  fill="rgba(201,168,76,.36)"/>
+          <!-- Brand text -->
+          <g transform="translate(45,204) rotate(90)">
+            <text x="0" y="0"  font-family="Bebas Neue, sans-serif" font-size="11" fill="rgba(201,168,76,.90)" text-anchor="middle" letter-spacing="5">SLUGGERS</text>
+          </g>
+          <g transform="translate(45,204) rotate(90)">
+            <text x="0" y="14" font-family="Space Grotesk, sans-serif" font-size="5.5" fill="rgba(201,168,76,.52)" text-anchor="middle" letter-spacing="3.5" font-weight="500">HIT</text>
+          </g>
+
+          <!-- ── TWISTED PAPER TIP (TOP) ── -->
+          <!-- Base cone shape — dark charred paper -->
+          <path d="M12,88 Q28,52 45,24 Q62,52 78,88 L70,100 L20,100 Z" fill="#241408"/>
+          <!-- Kief on cone -->
+          <path d="M12,88 Q28,52 45,24 Q62,52 78,88 L70,100 L20,100 Z" fill="url(#jBody)" filter="url(#jKief)" opacity=".65"/>
+          <!-- Twist lines — the paper wrapping spirals toward the tip -->
+          <path d="M22,94 Q38,62 45,28"  stroke="rgba(130,100,50,.40)" stroke-width="1.2" fill="none"/>
+          <path d="M68,94 Q52,62 45,28"  stroke="rgba(80,60,30,.35)"   stroke-width="1.2" fill="none"/>
+          <path d="M18,90 Q36,58 46,32"  stroke="rgba(130,100,50,.25)" stroke-width=".8"  fill="none"/>
+          <path d="M72,90 Q54,58 44,32"  stroke="rgba(80,60,30,.22)"   stroke-width=".8"  fill="none"/>
+          <!-- Specular on twist left side -->
+          <path d="M12,88 Q28,52 45,24 Q32,50 20,88 Z" fill="rgba(255,255,255,.08)"/>
+          <!-- Dark shadow on right of twist -->
+          <path d="M78,88 Q62,52 45,24 Q58,50 70,88 Z" fill="rgba(0,0,0,.20)"/>
+
+          <!-- ── REALISTIC EMBER ── -->
+          <!-- 1. Wide warm ambient glow -->
+          <ellipse cx="45" cy="34" rx="32" ry="26" fill="url(#jEmber)" filter="url(#jGlow)" opacity=".62"/>
+          <!-- 2. Dark char outermost ring -->
+          <ellipse cx="45" cy="36" rx="16" ry="13"  fill="#5a0e00"/>
+          <!-- 3. Deep cherry red -->
+          <ellipse cx="45" cy="36" rx="12" ry="9.5" fill="#b02000"/>
+          <!-- 4. Orange-red -->
+          <ellipse cx="45" cy="35" rx="8.5" ry="7"  fill="#d84000"/>
+          <!-- 5. Hot orange -->
+          <ellipse cx="45" cy="34" rx="5.5" ry="4.5" fill="#f06020"/>
+          <!-- 6. Bright core -->
+          <ellipse cx="45" cy="33" rx="3.2" ry="2.8" fill="#ff8040"/>
+          <!-- 7. White-hot pinpoint -->
+          <ellipse cx="44" cy="32" rx="1.6" ry="1.4" fill="#ffcc88" opacity=".9"/>
+          <!-- 8. Gray ash cap overlaid at very tip -->
+          <ellipse cx="45" cy="28" rx="11" ry="8"   fill="#50504a" opacity=".82"/>
+          <ellipse cx="45" cy="25" rx="8"  ry="5.5" fill="#888078"/>
+          <ellipse cx="45" cy="22" rx="5"  ry="3.8" fill="#b4b0a8"/>
+          <ellipse cx="45" cy="20" rx="3"  ry="2.2" fill="#d0ccc4" opacity=".80"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
   <div class="scroll-ind"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
 <!-- MARQUEE -->
 <div class="marquee-strip">
   <div class="marquee-inner">
-    <span class="mi">Premium Joints</span><span class="md"> ✦ </span><span class="mi">Infused Blunts</span><span class="md"> ✦ </span><span class="mi">Hash Hole</span><span class="md"> ✦ </span><span class="mi">Juiced 5-Packs</span><span class="md"> ✦ </span><span class="mi">Top Shelf</span><span class="md"> ✦ </span><span class="mi">Sluggers Hit</span><span class="md"> ✦ </span><span class="mi">Premium Joints</span><span class="md"> ✦ </span><span class="mi">Infused Blunts</span><span class="md"> ✦ </span><span class="mi">Hash Hole</span><span class="md"> ✦ </span><span class="mi">Juiced 5-Packs</span><span class="md"> ✦ </span><span class="mi">Top Shelf</span><span class="md"> ✦ </span><span class="mi">Sluggers Hit</span><span class="md"> ✦ </span>
+    <span class="mi">Premium Joints</span><span class="md"> ✦ </span>
+    <span class="mi">Infused Blunts</span><span class="md"> ✦ </span>
+    <span class="mi">Hash Hole</span><span class="md"> ✦ </span>
+    <span class="mi">Juiced 5-Packs</span><span class="md"> ✦ </span>
+    <span class="mi">Top Shelf</span><span class="md"> ✦ </span>
+    <span class="mi">Sluggers Hit</span><span class="md"> ✦ </span>
+    <span class="mi">Premium Joints</span><span class="md"> ✦ </span>
+    <span class="mi">Infused Blunts</span><span class="md"> ✦ </span>
+    <span class="mi">Hash Hole</span><span class="md"> ✦ </span>
+    <span class="mi">Juiced 5-Packs</span><span class="md"> ✦ </span>
+    <span class="mi">Top Shelf</span><span class="md"> ✦ </span>
+    <span class="mi">Sluggers Hit</span><span class="md"> ✦ </span>
   </div>
 </div>
 
@@ -433,70 +470,86 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
       <p>We reject mediocrity in all its forms. Every Slugger is a culmination of expertise, premium flower, and an unwavering commitment to the ritual of cannabis culture.</p>
       <button class="btn-primary">Our Story</button>
     </div>
-    <!-- Orbit joint -->
+
+    <!-- Orbit: vertical joint slowly spinning -->
     <div class="orbit-stage">
       <div class="orbit-c">
-        <div class="oc-ring" style="--spd:22s;width:240px;height:240px;border:1px solid rgba(77,140,48,0.13);"></div>
-        <div class="oc-ring" style="--spd:33s;width:306px;height:306px;animation-direction:reverse;border:1px solid rgba(50,120,30,0.10);"></div>
-        <div class="oc-ring" style="--spd:26s;width:375px;height:375px;border:1px solid rgba(77,140,48,0.06);"></div>
+        <div class="oc-ring" style="--spd:22s;width:240px;height:240px;border:1px solid rgba(77,140,48,.13);"></div>
+        <div class="oc-ring" style="--spd:33s;width:306px;height:306px;animation-direction:reverse;border:1px solid rgba(50,120,30,.10);"></div>
+        <div class="oc-ring" style="--spd:26s;width:375px;height:375px;border:1px solid rgba(77,140,48,.06);"></div>
         <div class="oc-glow"></div>
         <div class="oc-joint">
-          <!-- Kief-coated orbit joint — green/brown palette -->
-          <svg width="260" height="65" viewBox="0 0 260 65" xmlns="http://www.w3.org/2000/svg">
+          <!--
+            ORBIT JOINT — vertical, same cylindrical style, smaller
+            ViewBox: 0 0 60 240
+          -->
+          <svg width="72" height="288" viewBox="0 0 60 240" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="ojK" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%"   stop-color="#c8e098"/>
-                <stop offset="30%"  stop-color="#7a9e50"/>
-                <stop offset="65%"  stop-color="#4a6830"/>
-                <stop offset="100%" stop-color="#243818"/>
+              <linearGradient id="ojBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#a0c870"/>
+                <stop offset="20%"  stop-color="#6a9048"/>
+                <stop offset="50%"  stop-color="#3e6028"/>
+                <stop offset="80%"  stop-color="#253c18"/>
+                <stop offset="100%" stop-color="#0e1c08"/>
               </linearGradient>
-              <linearGradient id="ojF" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%"   stop-color="#f0f0e8"/>
-                <stop offset="100%" stop-color="#a09070"/>
+              <linearGradient id="ojShine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"  stop-color="#fff" stop-opacity=".24"/>
+                <stop offset="18%" stop-color="#fff" stop-opacity="0"/>
               </linearGradient>
-              <linearGradient id="ojCone" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%"   stop-color="#4a3018"/>
-                <stop offset="100%" stop-color="#180e04"/>
+              <linearGradient id="ojRim" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="75%"  stop-color="#000" stop-opacity="0"/>
+                <stop offset="100%" stop-color="#000" stop-opacity=".50"/>
               </linearGradient>
-              <radialGradient id="ojE" cx="50%" cy="50%" r="50%">
+              <linearGradient id="ojCrutch" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#f2f0e4"/>
+                <stop offset="60%"  stop-color="#b0a888"/>
+                <stop offset="100%" stop-color="#8a8060"/>
+              </linearGradient>
+              <filter id="ojKief" x="-5%" y="-5%" width="110%" height="110%">
+                <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="3" seed="22" result="noise"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .55 0" in="noise" result="g"/>
+                <feBlend in="SourceGraphic" in2="g" mode="overlay"/>
+              </filter>
+              <radialGradient id="ojEmber" cx="50%" cy="50%" r="50%">
                 <stop offset="0%"   stop-color="#ff9040"/>
-                <stop offset="40%"  stop-color="#e04000" stop-opacity="0.85"/>
+                <stop offset="30%"  stop-color="#e04000" stop-opacity=".85"/>
                 <stop offset="100%" stop-color="#aa1800" stop-opacity="0"/>
               </radialGradient>
-              <filter id="ojGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <filter id="ojKief" x="-5%" y="-5%" width="110%" height="110%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.9 0.6" numOctaves="3" seed="12" result="noise"/>
-                <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.50 0" result="cn" in="noise"/>
-                <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
-              </filter>
+              <filter id="ojGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             </defs>
+            <!-- Crutch -->
+            <rect x="8" y="190" width="44" height="44" rx="3" fill="url(#ojCrutch)"/>
+            <rect x="8" y="190" width="13" height="44" rx="3" fill="rgba(255,255,255,.16)"/>
+            <line x1="16" y1="190" x2="16" y2="234" stroke="rgba(100,90,70,.38)" stroke-width=".8"/>
+            <line x1="24" y1="190" x2="24" y2="234" stroke="rgba(100,90,70,.30)" stroke-width=".8"/>
+            <line x1="32" y1="190" x2="32" y2="234" stroke="rgba(100,90,70,.38)" stroke-width=".8"/>
+            <line x1="40" y1="190" x2="40" y2="234" stroke="rgba(100,90,70,.30)" stroke-width=".8"/>
+            <ellipse cx="30" cy="234" rx="22" ry="4" fill="#c8c0a0"/>
             <!-- Body -->
-            <rect x="44" y="14" width="174" height="36" rx="2" fill="url(#ojK)" filter="url(#ojKief)"/>
-            <rect x="44" y="14" width="174" height="13" rx="2" fill="rgba(255,255,255,0.14)"/>
-            <rect x="44" y="37" width="174" height="13" rx="2" fill="rgba(0,0,0,0.20)"/>
-            <!-- Cone tip -->
-            <polygon points="44,14 44,50 10,32" fill="url(#ojCone)"/>
-            <polygon points="44,32 44,50 10,32" fill="rgba(0,0,0,0.20)"/>
-            <!-- Filter/crutch -->
-            <rect x="216" y="16" width="42" height="32" rx="3" fill="url(#ojF)"/>
-            <rect x="216" y="16" width="42" height="10" rx="3" fill="rgba(255,255,255,0.18)"/>
-            <line x1="224" y1="16" x2="224" y2="48" stroke="rgba(100,90,70,0.38)" stroke-width="0.8"/>
-            <line x1="232" y1="16" x2="232" y2="48" stroke="rgba(100,90,70,0.30)" stroke-width="0.8"/>
-            <line x1="240" y1="16" x2="240" y2="48" stroke="rgba(100,90,70,0.38)" stroke-width="0.8"/>
-            <rect x="257" y="18" width="5" height="28" rx="2.5" fill="#e8e0c8"/>
-            <!-- Brand text (gold touch) -->
-            <text x="128" y="35" font-family="Anton, sans-serif" font-size="9" fill="rgba(201,168,76,0.82)" text-anchor="middle" letter-spacing="4">SLUGGERS</text>
-            <!-- Realistic ember -->
-            <ellipse cx="8"  cy="32" rx="14" ry="10" fill="url(#ojE)" filter="url(#ojGlow)" opacity="0.58"/>
-            <ellipse cx="10" cy="32" rx="7"  ry="5"  fill="#5a0e00"/>
-            <ellipse cx="10" cy="32" rx="5"  ry="3.8" fill="#b02000"/>
-            <ellipse cx="9.5" cy="31.5" rx="3.5" ry="2.8" fill="#d84000"/>
-            <ellipse cx="9"  cy="31"  rx="2.2" ry="1.8" fill="#f06020"/>
-            <ellipse cx="8.5" cy="30.5" rx="1.2" ry="1"   fill="#ff8040" opacity="0.9"/>
+            <rect x="8" y="55" width="44" height="137" rx="4" fill="url(#ojBody)" filter="url(#ojKief)"/>
+            <rect x="8" y="55" width="44" height="137" rx="4" fill="url(#ojShine)"/>
+            <rect x="8" y="55" width="44" height="137" rx="4" fill="url(#ojRim)"/>
+            <line x1="9"  y1="100" x2="51" y2="96"  stroke="rgba(10,22,5,.20)" stroke-width=".7"/>
+            <line x1="9"  y1="145" x2="51" y2="141" stroke="rgba(10,22,5,.16)" stroke-width=".7"/>
+            <!-- Gold band -->
+            <rect x="8" y="118" width="44" height="6" fill="rgba(201,168,76,.85)"/>
+            <text x="30" y="126" font-family="Bebas Neue,sans-serif" font-size="7" fill="rgba(201,168,76,.80)" text-anchor="middle" letter-spacing="3">SLUGGERS</text>
+            <!-- Twist tip -->
+            <path d="M8,55 Q22,32 30,12 Q38,32 52,55 L46,64 L14,64 Z" fill="#241408"/>
+            <path d="M8,55 Q22,32 30,12 Q38,32 52,55 L46,64 L14,64 Z" fill="url(#ojBody)" filter="url(#ojKief)" opacity=".6"/>
+            <path d="M14,60 Q24,38 30,16" stroke="rgba(130,100,50,.38)" stroke-width=".9" fill="none"/>
+            <path d="M46,60 Q36,38 30,16" stroke="rgba(80,60,30,.32)"   stroke-width=".9" fill="none"/>
+            <!-- Ember -->
+            <ellipse cx="30" cy="20" rx="20" ry="16" fill="url(#ojEmber)" filter="url(#ojGlow)" opacity=".60"/>
+            <ellipse cx="30" cy="22" rx="10" ry="8"  fill="#5a0e00"/>
+            <ellipse cx="30" cy="22" rx="7.5" ry="6" fill="#b02000"/>
+            <ellipse cx="30" cy="21" rx="5"  ry="4"  fill="#d84000"/>
+            <ellipse cx="30" cy="20" rx="3"  ry="2.6" fill="#f06020"/>
+            <ellipse cx="30" cy="19" rx="1.6" ry="1.4" fill="#ff8040" opacity=".9"/>
             <!-- Ash -->
-            <ellipse cx="5"  cy="32.5" rx="5"   ry="3.5" fill="#50504a" opacity="0.82"/>
-            <ellipse cx="4"  cy="32"   rx="3.5"  ry="2.5" fill="#888078"/>
-            <ellipse cx="3"  cy="31.5" rx="2"    ry="1.5" fill="#b4b0a8"/>
+            <ellipse cx="30" cy="16" rx="7"  ry="5"   fill="#50504a" opacity=".80"/>
+            <ellipse cx="30" cy="13" rx="5"  ry="3.5" fill="#888078"/>
+            <ellipse cx="30" cy="10" rx="3"  ry="2.2" fill="#b4b0a8"/>
           </svg>
         </div>
       </div>
@@ -515,7 +568,6 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
   </div>
   <div class="products-grid stagger">
 
-    <!-- Card 1: Juiced 5-Pack -->
     <div class="product-card">
       <div class="card-visual">
         <div class="card-ring-wrap"></div>
@@ -527,14 +579,13 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
       <p class="card-desc">5 diamond-infused joints packed in a collectible bag. Single source, indica or sativa — 3.5g total weight.</p>
       <div class="card-footer">
         <span class="card-price">$75</span>
-        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,0.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
+        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
       </div>
     </div>
 
-    <!-- Card 2: Blunts -->
     <div class="product-card">
       <div class="card-visual">
-        <div class="card-ring-wrap" style="animation-direction:reverse;border-color:rgba(60,140,30,0.18);"></div>
+        <div class="card-ring-wrap" style="animation-direction:reverse;border-color:rgba(60,140,30,.18);"></div>
         <img src="blunts.png" class="card-product-img" alt="Sluggers Blunt 2G">
       </div>
       <p class="card-number">No. 02</p>
@@ -543,14 +594,13 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
       <p class="card-desc">2g of top-shelf sativa wrapped in a natural tobacco leaf. Holographic tube. New York Diesel strain.</p>
       <div class="card-footer">
         <span class="card-price">$30</span>
-        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,0.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
+        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
       </div>
     </div>
 
-    <!-- Card 3: Hash Hole -->
     <div class="product-card">
       <div class="card-visual">
-        <div class="card-ring-wrap" style="border-color:rgba(77,140,48,0.22);width:190px;height:190px;"></div>
+        <div class="card-ring-wrap" style="border-color:rgba(77,140,48,.22);width:190px;height:190px;"></div>
         <img src="hashhole.png" class="card-product-img" alt="Sluggers Hash Hole">
       </div>
       <p class="card-number">No. 03</p>
@@ -559,7 +609,7 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
       <p class="card-desc">Kief-coated, hash rosin infused. Premium flower. The Ace series — our most elevated offering.</p>
       <div class="card-footer">
         <span class="card-price">$60</span>
-        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,0.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
+        <div class="card-arrow"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="rgba(77,140,48,.8)" stroke-width="1.4"><path d="M2.5 7.5h10M9 4l3.5 3.5L9 11"/></svg></div>
       </div>
     </div>
 
@@ -575,40 +625,44 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
     </div>
     <div class="ritual-steps stagger">
 
-      <!-- Step 1: horizontal joint spinning -->
+      <!-- Step 1 -->
       <div class="ritual-step">
         <div class="step-icon">
           <span class="step-num">01</span>
           <div class="step-joint-wrap">
-            <svg width="48" height="20" viewBox="0 0 48 20" style="animation:gentleSpin 8s ease-in-out infinite;transform-origin:center;" xmlns="http://www.w3.org/2000/svg">
+            <!-- Mini vertical joint icon -->
+            <svg width="22" height="50" viewBox="0 0 36 80" style="animation:heroFloat 8s ease-in-out infinite;" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="sj1k" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#c8e098"/><stop offset="50%" stop-color="#5a7840"/><stop offset="100%" stop-color="#243818"/>
+                <linearGradient id="sj1b" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#8aaa60"/><stop offset="50%" stop-color="#3e6028"/><stop offset="100%" stop-color="#0e1c08"/>
                 </linearGradient>
-                <linearGradient id="sj1c" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#4a3018"/><stop offset="100%" stop-color="#180e04"/>
+                <linearGradient id="sj1c" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e8e4d0"/><stop offset="100%" stop-color="#8a8060"/>
                 </linearGradient>
                 <radialGradient id="sj1e" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#ff9040"/><stop offset="100%" stop-color="#aa1800" stop-opacity="0"/>
                 </radialGradient>
-                <filter id="sj1g"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="sj1g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
                 <filter id="sj1kf" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="1.2 0.8" numOctaves="3" seed="5" result="noise"/>
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.45 0" result="cn" in="noise"/>
-                  <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
+                  <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="3" seed="5" result="n"/>
+                  <feColorMatrix type="matrix" values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .55 0" in="n" result="g"/>
+                  <feBlend in="SourceGraphic" in2="g" mode="overlay"/>
                 </filter>
               </defs>
-              <rect x="10" y="5" width="28" height="10" rx="1" fill="url(#sj1k)" filter="url(#sj1kf)"/>
-              <rect x="10" y="5" width="28" height="4" rx="1" fill="rgba(255,255,255,0.12)"/>
-              <polygon points="10,5 10,15 3,10" fill="url(#sj1c)"/>
-              <rect x="38" y="6" width="9" height="8" rx="1.5" fill="#e8e0c8"/>
-              <!-- Ember -->
-              <ellipse cx="2" cy="10" rx="5" ry="3.5" fill="url(#sj1e)" filter="url(#sj1g)" opacity="0.6"/>
-              <ellipse cx="3" cy="10" rx="2.5" ry="2"   fill="#8a1400"/>
-              <ellipse cx="3" cy="10" rx="1.5" ry="1.3" fill="#c83000"/>
-              <ellipse cx="2.5" cy="9.5" rx="0.8" ry="0.7" fill="#f06020"/>
-              <!-- Ash -->
-              <ellipse cx="0.5" cy="10" rx="2" ry="1.5" fill="#888078"/>
+              <rect x="5" y="56" width="26" height="22" rx="2" fill="url(#sj1c)"/>
+              <line x1="11" y1="56" x2="11" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <line x1="18" y1="56" x2="18" y2="78" stroke="rgba(100,90,70,.30)" stroke-width=".7"/>
+              <line x1="25" y1="56" x2="25" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <rect x="5" y="18" width="26" height="40" rx="3" fill="url(#sj1b)" filter="url(#sj1kf)"/>
+              <rect x="5" y="18" width="8"  height="40" rx="3" fill="rgba(255,255,255,.15)"/>
+              <path d="M5,18 Q18,6 31,18 L27,24 L9,24 Z" fill="#241408"/>
+              <ellipse cx="18" cy="10" rx="11" ry="9"  fill="url(#sj1e)" filter="url(#sj1g)" opacity=".60"/>
+              <ellipse cx="18" cy="11" rx="6"  ry="5"  fill="#5a0e00"/>
+              <ellipse cx="18" cy="11" rx="4"  ry="3.2" fill="#b02000"/>
+              <ellipse cx="18" cy="10" rx="2.4" ry="2" fill="#d84000"/>
+              <ellipse cx="18" cy="9"  rx="1.4" ry="1.2" fill="#f06020" opacity=".9"/>
+              <ellipse cx="18" cy="7"  rx="4"  ry="3"   fill="#50504a" opacity=".78"/>
+              <ellipse cx="18" cy="5"  rx="2.5" ry="2"  fill="#888078"/>
             </svg>
           </div>
         </div>
@@ -616,41 +670,43 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
         <p class="step-desc">Sun-grown, small-batch cannabis harvested at peak terpene expression.</p>
       </div>
 
-      <!-- Step 2: vertical joint drying -->
+      <!-- Step 2 -->
       <div class="ritual-step">
         <div class="step-icon">
           <span class="step-num">02</span>
           <div class="step-joint-wrap">
-            <svg width="20" height="50" viewBox="0 0 20 50" style="animation:heroFloat 5s ease-in-out infinite;" xmlns="http://www.w3.org/2000/svg">
+            <svg width="22" height="50" viewBox="0 0 36 80" style="animation:heroFloat 5s ease-in-out infinite 1s;" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="sj2k" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#c8e098"/><stop offset="50%" stop-color="#5a7840"/><stop offset="100%" stop-color="#243818"/>
+                <linearGradient id="sj2b" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#8aaa60"/><stop offset="50%" stop-color="#3e6028"/><stop offset="100%" stop-color="#0e1c08"/>
                 </linearGradient>
-                <linearGradient id="sj2c" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#4a3018"/><stop offset="100%" stop-color="#180e04"/>
+                <linearGradient id="sj2c" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e8e4d0"/><stop offset="100%" stop-color="#8a8060"/>
                 </linearGradient>
-                <filter id="sj2kf" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.9 1.2" numOctaves="3" seed="7" result="noise"/>
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.40 0" result="cn" in="noise"/>
-                  <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
-                </filter>
                 <radialGradient id="sj2e" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#ff9040"/><stop offset="100%" stop-color="#aa1800" stop-opacity="0"/>
                 </radialGradient>
-                <filter id="sj2g"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="sj2g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="sj2kf" x="-5%" y="-5%" width="110%" height="110%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="3" seed="9" result="n"/>
+                  <feColorMatrix type="matrix" values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .55 0" in="n" result="g"/>
+                  <feBlend in="SourceGraphic" in2="g" mode="overlay"/>
+                </filter>
               </defs>
-              <rect x="5" y="10" width="10" height="28" rx="1.5" fill="url(#sj2k)" filter="url(#sj2kf)"/>
-              <rect x="5" y="10" width="4" height="28" rx="1.5" fill="rgba(255,255,255,0.11)"/>
-              <path d="M5,10 Q10,3 15,10 L13,14 L7,14 Z" fill="url(#sj2c)"/>
-              <rect x="5" y="38" width="10" height="8" rx="1.5" fill="#e8e0c8"/>
-              <!-- Ember at tip -->
-              <ellipse cx="10" cy="6" rx="6" ry="4.5" fill="url(#sj2e)" filter="url(#sj2g)" opacity="0.58"/>
-              <ellipse cx="10" cy="7" rx="3.5" ry="2.5" fill="#8a1400"/>
-              <ellipse cx="10" cy="7" rx="2.2" ry="1.6" fill="#c83000"/>
-              <ellipse cx="10" cy="6.5" rx="1.2" ry="1"   fill="#f06020"/>
-              <!-- Ash -->
-              <ellipse cx="10" cy="3.5" rx="3" ry="2"   fill="#888078"/>
-              <ellipse cx="10" cy="2"   rx="1.8" ry="1.3" fill="#b4b0a8"/>
+              <rect x="5" y="56" width="26" height="22" rx="2" fill="url(#sj2c)"/>
+              <line x1="11" y1="56" x2="11" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <line x1="18" y1="56" x2="18" y2="78" stroke="rgba(100,90,70,.30)" stroke-width=".7"/>
+              <line x1="25" y1="56" x2="25" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <rect x="5" y="18" width="26" height="40" rx="3" fill="url(#sj2b)" filter="url(#sj2kf)"/>
+              <rect x="5" y="18" width="8"  height="40" rx="3" fill="rgba(255,255,255,.15)"/>
+              <path d="M5,18 Q18,6 31,18 L27,24 L9,24 Z" fill="#241408"/>
+              <ellipse cx="18" cy="10" rx="11" ry="9"  fill="url(#sj2e)" filter="url(#sj2g)" opacity=".60"/>
+              <ellipse cx="18" cy="11" rx="6"  ry="5"  fill="#5a0e00"/>
+              <ellipse cx="18" cy="11" rx="4"  ry="3.2" fill="#b02000"/>
+              <ellipse cx="18" cy="10" rx="2.4" ry="2" fill="#d84000"/>
+              <ellipse cx="18" cy="9"  rx="1.4" ry="1.2" fill="#f06020" opacity=".9"/>
+              <ellipse cx="18" cy="7"  rx="4"   ry="3"   fill="#50504a" opacity=".78"/>
+              <ellipse cx="18" cy="5"  rx="2.5" ry="2"   fill="#888078"/>
             </svg>
           </div>
         </div>
@@ -658,40 +714,43 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
         <p class="step-desc">60-day slow cure in climate-controlled rooms for the perfect burn.</p>
       </div>
 
-      <!-- Step 3: rolling motion -->
+      <!-- Step 3 -->
       <div class="ritual-step">
         <div class="step-icon">
           <span class="step-num">03</span>
           <div class="step-joint-wrap">
-            <svg width="50" height="20" viewBox="0 0 50 20" style="animation:gentleSpin 10s ease-in-out infinite;" xmlns="http://www.w3.org/2000/svg">
+            <svg width="22" height="50" viewBox="0 0 36 80" style="animation:heroFloat 6s ease-in-out infinite .5s;" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <linearGradient id="sj3k" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#c8e098"/><stop offset="50%" stop-color="#5a7840"/><stop offset="100%" stop-color="#243818"/>
+                <linearGradient id="sj3b" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#8aaa60"/><stop offset="50%" stop-color="#3e6028"/><stop offset="100%" stop-color="#0e1c08"/>
                 </linearGradient>
-                <linearGradient id="sj3c" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#4a3018"/><stop offset="100%" stop-color="#180e04"/>
+                <linearGradient id="sj3c" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#e8e4d0"/><stop offset="100%" stop-color="#8a8060"/>
                 </linearGradient>
-                <filter id="sj3kf" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="1.2 0.8" numOctaves="3" seed="3" result="noise"/>
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.45 0" result="cn" in="noise"/>
-                  <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
-                </filter>
                 <radialGradient id="sj3e" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#ff9040"/><stop offset="100%" stop-color="#aa1800" stop-opacity="0"/>
                 </radialGradient>
-                <filter id="sj3g"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="sj3g"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <filter id="sj3kf" x="-5%" y="-5%" width="110%" height="110%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="3" seed="13" result="n"/>
+                  <feColorMatrix type="matrix" values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .55 0" in="n" result="g"/>
+                  <feBlend in="SourceGraphic" in2="g" mode="overlay"/>
+                </filter>
               </defs>
-              <rect x="10" y="5" width="30" height="10" rx="1.5" fill="url(#sj3k)" filter="url(#sj3kf)"/>
-              <rect x="10" y="5" width="30" height="4" rx="1.5" fill="rgba(255,255,255,0.13)"/>
-              <polygon points="10,5 10,15 3,10" fill="url(#sj3c)"/>
-              <rect x="40" y="6" width="8" height="8" rx="1.5" fill="#e8e0c8"/>
-              <!-- Ember -->
-              <ellipse cx="2" cy="10" rx="5" ry="3.5" fill="url(#sj3e)" filter="url(#sj3g)" opacity="0.6"/>
-              <ellipse cx="3" cy="10" rx="2.5" ry="2"   fill="#8a1400"/>
-              <ellipse cx="3" cy="10" rx="1.5" ry="1.3" fill="#c83000"/>
-              <ellipse cx="2.5" cy="9.5" rx="0.8" ry="0.7" fill="#f06020"/>
-              <!-- Ash -->
-              <ellipse cx="0.5" cy="10" rx="2" ry="1.5" fill="#888078"/>
+              <rect x="5" y="56" width="26" height="22" rx="2" fill="url(#sj3c)"/>
+              <line x1="11" y1="56" x2="11" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <line x1="18" y1="56" x2="18" y2="78" stroke="rgba(100,90,70,.30)" stroke-width=".7"/>
+              <line x1="25" y1="56" x2="25" y2="78" stroke="rgba(100,90,70,.38)" stroke-width=".7"/>
+              <rect x="5" y="18" width="26" height="40" rx="3" fill="url(#sj3b)" filter="url(#sj3kf)"/>
+              <rect x="5" y="18" width="8"  height="40" rx="3" fill="rgba(255,255,255,.15)"/>
+              <path d="M5,18 Q18,6 31,18 L27,24 L9,24 Z" fill="#241408"/>
+              <ellipse cx="18" cy="10" rx="11" ry="9"  fill="url(#sj3e)" filter="url(#sj3g)" opacity=".60"/>
+              <ellipse cx="18" cy="11" rx="6"  ry="5"  fill="#5a0e00"/>
+              <ellipse cx="18" cy="11" rx="4"  ry="3.2" fill="#b02000"/>
+              <ellipse cx="18" cy="10" rx="2.4" ry="2" fill="#d84000"/>
+              <ellipse cx="18" cy="9"  rx="1.4" ry="1.2" fill="#f06020" opacity=".9"/>
+              <ellipse cx="18" cy="7"  rx="4"   ry="3"   fill="#50504a" opacity=".78"/>
+              <ellipse cx="18" cy="5"  rx="2.5" ry="2"   fill="#888078"/>
             </svg>
           </div>
         </div>
@@ -704,26 +763,21 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
         <div class="step-icon">
           <span class="step-num">04</span>
           <div class="step-joint-wrap">
-            <svg width="22" height="52" viewBox="0 0 22 52" style="animation:heroFloat 6s ease-in-out infinite 1s;" xmlns="http://www.w3.org/2000/svg">
+            <svg width="22" height="52" viewBox="0 0 22 52" style="animation:heroFloat 7s ease-in-out infinite 1.5s;" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="sj4tube" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stop-color="#c0c8d8"/><stop offset="30%" stop-color="#e8eef8"/>
                   <stop offset="60%" stop-color="#b0b8c8"/><stop offset="100%" stop-color="#8090a8"/>
                 </linearGradient>
                 <linearGradient id="sj4k" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#c8e098"/><stop offset="50%" stop-color="#5a7840"/><stop offset="100%" stop-color="#243818"/>
+                  <stop offset="0%" stop-color="#8aaa60"/><stop offset="50%" stop-color="#3e6028"/><stop offset="100%" stop-color="#0e1c08"/>
                 </linearGradient>
-                <filter id="sj4kf" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.9 1.2" numOctaves="3" seed="9" result="noise"/>
-                  <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.38 0" result="cn" in="noise"/>
-                  <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
-                </filter>
               </defs>
-              <rect x="3" y="5" width="16" height="42" rx="3" fill="url(#sj4tube)" opacity="0.55"/>
-              <rect x="3" y="5" width="5" height="42" rx="3" fill="rgba(255,255,255,0.25)"/>
-              <rect x="6" y="9" width="10" height="34" rx="1.5" fill="url(#sj4k)" filter="url(#sj4kf)"/>
-              <rect x="2" y="2" width="18" height="6" rx="3" fill="#444"/>
-              <rect x="2" y="2" width="18" height="3" rx="2" fill="rgba(255,255,255,0.25)"/>
+              <rect x="3" y="5" width="16" height="42" rx="3" fill="url(#sj4tube)" opacity=".55"/>
+              <rect x="3" y="5" width="5"  height="42" rx="3" fill="rgba(255,255,255,.25)"/>
+              <rect x="6" y="9" width="10" height="34" rx="1.5" fill="url(#sj4k)"/>
+              <rect x="2" y="2" width="18" height="6" rx="3" fill="#333"/>
+              <rect x="2" y="2" width="18" height="3" rx="2" fill="rgba(255,255,255,.25)"/>
               <rect x="4" y="45" width="14" height="4" rx="2" fill="#888"/>
             </svg>
           </div>
@@ -739,130 +793,111 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
 <!-- ═══════════ CRAFT ═══════════ -->
 <section class="craft" id="craft">
   <div class="craft-inner">
-    <!-- Big 3D blunt visual — JS applies cursor tilt to #craftJointStage -->
     <div class="craft-visual">
       <div class="wisp" style="--dur:4.2s;--delay:0s;--dx:24px;--dx2:42px;width:28px;height:38px;top:calc(50% - 158px);left:calc(50% - 16px);"></div>
       <div class="wisp" style="--dur:5.5s;--delay:1.5s;--dx:-20px;--dx2:-6px;width:38px;height:52px;top:calc(50% - 145px);left:calc(50% - 32px);"></div>
       <div class="wisp" style="--dur:3.9s;--delay:3s;--dx:32px;--dx2:14px;width:22px;height:28px;top:calc(50% - 166px);left:calc(50% - 4px);"></div>
 
-      <!-- 3D tilt stage -->
       <div class="craft-joint-3d" id="craftJointStage">
-        <!-- BIG VERTICAL JOINT — kief-coated, green/brown/black/white, realistic ember -->
-        <svg class="craft-blunt-wrap" width="100" height="420" viewBox="0 0 100 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- Same vertical joint design, larger -->
+        <svg class="craft-blunt-wrap" width="100" height="420" viewBox="0 0 90 400" xmlns="http://www.w3.org/2000/svg"
+             style="filter:drop-shadow(0 30px 80px rgba(20,80,10,.38)) drop-shadow(0 0 80px rgba(20,80,10,.20));">
           <defs>
-            <!-- Joint body: dark green/olive/brown — cannabis look -->
-            <linearGradient id="bw1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#4a6030"/>
-              <stop offset="15%"  stop-color="#304020"/>
-              <stop offset="50%"  stop-color="#283618"/>
-              <stop offset="85%"  stop-color="#1a2410"/>
-              <stop offset="100%" stop-color="#0c1208"/>
+            <linearGradient id="cjBody" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#a0c870"/>
+              <stop offset="18%"  stop-color="#6a9048"/>
+              <stop offset="42%"  stop-color="#3e6028"/>
+              <stop offset="68%"  stop-color="#253c18"/>
+              <stop offset="88%"  stop-color="#182810"/>
+              <stop offset="100%" stop-color="#0e1c08"/>
             </linearGradient>
-            <!-- Left sheen (3D cylinder illusion) -->
-            <linearGradient id="bw2" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#80a050" stop-opacity="0.50"/>
-              <stop offset="30%"  stop-color="#80a050" stop-opacity="0.10"/>
-              <stop offset="100%" stop-color="#80a050" stop-opacity="0"/>
+            <linearGradient id="cjShine" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"  stop-color="#fff" stop-opacity=".28"/>
+              <stop offset="14%" stop-color="#fff" stop-opacity=".07"/>
+              <stop offset="40%" stop-color="#fff" stop-opacity="0"/>
             </linearGradient>
-            <!-- Kief coating on upper portion — bright green/white -->
-            <linearGradient id="bw3" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#c0e090" stop-opacity="0.68"/>
-              <stop offset="25%"  stop-color="#8aaa60" stop-opacity="0.48"/>
-              <stop offset="55%"  stop-color="#5a7840" stop-opacity="0.52"/>
-              <stop offset="100%" stop-color="#283818" stop-opacity="0.30"/>
+            <linearGradient id="cjRim" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+              <stop offset="72%"  stop-color="#000" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#000" stop-opacity=".55"/>
             </linearGradient>
-            <!-- Filter end — rolling paper white -->
-            <linearGradient id="bf1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#f0f0e8"/>
-              <stop offset="55%"  stop-color="#c8c0a0"/>
-              <stop offset="100%" stop-color="#a09070"/>
+            <linearGradient id="cjCrutch" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#f2f0e4"/>
+              <stop offset="30%"  stop-color="#c8c0a0"/>
+              <stop offset="70%"  stop-color="#b0a888"/>
+              <stop offset="100%" stop-color="#8a8060"/>
             </linearGradient>
-            <!-- Ember ambient glow -->
-            <radialGradient id="be1" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stop-color="#ff9040"/>
-              <stop offset="25%"  stop-color="#e04000" stop-opacity="0.90"/>
-              <stop offset="60%"  stop-color="#aa1800" stop-opacity="0.60"/>
-              <stop offset="100%" stop-color="#660000" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="beGlow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <!-- Gold accent band -->
-            <linearGradient id="bgold" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="cjGold" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%"   stop-color="#f0d060"/>
               <stop offset="50%"  stop-color="#c9a030"/>
               <stop offset="100%" stop-color="#806010"/>
             </linearGradient>
-            <!-- Green kief texture -->
-            <filter id="bKief" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.7 0.5" numOctaves="4" seed="14" result="noise"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.65  0 0 0 0 0.20  0 0 0 0.55 0" result="cn" in="noise"/>
-              <feBlend in="SourceGraphic" in2="cn" mode="overlay"/>
+            <radialGradient id="cjEmber" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ff9040"/>
+              <stop offset="28%"  stop-color="#e04000" stop-opacity=".88"/>
+              <stop offset="62%"  stop-color="#aa1800" stop-opacity=".55"/>
+              <stop offset="100%" stop-color="#660000" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="cjGlow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="cjKief" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency=".65 .5" numOctaves="4" seed="14" result="noise"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 .38  0 0 0 0 .72  0 0 0 0 .22  0 0 0 .60 0" in="noise" result="g"/>
+              <feBlend in="SourceGraphic" in2="g" mode="overlay"/>
             </filter>
           </defs>
 
-          <!-- Ground shadow -->
-          <ellipse cx="50" cy="417" rx="30" ry="6" fill="rgba(0,0,0,0.55)"/>
+          <!-- Crutch -->
+          <rect x="12" y="318" width="66" height="72" rx="4" fill="url(#cjCrutch)"/>
+          <rect x="12" y="318" width="20" height="72" rx="4" fill="rgba(255,255,255,.18)"/>
+          <rect x="60" y="318" width="18" height="72" rx="4" fill="rgba(0,0,0,.28)"/>
+          <line x1="24" y1="318" x2="24" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <line x1="34" y1="318" x2="34" y2="390" stroke="rgba(100,90,70,.34)" stroke-width="1"/>
+          <line x1="44" y1="318" x2="44" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <line x1="54" y1="318" x2="54" y2="390" stroke="rgba(100,90,70,.34)" stroke-width="1"/>
+          <line x1="64" y1="318" x2="64" y2="390" stroke="rgba(100,90,70,.42)" stroke-width="1"/>
+          <ellipse cx="45" cy="390" rx="33" ry="6" fill="#c8c0a0"/>
+          <ellipse cx="45" cy="388" rx="33" ry="4" fill="rgba(255,255,255,.14)"/>
+          <ellipse cx="45" cy="396" rx="28" ry="5" fill="rgba(0,0,0,.55)"/>
 
-          <!-- Filter section (bottom) — rolling paper -->
-          <rect x="16" y="320" width="68" height="84" rx="4" fill="url(#bf1)"/>
-          <rect x="16" y="320" width="68" height="20" rx="4" fill="rgba(255,255,255,0.18)"/>
-          <line x1="26" y1="320" x2="26" y2="404" stroke="rgba(100,90,70,0.44)" stroke-width="1"/>
-          <line x1="36" y1="320" x2="36" y2="404" stroke="rgba(100,90,70,0.36)" stroke-width="1"/>
-          <line x1="46" y1="320" x2="46" y2="404" stroke="rgba(100,90,70,0.44)" stroke-width="1"/>
-          <line x1="56" y1="320" x2="56" y2="404" stroke="rgba(100,90,70,0.36)" stroke-width="1"/>
-          <line x1="66" y1="320" x2="66" y2="404" stroke="rgba(100,90,70,0.44)" stroke-width="1"/>
-          <line x1="76" y1="320" x2="76" y2="404" stroke="rgba(100,90,70,0.36)" stroke-width="1"/>
-          <rect x="19" y="402" width="62" height="14" rx="7" fill="#e8e0c8"/>
-          <rect x="19" y="402" width="62" height="6" rx="3" fill="rgba(255,255,255,0.20)"/>
-
-          <!-- Main body — green kief-coated joint -->
-          <rect x="16" y="82" width="68" height="240" rx="5" fill="url(#bw1)"/>
-          <rect x="16" y="82" width="22" height="240" rx="5" fill="url(#bw2)"/>
-          <rect x="68" y="82" width="16" height="240" rx="5" fill="rgba(0,0,0,0.28)"/>
-          <!-- Leaf vein texture lines -->
-          <line x1="16" y1="125" x2="84" y2="115" stroke="rgba(10,20,5,0.38)" stroke-width="1"/>
-          <line x1="16" y1="168" x2="84" y2="158" stroke="rgba(10,20,5,0.32)" stroke-width="1"/>
-          <line x1="16" y1="211" x2="84" y2="201" stroke="rgba(10,20,5,0.38)" stroke-width="1"/>
-          <line x1="16" y1="254" x2="84" y2="244" stroke="rgba(10,20,5,0.32)" stroke-width="1"/>
-          <line x1="16" y1="297" x2="84" y2="287" stroke="rgba(10,20,5,0.38)" stroke-width="1"/>
-          <!-- Kief coating on upper portion -->
-          <rect x="16" y="82" width="68" height="120" rx="5" fill="url(#bw3)" filter="url(#bKief)"/>
-          <!-- Gold brand band (touch of gold) -->
-          <rect x="16" y="202" width="68" height="9" fill="url(#bgold)" opacity="0.94"/>
-          <rect x="16" y="215" width="68" height="2" fill="rgba(201,168,76,0.38)"/>
-          <g transform="translate(50,208) rotate(90)">
-            <text x="0" y="0" font-family="Anton, sans-serif" font-size="12" fill="rgba(201,168,76,0.90)" text-anchor="middle" letter-spacing="5">SLUGGERS</text>
+          <!-- Body -->
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#cjBody)" filter="url(#cjKief)"/>
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#cjShine)"/>
+          <rect x="12" y="88" width="66" height="232" rx="5" fill="url(#cjRim)"/>
+          <line x1="13" y1="140" x2="77" y2="135" stroke="rgba(10,22,5,.22)" stroke-width=".8"/>
+          <line x1="13" y1="190" x2="77" y2="185" stroke="rgba(10,22,5,.18)" stroke-width=".8"/>
+          <line x1="13" y1="240" x2="77" y2="235" stroke="rgba(10,22,5,.22)" stroke-width=".8"/>
+          <line x1="13" y1="290" x2="77" y2="285" stroke="rgba(10,22,5,.18)" stroke-width=".8"/>
+          <rect x="12" y="198" width="66" height="9"  fill="url(#cjGold)" opacity=".92"/>
+          <rect x="12" y="211" width="66" height="2"  fill="rgba(201,168,76,.36)"/>
+          <g transform="translate(45,204) rotate(90)">
+            <text x="0" y="0"  font-family="Bebas Neue,sans-serif" font-size="11" fill="rgba(201,168,76,.90)" text-anchor="middle" letter-spacing="5">SLUGGERS</text>
           </g>
-          <g transform="translate(50,208) rotate(90)">
-            <text x="0" y="16" font-family="Space Grotesk, sans-serif" font-size="6" fill="rgba(201,168,76,0.52)" text-anchor="middle" letter-spacing="4" font-weight="500">HIT</text>
+          <g transform="translate(45,204) rotate(90)">
+            <text x="0" y="14" font-family="Space Grotesk,sans-serif" font-size="5.5" fill="rgba(201,168,76,.52)" text-anchor="middle" letter-spacing="3.5" font-weight="500">HIT</text>
           </g>
 
-          <!-- Twisted cone tip at top -->
-          <path d="M16,82 Q50,40 84,82 L74,96 L26,96 Z" fill="#2a1808"/>
-          <path d="M18,87 Q50,55 82,87" stroke="rgba(100,80,40,0.30)" stroke-width="1" fill="none"/>
-          <path d="M20,93 Q50,68 80,93" stroke="rgba(100,80,40,0.22)" stroke-width="1" fill="none"/>
-          <polygon points="16,82 84,82 50,96" fill="rgba(0,0,0,0.22)"/>
-          <path d="M16,82 Q50,40 84,82 L74,96 L26,96 Z" fill="url(#bw3)" filter="url(#bKief)" opacity="0.80"/>
+          <!-- Twisted tip -->
+          <path d="M12,88 Q28,52 45,24 Q62,52 78,88 L70,100 L20,100 Z" fill="#241408"/>
+          <path d="M12,88 Q28,52 45,24 Q62,52 78,88 L70,100 L20,100 Z" fill="url(#cjBody)" filter="url(#cjKief)" opacity=".65"/>
+          <path d="M22,94 Q38,62 45,28"  stroke="rgba(130,100,50,.40)" stroke-width="1.2" fill="none"/>
+          <path d="M68,94 Q52,62 45,28"  stroke="rgba(80,60,30,.35)"   stroke-width="1.2" fill="none"/>
+          <path d="M18,90 Q36,58 46,32"  stroke="rgba(130,100,50,.25)" stroke-width=".8"  fill="none"/>
+          <path d="M72,90 Q54,58 44,32"  stroke="rgba(80,60,30,.22)"   stroke-width=".8"  fill="none"/>
+          <path d="M12,88 Q28,52 45,24 Q32,50 20,88 Z" fill="rgba(255,255,255,.08)"/>
+          <path d="M78,88 Q62,52 45,24 Q58,50 70,88 Z" fill="rgba(0,0,0,.20)"/>
 
-          <!-- ── REALISTIC EMBER at top ── -->
-          <!-- 1. Warm ambient glow halo -->
-          <ellipse cx="50" cy="56" rx="28" ry="22" fill="url(#be1)" filter="url(#beGlow)" opacity="0.58"/>
-          <!-- 2. Dark char outer ring -->
-          <ellipse cx="50" cy="58" rx="14"  ry="11"  fill="#5a0e00"/>
-          <!-- 3. Deep cherry red -->
-          <ellipse cx="50" cy="58" rx="10.5" ry="8"  fill="#b02000"/>
-          <!-- 4. Orange-red -->
-          <ellipse cx="50" cy="57" rx="7.5"  ry="6"   fill="#d84000"/>
-          <!-- 5. Hot orange -->
-          <ellipse cx="50" cy="56" rx="5"    ry="4"   fill="#f06020"/>
-          <!-- 6. Bright core -->
-          <ellipse cx="49" cy="55" rx="3"    ry="2.5" fill="#ff8040"/>
-          <!-- 7. White-hot pinpoint -->
-          <ellipse cx="49" cy="54" rx="1.5"  ry="1.3" fill="#ffcc88" opacity="0.9"/>
-          <!-- 8. Ash cap (above cherry) -->
-          <ellipse cx="50" cy="50" rx="10"   ry="7"   fill="#50504a" opacity="0.80"/>
-          <ellipse cx="50" cy="47" rx="7"    ry="5"   fill="#888078"/>
-          <ellipse cx="50" cy="44" rx="4.5"  ry="3.5" fill="#b4b0a8"/>
-          <ellipse cx="50" cy="42" rx="2.5"  ry="2"   fill="#d0ccc4" opacity="0.78"/>
+          <!-- Ember -->
+          <ellipse cx="45" cy="34" rx="32" ry="26" fill="url(#cjEmber)" filter="url(#cjGlow)" opacity=".62"/>
+          <ellipse cx="45" cy="36" rx="16" ry="13"  fill="#5a0e00"/>
+          <ellipse cx="45" cy="36" rx="12" ry="9.5" fill="#b02000"/>
+          <ellipse cx="45" cy="35" rx="8.5" ry="7"  fill="#d84000"/>
+          <ellipse cx="45" cy="34" rx="5.5" ry="4.5" fill="#f06020"/>
+          <ellipse cx="45" cy="33" rx="3.2" ry="2.8" fill="#ff8040"/>
+          <ellipse cx="44" cy="32" rx="1.6" ry="1.4" fill="#ffcc88" opacity=".9"/>
+          <ellipse cx="45" cy="28" rx="11"  ry="8"   fill="#50504a" opacity=".82"/>
+          <ellipse cx="45" cy="25" rx="8"   ry="5.5" fill="#888078"/>
+          <ellipse cx="45" cy="22" rx="5"   ry="3.8" fill="#b4b0a8"/>
+          <ellipse cx="45" cy="20" rx="3"   ry="2.2" fill="#d0ccc4" opacity=".80"/>
         </svg>
       </div>
     </div>
@@ -906,81 +941,64 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
 </footer>
 
 <script>
-/* ══ STARFIELD — fixed, behind entire page ══ */
+/* ══ STARFIELD ══ */
 (function(){
-  const canvas = document.getElementById('starCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, stars = [], shootingStars = [];
-
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  const cv = document.getElementById('starCanvas');
+  const cx = cv.getContext('2d');
+  let W, H, stars=[], shoots=[];
+  function resize(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
+  resize(); window.addEventListener('resize',resize);
 
   function mkStar(){
-    return {
-      x: Math.random()*W, y: Math.random()*H,
-      r: Math.random()*2.8,
-      alpha: 0.35 + Math.random()*0.65,
-      ts: 0.004 + Math.random()*0.016,
-      to: Math.random()*Math.PI*2,
-      color: Math.random()<0.12 ? `hsl(${200+Math.random()*60},80%,92%)` :
-             Math.random()<0.09 ? `hsl(${28+Math.random()*18},90%,88%)`  :
-             Math.random()<0.09 ? `hsl(${90+Math.random()*40},70%,85%)`  : '#fff'
-    };
+    return { x:Math.random()*W, y:Math.random()*H, r:Math.random()*2.8,
+      alpha:.35+Math.random()*.65, ts:.004+Math.random()*.016, to:Math.random()*Math.PI*2,
+      color: Math.random()<.12 ? `hsl(${200+Math.random()*60},80%,92%)` :
+             Math.random()<.09 ? `hsl(${28+Math.random()*18},90%,88%)`  :
+             Math.random()<.09 ? `hsl(${95+Math.random()*35},70%,85%)`  : '#fff' };
   }
-  function mkShoot(){
-    return { x:Math.random()*W*0.7+W*0.1, y:Math.random()*H*0.4, vx:5+Math.random()*7, vy:2+Math.random()*4, len:90+Math.random()*130, life:1 };
-  }
+  function mkShoot(){ return {x:Math.random()*W*.7+W*.1,y:Math.random()*H*.4,vx:5+Math.random()*7,vy:2+Math.random()*4,len:90+Math.random()*130,life:1}; }
 
-  /* More stars — roughly 2× original density */
   const N = Math.floor(W*H/780);
   for(let i=0;i<N;i++) stars.push(mkStar());
-
-  let t=0, nextShoot=3+Math.random()*8;
+  let t=0, ns=3+Math.random()*8;
 
   function draw(ms){
-    t = ms/1000;
-    ctx.clearRect(0,0,W,H);
-
-    /* Nebula blobs — 7 blobs, higher opacity, added green tones */
-    [[50,0,120,0.070],[0,20,100,0.062],[70,0,140,0.065],
-     [0,80,25,0.060],[90,35,0,0.058],[25,80,15,0.065],[45,70,20,0.055]].forEach((c,i)=>{
-      const gx = W*(0.1+i*0.14+Math.sin(t*0.04+i)*0.06);
-      const gy = H*(0.15+Math.sin(t*0.03+i*1.4)*0.35+0.1);
-      const gr = ctx.createRadialGradient(gx,gy,0,gx,gy,W*(0.3+i*0.04));
+    t=ms/1000; cx.clearRect(0,0,W,H);
+    /* Nebulas */
+    [[50,0,120,.07],[0,20,100,.062],[70,0,140,.065],
+     [0,80,25,.060],[90,35,0,.058],[25,80,15,.065],[45,70,20,.055]].forEach((c,i)=>{
+      const gx=W*(.1+i*.14+Math.sin(t*.04+i)*.06);
+      const gy=H*(.15+Math.sin(t*.03+i*1.4)*.35+.1);
+      const gr=cx.createRadialGradient(gx,gy,0,gx,gy,W*(.3+i*.04));
       gr.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${c[3]})`);
       gr.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=gr; ctx.fillRect(0,0,W,H);
+      cx.fillStyle=gr; cx.fillRect(0,0,W,H);
     });
-
-    /* Stars — brighter twinkling floor */
+    /* Stars */
     stars.forEach(s=>{
-      const tw = 0.5+0.5*Math.sin(t*s.ts*60+s.to);
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle=s.color; ctx.globalAlpha=s.alpha*(0.50+0.50*tw); ctx.fill();
+      const tw=.5+.5*Math.sin(t*s.ts*60+s.to);
+      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      cx.fillStyle=s.color; cx.globalAlpha=s.alpha*(.5+.5*tw); cx.fill();
       if(s.r>1.2){
-        const g2=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3.5);
-        g2.addColorStop(0,`rgba(255,255,255,${0.12*tw})`); g2.addColorStop(1,'rgba(255,255,255,0)');
-        ctx.beginPath(); ctx.arc(s.x,s.y,s.r*3.5,0,Math.PI*2);
-        ctx.fillStyle=g2; ctx.globalAlpha=1; ctx.fill();
+        const g2=cx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3.5);
+        g2.addColorStop(0,`rgba(255,255,255,${.12*tw})`);
+        g2.addColorStop(1,'rgba(255,255,255,0)');
+        cx.beginPath(); cx.arc(s.x,s.y,s.r*3.5,0,Math.PI*2);
+        cx.fillStyle=g2; cx.globalAlpha=1; cx.fill();
       }
     });
-    ctx.globalAlpha=1;
-
-    /* Shooting stars — more frequent */
-    if(t>nextShoot){ shootingStars.push(mkShoot()); nextShoot=t+3+Math.random()*8; }
-    shootingStars=shootingStars.filter(ss=>{
-      ss.x+=ss.vx; ss.y+=ss.vy; ss.life-=0.028;
+    cx.globalAlpha=1;
+    /* Shooting stars */
+    if(t>ns){ shoots.push(mkShoot()); ns=t+3+Math.random()*8; }
+    shoots=shoots.filter(ss=>{
+      ss.x+=ss.vx; ss.y+=ss.vy; ss.life-=.028;
       if(ss.life<=0) return false;
-      const gr=ctx.createLinearGradient(ss.x,ss.y,ss.x-ss.len,ss.y-ss.vy*(ss.len/ss.vx));
-      gr.addColorStop(0,`rgba(255,255,255,${ss.life*0.9})`);
-      gr.addColorStop(0.3,`rgba(180,230,180,${ss.life*0.5})`);
+      const gr=cx.createLinearGradient(ss.x,ss.y,ss.x-ss.len,ss.y-ss.vy*(ss.len/ss.vx));
+      gr.addColorStop(0,`rgba(255,255,255,${ss.life*.9})`);
+      gr.addColorStop(.3,`rgba(180,230,180,${ss.life*.5})`);
       gr.addColorStop(1,'rgba(255,255,255,0)');
-      ctx.beginPath(); ctx.moveTo(ss.x,ss.y); ctx.lineTo(ss.x-ss.len,ss.y-ss.vy*(ss.len/ss.vx));
-      ctx.strokeStyle=gr; ctx.lineWidth=1.6*ss.life; ctx.stroke();
+      cx.beginPath(); cx.moveTo(ss.x,ss.y); cx.lineTo(ss.x-ss.len,ss.y-ss.vy*(ss.len/ss.vx));
+      cx.strokeStyle=gr; cx.lineWidth=1.6*ss.life; cx.stroke();
       return true;
     });
     requestAnimationFrame(draw);
@@ -992,33 +1010,39 @@ footer { background:rgba(2,5,2,0.96); padding:72px 60px 36px; border-top:1px sol
 const dot=document.getElementById('cursorDot'), ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-(function animC(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;dot.style.left=mx+'px';dot.style.top=my+'px';ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);})();
+(function animC(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animC);
+})();
 document.querySelectorAll('a,button,.product-card,.ritual-step').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(77,140,48,0.90)';});
-  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(77,140,48,0.55)';});
+  el.addEventListener('mouseenter',()=>{ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(77,140,48,.90)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(77,140,48,.55)';});
 });
 
-/* ══ 3D CURSOR TILT FOR JOINTS ══ */
+/* ══ 3D CURSOR TILT — hero joint & craft joint ══ */
 const _jEls = [
-  { el: document.getElementById('heroJointStage'),  sx: 20, sy: 12 },
-  { el: document.getElementById('craftJointStage'), sx: 16, sy: 10 },
+  { el: document.getElementById('heroJointStage'),  sx:22, sy:13, bx:10, bz:-6 },
+  { el: document.getElementById('craftJointStage'), sx:16, sy:10, bx:0,  bz:0  },
 ];
-let _jTX=0, _jTY=0, _jCX=0, _jCY=0;
-document.addEventListener('mousemove', e=>{
-  _jCX = (e.clientX/window.innerWidth  - 0.5) * 2;
-  _jCY = (e.clientY/window.innerHeight - 0.5) * 2;
+let _tx=0,_ty=0,_cx=0,_cy=0;
+document.addEventListener('mousemove',e=>{
+  _cx=(e.clientX/window.innerWidth -.5)*2;
+  _cy=(e.clientY/window.innerHeight-.5)*2;
 });
-(function _jLoop(){
-  _jTX += (_jCX - _jTX) * 0.07;
-  _jTY += (_jCY - _jTY) * 0.07;
-  _jEls.forEach(({el,sx,sy})=>{
-    if(el) el.style.transform=`rotateY(${_jTX*sx}deg) rotateX(${-_jTY*sy}deg)`;
+(function tilt(){
+  _tx+=(_cx-_tx)*.07; _ty+=(_cy-_ty)*.07;
+  _jEls.forEach(({el,sx,sy,bx,bz})=>{
+    if(el) el.style.transform=`rotateY(${bx+_tx*sx}deg) rotateX(${-_ty*sy}deg) rotateZ(${bz}deg)`;
   });
-  requestAnimationFrame(_jLoop);
+  requestAnimationFrame(tilt);
 })();
 
 /* ══ SCROLL REVEAL ══ */
-const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting) e.target.classList.add('visible');
+}),{threshold:.1});
 document.querySelectorAll('.reveal,.stagger').forEach(el=>io.observe(el));
 </script>
 </body>
